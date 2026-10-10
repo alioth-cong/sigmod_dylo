@@ -1,0 +1,5 @@
+method,tokens_per_batch,comms_resummarized_per_batch,vs_fromscratch_saving_pct,vs_dfleiden_saving_pct,usd_per_batch,usd_saved_vs_fromscratch
+from-scratch Leiden,1021077,25911,0.0,-198.4,0.153162,0.0
+cost-oblivious DF-Leiden,342181,1128,66.5,0.0,0.051327,0.101834
+DyLo-Leiden (structural w),324187,1121,68.3,5.3,0.048628,0.104534
+DyLo-Leiden (token w),324384,1122,68.2,5.2,0.048658,0.104504

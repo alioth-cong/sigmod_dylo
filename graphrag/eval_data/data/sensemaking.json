@@ -1,0 +1,242 @@
+[
+ {
+  "user": "Academic researcher",
+  "task": "Identify patterns in the representation of female characters across different genres",
+  "question": "How many female characters are represented in the dataset, and how does this vary by genre?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Identify patterns in the representation of female characters across different genres",
+  "question": "What types of roles do female characters typically occupy in the dataset, and how has this changed over time?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Identify patterns in the representation of female characters across different genres",
+  "question": "Are there any significant correlations between the representation of female characters and the success of the creative works they appear in?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Identify patterns in the representation of female characters across different genres",
+  "question": "How do the portrayals of female characters differ between different geographic locations mentioned in the dataset?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Analyze the impact of social media on the popularity of certain musical artists",
+  "question": "Which musical artists have seen the most significant increase in popularity after the rise of social media platforms?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Analyze the impact of social media on the popularity of certain musical artists",
+  "question": "What specific social media metrics correlate with increased album sales or streaming numbers for these artists?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Analyze the impact of social media on the popularity of certain musical artists",
+  "question": "How does the presence of social media activity compare between successful and less successful albums by the same artist?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Analyze the impact of social media on the popularity of certain musical artists",
+  "question": "Are there any patterns in the types of content shared on social media that correlate with spikes in an artist's popularity?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Evaluate the influence of historical events on the creation of books and films",
+  "question": "How many books and films were created in response to significant historical events in the dataset?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Evaluate the influence of historical events on the creation of books and films",
+  "question": "What are the most common themes explored in books and films created in response to major historical events?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Evaluate the influence of historical events on the creation of books and films",
+  "question": "Are there any notable differences in the reception of books and films addressing the same historical event in different regions?"
+ },
+ {
+  "user": "Academic researcher",
+  "task": "Evaluate the influence of historical events on the creation of books and films",
+  "question": "How do the representations of historical events in books and films vary in terms of accuracy and perspective?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Determine the correlation between the number of awards won by a film and its box office performance",
+  "question": "What is the average box office revenue for films that won at least one award versus those that did not?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Determine the correlation between the number of awards won by a film and its box office performance",
+  "question": "Does the relationship between awards and box office performance change when considering different genres of films?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Determine the correlation between the number of awards won by a film and its box office performance",
+  "question": "Are there any outliers in the data where a film with few awards performed exceptionally well at the box office?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Determine the correlation between the number of awards won by a film and its box office performance",
+  "question": "How does the number of awards won affect the opening weekend box office performance compared to the final box office gross?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Analyze the distribution of book series lengths",
+  "question": "What is the average length of book series in the dataset, and how does this vary by genre?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Analyze the distribution of book series lengths",
+  "question": "Are there any book series that significantly deviate from the average length, and what might explain their longer or shorter lengths?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Analyze the distribution of book series lengths",
+  "question": "How does the length of book series correlate with the success of the series in terms of total book sales?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Analyze the distribution of book series lengths",
+  "question": "What factors, if any, can be identified as contributing to the popularity of longer book series?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Examine the geographical distribution of sports teams and athletes",
+  "question": "Which countries have the highest number of professional sports teams represented in the dataset?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Examine the geographical distribution of sports teams and athletes",
+  "question": "How does the distribution of sports teams across countries correlate with the population size of those countries?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Examine the geographical distribution of sports teams and athletes",
+  "question": "Are there any sports that are more or less popular in certain regions based on the number of teams and athletes listed?"
+ },
+ {
+  "user": "Data analyst",
+  "task": "Examine the geographical distribution of sports teams and athletes",
+  "question": "How does the geographical distribution of athletes in the dataset compare to the global distribution of those sports?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Identify trends in the marketing strategies used for successful book releases",
+  "question": "What are the most common marketing strategies employed for books that achieve high sales figures?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Identify trends in the marketing strategies used for successful book releases",
+  "question": "Do books with higher marketing budgets generally perform better in terms of sales and reviews?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Identify trends in the marketing strategies used for successful book releases",
+  "question": "Are there any specific marketing campaigns that correlate with the rapid rise in popularity of certain authors or books?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Identify trends in the marketing strategies used for successful book releases",
+  "question": "How does the use of digital marketing channels compare to traditional methods in the success of book releases?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Assess the impact of celebrity endorsements on album sales",
+  "question": "How many albums have received notable celebrity endorsements, and how does this affect their sales?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Assess the impact of celebrity endorsements on album sales",
+  "question": "Are there any celebrities whose endorsements have had a particularly significant impact on album sales?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Assess the impact of celebrity endorsements on album sales",
+  "question": "Does the type of endorsement (e.g., social media post, public appearance) affect the album's sales differently?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Assess the impact of celebrity endorsements on album sales",
+  "question": "How does the timing of a celebrity endorsement in relation to an album release impact its success?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Evaluate the effectiveness of different promotional strategies for films",
+  "question": "What promotional strategies have been most effective in increasing ticket sales for films?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Evaluate the effectiveness of different promotional strategies for films",
+  "question": "Are there any correlations between the use of specific promotional strategies and the critical reception of films?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Evaluate the effectiveness of different promotional strategies for films",
+  "question": "How do promotional strategies differ between successful and unsuccessful films in the dataset?"
+ },
+ {
+  "user": "Marketing consultant",
+  "task": "Evaluate the effectiveness of different promotional strategies for films",
+  "question": "Are there any promotional strategies that have proven ineffective, and why might this be the case?"
+ },
+ {
+  "user": "Historian",
+  "task": "Trace the evolution of a specific genre of literature over time",
+  "question": "How has the representation and popularity of a specific literary genre evolved over the years in the dataset?"
+ },
+ {
+  "user": "Historian",
+  "task": "Trace the evolution of a specific genre of literature over time",
+  "question": "What significant events or movements have influenced the development of this genre according to the dataset?"
+ },
+ {
+  "user": "Historian",
+  "task": "Trace the evolution of a specific genre of literature over time",
+  "question": "Are there any notable authors or works within this genre that stand out in terms of their impact on the genre’s evolution?"
+ },
+ {
+  "user": "Historian",
+  "task": "Trace the evolution of a specific genre of literature over time",
+  "question": "How does the portrayal of certain themes or issues in this genre change over time, and what might explain these changes?"
+ },
+ {
+  "user": "Historian",
+  "task": "Analyze the impact of political events on the creation and reception of films",
+  "question": "How many films address significant political events in the dataset, and what are the most common themes explored in these films?"
+ },
+ {
+  "user": "Historian",
+  "task": "Analyze the impact of political events on the creation and reception of films",
+  "question": "What is the general reception of films addressing political events, and how does this reception vary by region?"
+ },
+ {
+  "user": "Historian",
+  "task": "Analyze the impact of political events on the creation and reception of films",
+  "question": "Are there any patterns in the timing of film releases relative to political events, and how do these patterns affect the films' success?"
+ },
+ {
+  "user": "Historian",
+  "task": "Analyze the impact of political events on the creation and reception of films",
+  "question": "How do the depictions of political events in films compare to real-world accounts or historical records?"
+ },
+ {
+  "user": "Historian",
+  "task": "Study the cultural significance of sports in different regions",
+  "question": "Which sports are most culturally significant in different regions based on the number of teams and athletes listed in the dataset?"
+ },
+ {
+  "user": "Historian",
+  "task": "Study the cultural significance of sports in different regions",
+  "question": "How does the cultural significance of sports vary by region, and what might explain these differences?"
+ },
+ {
+  "user": "Historian",
+  "task": "Study the cultural significance of sports in different regions",
+  "question": "Are there any regional sports that have gained international recognition through the dataset?"
+ },
+ {
+  "user": "Historian",
+  "task": "Study the cultural significance of sports in different regions",
+  "question": "How do the cultural perceptions of sports in the dataset compare to actual participation rates or fan bases?"
+ }
+]

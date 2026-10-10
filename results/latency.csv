@@ -1,0 +1,481 @@
+method,dataset,value,unit,language,repo,commit,notes
+batch,cit-hepph,150.651,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; ok
+df-leiden,cit-hepph,26.905,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+df-louvain,cit-hepph,0.349,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; ok
+ds-louvain,cit-hepph,5.120,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; ok
+dylo-leiden,cit-hepph,0.300,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj
+dylo-louvain,cit-hepph,0.980,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dylo-slm,cit-hepph,0.248,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dynamo,cit-hepph,271.930,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+gremod,cit-hepph,4.256,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; ok
+leiden-cpp-static,cit-hepph,3473.328,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; ok"
+leiden-hier,cit-hepph,1971.792,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); ok
+leiden-static,cit-hepph,4031.349,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+louvain-cpp-static,cit-hepph,1443.460,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; ok"
+louvain-hier,cit-hepph,879.909,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); ok
+louvain-static,cit-hepph,3333.000,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; ok
+qca,cit-hepph,6.907,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; ok
+slm-cpp-static,cit-hepph,4666.821,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; ok"
+slm-static,cit-hepph,1320.999,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+batch,cit-hepth,138.417,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; ok
+df-leiden,cit-hepth,20.346,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+df-louvain,cit-hepth,0.427,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; ok
+ds-louvain,cit-hepth,3.416,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; ok
+dylo-leiden,cit-hepth,0.879,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj
+dylo-louvain,cit-hepth,0.964,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dylo-slm,cit-hepth,1.092,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dynamo,cit-hepth,179.000,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+gremod,cit-hepth,3.861,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; ok
+leiden-cpp-static,cit-hepth,2348.588,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; ok"
+leiden-hier,cit-hepth,1642.710,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); ok
+leiden-static,cit-hepth,3317.472,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+louvain-cpp-static,cit-hepth,970.360,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; ok"
+louvain-hier,cit-hepth,607.028,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); ok
+louvain-static,cit-hepth,2364.028,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; ok
+qca,cit-hepth,11.528,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; ok
+slm-cpp-static,cit-hepth,3396.257,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; ok"
+slm-static,cit-hepth,982.297,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+batch,dblp,554.095,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; ok
+df-leiden,dblp,175.669,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+df-louvain,dblp,0.931,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; ok
+ds-louvain,dblp,20.955,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; ok
+dylo-leiden,dblp,1.422,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj
+dylo-louvain,dblp,2.035,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dylo-slm,dblp,1.530,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dynamo,dblp,2404.648,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+gremod,dblp,5.543,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; ok
+leiden-cpp-static,dblp,26686.913,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; ok"
+leiden-hier,dblp,10760.082,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); ok
+leiden-static,dblp,25286.752,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+louvain-cpp-static,dblp,12795.412,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; ok"
+louvain-hier,dblp,7557.645,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); ok
+louvain-static,dblp,23225.029,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; ok
+qca,dblp,7.533,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; ok
+slm-cpp-static,dblp,31657.456,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; ok"
+slm-static,dblp,7913.252,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+batch,epinions,208.317,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; ok
+df-leiden,epinions,26.152,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+df-louvain,epinions,0.665,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; ok
+ds-louvain,epinions,4.895,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; ok
+dylo-leiden,epinions,1.250,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj
+dylo-louvain,epinions,1.454,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dylo-slm,epinions,1.155,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dynamo,epinions,223.634,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+gremod,epinions,5.000,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; ok
+leiden-cpp-static,epinions,5670.396,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; ok"
+leiden-hier,epinions,2284.907,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); ok
+leiden-static,epinions,6882.000,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+louvain-cpp-static,epinions,1703.907,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; ok"
+louvain-hier,epinions,781.979,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); ok
+louvain-static,epinions,3339.049,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; ok
+qca,epinions,95.585,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; ok
+slm-cpp-static,epinions,5512.143,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; ok"
+slm-static,epinions,1330.480,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+batch,facebook,109.556,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; ok
+df-leiden,facebook,2.131,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+df-louvain,facebook,0.077,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; ok
+ds-louvain,facebook,0.610,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; ok
+dylo-leiden,facebook,0.074,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj
+dylo-louvain,facebook,0.068,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dylo-slm,facebook,0.124,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dynamo,facebook,14.222,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+gremod,facebook,2.000,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; ok
+leiden-cpp-static,facebook,138.632,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; ok"
+leiden-hier,facebook,206.780,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); ok
+leiden-static,facebook,388.889,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+louvain-cpp-static,facebook,63.206,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; ok"
+louvain-hier,facebook,61.619,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); ok
+louvain-static,facebook,367.333,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; ok
+qca,facebook,7.222,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; ok
+slm-cpp-static,facebook,122.369,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; ok"
+slm-static,facebook,288.727,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+batch,flickr,1473.241,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; ok
+df-leiden,flickr,178.143,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+df-louvain,flickr,1.533,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; ok
+ds-louvain,flickr,42.313,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; ok
+dylo-leiden,flickr,1.915,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj
+dylo-louvain,flickr,1.670,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dylo-slm,flickr,1.942,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dynamo,flickr,3907.294,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+gremod,flickr,5.509,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; ok
+leiden-hier,flickr,21897.995,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); ok
+louvain-hier,flickr,12120.620,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); ok
+louvain-static,flickr,26098.972,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; ok
+qca,flickr,40.862,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; ok
+slm-static,flickr,13785.824,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+batch,gplus,4649.255,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; ok
+df-leiden,gplus,317.842,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+df-louvain,gplus,3.350,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; ok
+ds-louvain,gplus,92.761,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; ok
+dylo-leiden,gplus,1.927,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj
+dylo-louvain,gplus,3.057,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dylo-slm,gplus,4.101,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dynamo,gplus,3751.248,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+gremod,gplus,5.075,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; ok
+qca,gplus,5641.042,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; ok
+df-leiden,lj_17M,4596.624,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+dylo-louvain,lj_17M,1.559,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok"
+dynamo,lj_17M,142407.100,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+leiden-static,lj_17M,653697.300,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+slm-static,lj_17M,429259.185,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+df-leiden,lj_34M,4111.981,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+dylo-louvain,lj_34M,1.664,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok"
+dynamo,lj_34M,265552.700,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+leiden-static,lj_34M,1035585.400,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+slm-static,lj_34M,741364.042,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+df-leiden,lj_42M,3892.271,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+dylo-louvain,lj_42M,1.784,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok"
+dynamo,lj_42M,333304.100,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+leiden-static,lj_42M,1214397.100,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+slm-static,lj_42M,929286.402,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+df-leiden,lj_8M,3774.668,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+dylo-louvain,lj_8M,1.265,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok"
+dynamo,lj_8M,71687.700,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+leiden-static,lj_8M,406060.000,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+slm-static,lj_8M,233074.653,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+batch,twitter,443.607,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; ok
+df-leiden,twitter,60.075,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+df-louvain,twitter,0.720,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; ok
+ds-louvain,twitter,15.444,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; ok
+dylo-leiden,twitter,1.086,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj
+dylo-louvain,twitter,1.076,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dylo-slm,twitter,1.244,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dynamo,twitter,796.348,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+gremod,twitter,4.193,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; ok
+leiden-cpp-static,twitter,11861.879,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; ok"
+leiden-hier,twitter,5616.331,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); ok
+leiden-static,twitter,11501.407,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok
+louvain-cpp-static,twitter,5142.586,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; ok"
+louvain-hier,twitter,2689.960,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); ok
+louvain-static,twitter,8621.193,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; ok
+qca,twitter,11.578,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; ok
+slm-cpp-static,twitter,14228.390,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; ok"
+slm-static,twitter,3286.646,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+batch,youtube,1903.849,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; ok
+df-leiden,youtube,423.002,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok
+df-louvain,youtube,3.550,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; ok
+ds-louvain,youtube,70.467,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; ok
+dylo-leiden,youtube,2.772,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj
+dylo-louvain,youtube,2.959,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dylo-slm,youtube,3.687,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; ok; re-measured solo single-thread (): margin-gate+flat-adj"
+dynamo,youtube,8169.846,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok
+gremod,youtube,8.161,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; ok
+qca,youtube,56.328,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; ok
+slm-static,youtube,25095.365,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok"
+dylo-leiden,facebook,0.27409977777777783,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dynamo,facebook,32.333333333333336,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+leiden-static,facebook,665.3333333333334,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=ok
+df-louvain,cit-hepph,0.459674418604651,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+ds-louvain,cit-hepph,5.92346511627907,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-leiden,cit-hepth,21.25486105555556,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+gremod,cit-hepph,3.302325581395349,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,cit-hepph,7.72093023255814,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+df-louvain,cit-hepth,0.43324999999999997,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+dylo-louvain,cit-hepph,0.19078181395348834,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+df-leiden,cit-hepph,29.52627923255814,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+ds-louvain,cit-hepth,3.6395833333333334,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+gremod,cit-hepth,3.6944444444444446,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+dylo-louvain,cit-hepth,0.25454136111111114,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-leiden,cit-hepph,0.2178068372093023,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-leiden,cit-hepth,0.19117622222222222,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-slm,cit-hepph,0.20833351162790703,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,cit-hepth,0.22662969444444453,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+qca,cit-hepth,11.527777777777779,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,cit-hepth,186.08333333333334,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+batch,cit-hepph,169.48837209302326,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,cit-hepth,205.88888888888889,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+dynamo,cit-hepph,273.6744186046512,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+louvain-hier,cit-hepth,626.4232728055555,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); status=ok
+df-louvain,dblp,1.046190476190476,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+louvain-cpp-static,cit-hepth,928.0338089166665,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; status=ok"
+louvain-hier,cit-hepph,884.4295434651164,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); status=ok
+ds-louvain,dblp,21.79898085714285,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-leiden,dblp,169.00229536190483,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+slm-static,cit-hepth,1000.4735853611112,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=ok"
+dylo-louvain,dblp,0.485020580952381,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+leiden-hier,cit-hepth,1583.884537222222,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); status=ok
+louvain-cpp-static,cit-hepph,1530.3414881860463,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; status=ok"
+dylo-leiden,dblp,0.5194246666666669,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+slm-static,cit-hepph,1334.3184160232556,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=ok"
+gremod,dblp,5.733333333333333,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+dylo-slm,dblp,0.5497608190476192,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+leiden-hier,cit-hepph,2002.152470627907,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); status=ok
+louvain-static,cit-hepth,2569.6944444444443,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; status=ok
+batch,dblp,582.0285714285715,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+leiden-cpp-static,cit-hepth,2674.9559670000003,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; status=ok"
+df-louvain,epinions,0.8931951219512195,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+batch,epinions,220.7560975609756,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+df-leiden,epinions,26.67114636585366,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+ds-louvain,epinions,4.891756097560976,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+dylo-louvain,epinions,0.29760941463414625,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-leiden,epinions,0.32884334146341465,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+qca,dblp,7.495238095238095,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+gremod,epinions,5.097560975609756,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+dylo-slm,epinions,0.27799487804878037,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+slm-cpp-static,cit-hepth,3207.532762027777,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; status=ok"
+leiden-static,cit-hepth,3296.8055555555557,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=ok
+dynamo,epinions,259.4634146341463,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+qca,epinions,95.58536585365853,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+leiden-cpp-static,cit-hepph,3416.5232213023255,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; status=ok"
+louvain-static,cit-hepph,3530.860465116279,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; status=ok
+batch,facebook,113.22222222222223,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+df-leiden,facebook,2.139888888888889,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+df-louvain,facebook,0.07688888888888891,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+ds-louvain,facebook,0.616,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+dylo-leiden,facebook,0.08749555555555555,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-louvain,facebook,0.08545699999999999,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,facebook,0.08605333333333333,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dynamo,facebook,15.88888888888889,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,facebook,2.4444444444444446,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+leiden-cpp-static,facebook,150.89351544444446,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; status=ok"
+leiden-hier,facebook,210.93930133333333,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); status=ok
+leiden-static,facebook,397.0,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=ok
+louvain-cpp-static,facebook,61.866552333333324,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; status=ok"
+louvain-hier,facebook,63.02298444444445,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); status=ok
+louvain-hier,epinions,824.6861376341467,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); status=ok
+qca,facebook,7.333333333333333,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+slm-cpp-static,facebook,123.63145566666665,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; status=ok"
+louvain-static,facebook,349.44444444444446,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; status=ok
+leiden-static,cit-hepph,4053.1162790697676,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=ok
+slm-static,facebook,288.2397438888889,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=ok"
+louvain-cpp-static,epinions,1846.4570643170732,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; status=ok"
+slm-cpp-static,cit-hepph,4958.42287576744,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; status=ok"
+leiden-hier,epinions,2309.5454588536586,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); status=ok
+slm-static,epinions,1333.0740463414634,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=ok"
+louvain-static,epinions,3373.4634146341464,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; status=ok
+df-louvain,flickr,1.605209374999999,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+dylo-louvain,flickr,0.6285132937499999,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+ds-louvain,flickr,42.941409334374995,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+dylo-leiden,flickr,0.6118840500000003,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+leiden-cpp-static,epinions,6112.156909463414,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; status=ok"
+df-leiden,flickr,181.49303744374998,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+dylo-slm,flickr,0.6139918218749998,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dynamo,dblp,2508.961904761905,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+slm-cpp-static,epinions,6005.932129756096,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; status=ok"
+leiden-static,epinions,6848.341463414634,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=ok
+gremod,flickr,6.771875,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,flickr,76.115625,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,flickr,2156.05,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dylo-leiden,gplus,0.8624272957516357,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+df-louvain,gplus,7.574098038398694,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+dylo-louvain,gplus,1.0752736250000003,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+louvain-hier,dblp,12932.990489723808,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); status=ok
+dylo-slm,gplus,1.4333378741830065,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+gremod,gplus,10.799019607843137,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+slm-static,dblp,14754.507505390473,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=ok"
+ds-louvain,gplus,219.45427944117637,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-leiden,lj_17M,6467.271533200001,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+df-leiden,gplus,688.5874899395424,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+louvain-cpp-static,dblp,21554.52623310475,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; status=ok"
+leiden-hier,dblp,18335.3634243619,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); status=ok
+df-leiden,lj_34M,4237.0483886,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+dylo-louvain,lj_17M,2.4175136,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dynamo,flickr,7950.565625,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+dylo-louvain,lj_34M,3.2828297999999996,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+louvain-static,dblp,43378.94285714286,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; status=ok
+leiden-static,dblp,43496.50476190476,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=ok
+df-leiden,lj_42M,3977.5308348999997,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+dynamo,lj_17M,245995.0,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+leiden-cpp-static,dblp,46992.56931118096,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; status=ok"
+df-leiden,lj_8M,4038.9095214,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+dylo-louvain,lj_8M,2.4238849,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+slm-cpp-static,dblp,55791.47464627619,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; status=ok"
+dynamo,lj_8M,145329.1,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+dylo-louvain,lj_42M,3.390892,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+batch,twitter,448.8888888888889,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+df-leiden,twitter,65.95545194074076,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+df-louvain,twitter,0.8111925925925928,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+ds-louvain,twitter,14.852437066666658,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+dylo-leiden,twitter,0.3247042592592591,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-louvain,twitter,0.32135054814814823,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,twitter,0.3498884074074074,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dynamo,twitter,769.1925925925926,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,twitter,4.703703703703703,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+dynamo,lj_34M,451040.8,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+batch,gplus,6697.450163398693,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+louvain-hier,flickr,22416.308231656243,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); status=ok
+leiden-hier,twitter,10705.806373614816,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); status=ok
+louvain-hier,twitter,6716.315506148146,ms/batch,Python,igraph/python-igraph,v1.0.0,from-scratch Louvain with full dendrogram; HIERARCHICAL re-summarization cost (P1); status=ok
+leiden-cpp-static,twitter,19903.25840788149,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Leiden via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-leiden; status=ok"
+qca,twitter,12.385185185185184,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+louvain-cpp-static,twitter,9086.171347614818,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch Louvain via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-louvain; status=ok"
+dynamo,lj_42M,542147.2,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+slm-static,lj_17M,742856.1537981,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=ok"
+leiden-static,twitter,19402.992592592593,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=ok
+slm-static,flickr,24065.427560378117,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=ok"
+slm-static,lj_8M,379064.3951892,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=ok"
+df-louvain,youtube,5.4692240802675585,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+df-leiden,youtube,742.7020872107029,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+slm-static,twitter,5053.934362185187,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=ok"
+ds-louvain,youtube,128.77927738127093,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+dylo-louvain,youtube,1.4054207792642126,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-leiden,youtube,1.4215519096989973,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+batch,youtube,3102.9866220735785,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+louvain-static,twitter,14886.888888888889,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; status=ok
+dylo-slm,youtube,1.3083892876254177,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+gremod,youtube,11.94314381270903,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,gplus,8824.904411764706,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+qca,youtube,156.24414715719064,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+leiden-static,lj_8M,663897.3,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=ok
+leiden-static,lj_17M,1083931.1,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=ok
+slm-cpp-static,twitter,25413.881618281484,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"from-scratch SLM via DyLo's C++ base detector (detect_iter), re-run per batch; fair same-impl baseline for dylo-slm; status=ok"
+leiden-hier,flickr,,ms/batch,Python,vtraag/leidenalg,c08884a4,from-scratch Leiden with full dendrogram (aggregation passes); HIERARCHICAL re-summarization cost (P1); status=TLE
+leiden-static,flickr,,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=TLE
+louvain-static,flickr,,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; status=TLE
+dynamo,gplus,,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=TLE
+gremod,livejournal,,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=TLE
+leiden-static,lj_34M,,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=TLE
+dynamo,youtube,14963.816053511706,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+slm-static,lj_34M,,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=TLE"
+leiden-static,lj_42M,,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=TLE
+slm-static,lj_42M,,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=TLE"
+leiden-static,youtube,,ms/batch,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; status=TLE
+slm-static,youtube,,ms/batch,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; status=TLE"
+dylo-louvain,facebook,0.08864222222222223,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-louvain,cit-hepth,0.20027100000000003,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-louvain,cit-hepph,0.2021436976744186,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-louvain,epinions,0.2926394878048781,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-louvain,dblp,0.5071535333333334,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-louvain,twitter,0.26298374074074066,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-louvain,flickr,0.560316371875,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-louvain,youtube,0.8514380066889627,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-louvain,gplus,0.42674469771241913,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,facebook,0.08843044444444445,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,cit-hepth,0.19997416666666665,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,cit-hepph,0.1919704186046512,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,epinions,0.28365282926829266,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,dblp,0.495411238095238,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,twitter,0.2541870666666666,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,flickr,0.53184594375,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,youtube,0.8201843678929768,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-slm,gplus,0.412432276960784,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental SLM (Alg 1 + open-set DP). Refine=full within-community local-moving (Smart Local Moving, Waltman & van Eck 2013) + aggregate-init lift. Detect Q matches slm-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok"
+dylo-leiden,facebook,0.08840655555555556,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-leiden,cit-hepth,0.20392011111111114,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-leiden,cit-hepph,0.1974796279069768,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-leiden,epinions,0.26803529268292686,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-leiden,dblp,0.4680191428571428,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-leiden,twitter,0.24417542222222227,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-leiden,flickr,0.5348608125000001,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-leiden,youtube,0.8183226220735788,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dylo-leiden,gplus,0.41283969117647085,ms/batch,C++,this-artifact (harness/cpp/dylo),0,DyLo cost-aware incremental Leiden (Alg 1 + open-set DP). Refine=connectedness-gated single-pass merge (Traag/van Eck/Waltman 2019) + aggregate-init lift -> well-connected sub-communities. Detect Q matches leiden-static within eps<=0.005 on 6 datasets. lambda via DYLO_LAMBDA env (default 0).; status=ok
+dynamo,facebook,15.444444444444445,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+qca,facebook,7.0,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+gremod,facebook,2.0,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+batch,facebook,107.77777777777777,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+df-louvain,facebook,0.07755555555555557,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+ds-louvain,facebook,0.6183333333333333,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-leiden,facebook,2.1445555555555558,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+hit-leiden,cit-hepph,1560.249,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"faithful HIT-Leiden approx (arXiv:2601.08554): hierarchical cost-oblivious incremental Leiden = DyLo-Leiden at lambda=0 (affected-region + full re-optimization, no lambda*Cost term); anchors DyLo's lambda-frontier; hierarchical-mode per-batch time (DP + dendrogram), single-thread"
+hit-leiden,cit-hepth,1134.555,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"faithful HIT-Leiden approx (arXiv:2601.08554): hierarchical cost-oblivious incremental Leiden = DyLo-Leiden at lambda=0 (affected-region + full re-optimization, no lambda*Cost term); anchors DyLo's lambda-frontier; hierarchical-mode per-batch time (DP + dendrogram), single-thread"
+hit-leiden,dblp,7904.275,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"faithful HIT-Leiden approx (arXiv:2601.08554): hierarchical cost-oblivious incremental Leiden = DyLo-Leiden at lambda=0 (affected-region + full re-optimization, no lambda*Cost term); anchors DyLo's lambda-frontier; hierarchical-mode per-batch time (DP + dendrogram), single-thread"
+hit-leiden,epinions,2052.104,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"faithful HIT-Leiden approx (arXiv:2601.08554): hierarchical cost-oblivious incremental Leiden = DyLo-Leiden at lambda=0 (affected-region + full re-optimization, no lambda*Cost term); anchors DyLo's lambda-frontier; hierarchical-mode per-batch time (DP + dendrogram), single-thread"
+hit-leiden,facebook,75.955,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"faithful HIT-Leiden approx (arXiv:2601.08554): hierarchical cost-oblivious incremental Leiden = DyLo-Leiden at lambda=0 (affected-region + full re-optimization, no lambda*Cost term); anchors DyLo's lambda-frontier; hierarchical-mode per-batch time (DP + dendrogram), single-thread"
+hit-leiden,flickr,20902.432,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"faithful HIT-Leiden approx (arXiv:2601.08554): hierarchical cost-oblivious incremental Leiden = DyLo-Leiden at lambda=0 (affected-region + full re-optimization, no lambda*Cost term); anchors DyLo's lambda-frontier; hierarchical-mode per-batch time (DP + dendrogram), single-thread"
+hit-leiden,gplus,61753.160,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"faithful HIT-Leiden approx (arXiv:2601.08554): hierarchical cost-oblivious incremental Leiden = DyLo-Leiden at lambda=0 (affected-region + full re-optimization, no lambda*Cost term); anchors DyLo's lambda-frontier; hierarchical-mode per-batch time (DP + dendrogram), single-thread"
+hit-leiden,twitter,5921.830,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"faithful HIT-Leiden approx (arXiv:2601.08554): hierarchical cost-oblivious incremental Leiden = DyLo-Leiden at lambda=0 (affected-region + full re-optimization, no lambda*Cost term); anchors DyLo's lambda-frontier; hierarchical-mode per-batch time (DP + dendrogram), single-thread"
+hit-leiden,youtube,30142.540,ms/batch,C++,this-artifact (harness/cpp/dylo),0,"faithful HIT-Leiden approx (arXiv:2601.08554): hierarchical cost-oblivious incremental Leiden = DyLo-Leiden at lambda=0 (affected-region + full re-optimization, no lambda*Cost term); anchors DyLo's lambda-frontier; hierarchical-mode per-batch time (DP + dendrogram), single-thread"
+gremod,facebook,1.7777777777777777,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,facebook,6.666666666666667,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,facebook,108.55555555555556,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,facebook,15.0,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+df-louvain,facebook,0.07700000000000001,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+ds-louvain,facebook,0.621,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-leiden,facebook,2.1452222222222224,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+gremod,cit-hepth,3.1666666666666665,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,cit-hepth,11.583333333333334,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,cit-hepth,156.61111111111111,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,cit-hepth,209.80555555555554,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+df-louvain,cit-hepth,0.4349166666666667,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+ds-louvain,cit-hepth,3.4063333333333325,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-leiden,cit-hepth,17.22630530555556,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+gremod,cit-hepph,3.441860465116279,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,cit-hepph,6.395348837209302,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,cit-hepph,156.88372093023256,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,cit-hepph,235.90697674418604,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+df-louvain,cit-hepph,0.33360465116279064,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+ds-louvain,cit-hepph,3.883976744186046,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-leiden,cit-hepph,23.188976720930228,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+gremod,epinions,4.219512195121951,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,epinions,96.70731707317073,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,epinions,201.29268292682926,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,epinions,227.58536585365854,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+df-louvain,epinions,0.6685121951219513,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+ds-louvain,epinions,4.648756097560977,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-leiden,epinions,24.68617082926829,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+gremod,twitter,3.7111111111111112,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,twitter,10.911111111111111,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+gremod,twitter,3.585185185185185,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+batch,twitter,414.02962962962965,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+gremod,facebook,2.0,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,facebook,4.888888888888889,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,facebook,102.44444444444444,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,facebook,14.88888888888889,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,cit-hepth,3.25,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,cit-hepth,11.86111111111111,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,cit-hepth,151.69444444444446,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,cit-hepth,181.44444444444446,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,cit-hepph,3.441860465116279,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,cit-hepph,6.488372093023256,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,cit-hepph,154.32558139534885,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,twitter,712.8592592592593,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+dynamo,cit-hepph,278.0,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,epinions,4.341463414634147,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,epinions,96.29268292682927,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,epinions,197.8048780487805,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,epinions,224.58536585365854,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,twitter,3.6666666666666665,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,twitter,11.037037037037036,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,twitter,419.0,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,twitter,677.2592592592592,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,dblp,5.152380952380953,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,dblp,7.304761904761905,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,dblp,520.3238095238095,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,dblp,2100.704761904762,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,facebook,1.6666666666666667,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,facebook,6.555555555555555,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,facebook,101.11111111111111,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,facebook,15.555555555555555,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,cit-hepth,2.888888888888889,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,cit-hepth,10.75,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,cit-hepth,146.94444444444446,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,cit-hepth,178.41666666666666,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,cit-hepph,2.7674418604651163,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,cit-hepph,6.534883720930233,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,cit-hepph,151.67441860465115,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,cit-hepph,263.1860465116279,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,epinions,4.024390243902439,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,epinions,95.41463414634147,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,epinions,192.02439024390245,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,epinions,223.29268292682926,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,twitter,3.3851851851851853,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,twitter,11.044444444444444,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,twitter,394.14814814814815,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,twitter,687.4,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,dblp,5.161904761904762,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+qca,dblp,6.961904761904762,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+batch,dblp,518.6285714285714,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,dblp,2154.9142857142856,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+gremod,gplus,4.893790849673203,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+gremod,flickr,5.2375,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+gremod,youtube,8.103678929765886,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+louvain-static,hotpot_entity,655.8,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; status=ok
+dynamo,hotpot_entity,70.8,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+df-leiden,hotpot_entity,8.4864,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+batch,hotpot_entity,95.65,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+ds-louvain,hotpot_entity,1.3226499999999999,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-louvain,hotpot_entity,0.21355000000000005,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+qca,hotpot_entity,3.7,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+louvain-static,mhrag_entity,144.95,ms/batch,Java,nogrady/dynamo,4a94453c,static reference; re-run per batch; flat; status=ok
+dynamo,mhrag_entity,15.0,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok
+df-leiden,mhrag_entity,,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=exit=139
+batch,mhrag_entity,27.85,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+ds-louvain,mhrag_entity,,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=exit=134
+df-louvain,mhrag_entity,,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=exit=134
+qca,mhrag_entity,3.45,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+df-louvain,livejournal,9.364449970000003,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic frontier Louvain; OpenMP; flat; status=ok
+ds-louvain,livejournal,594.8721240250001,ms/batch,C++,puzzlef/louvain-communities-openmp-dynamic,a0469c8b,dynamic delta-screening Louvain; OpenMP; flat; status=ok
+df-leiden,livejournal,3554.6715246799977,ms/batch,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; status=ok
+qca,livejournal,137.355,ms/batch,Java,nogrady/dynamo,4a94453c,incremental; flat; status=ok
+gremod,livejournal,9.115,ms/batch,Java,nogrady/dynamo,4a94453c,incremental insertion-only; flat; status=ok
+batch,livejournal,28229.19,ms/batch,Java,nogrady/dynamo,4a94453c,batch incremental; flat; status=ok
+dynamo,livejournal,333820.8,ms/batch,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; status=ok

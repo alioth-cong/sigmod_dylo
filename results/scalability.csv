@@ -1,0 +1,21 @@
+method,|E|,latency_ms,modularity,language,repo,commit,notes
+df-leiden,7210000,3774.668,0.794917,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok; prefix=8M
+df-leiden,15310000,4596.624,0.767889,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok; prefix=17M
+df-leiden,30610000,4111.981,0.747876,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok; prefix=34M
+df-leiden,37810000,3892.271,0.730068,C++,puzzlef/leiden-communities-openmp-dynamic,28c304fe,Dynamic Frontier Leiden (arXiv:2405.11658); OpenMP; flat; ok; prefix=42M
+dylo-louvain,7210000,1.265,0.785983,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; prefix=8M"
+dylo-louvain,15310000,1.559,0.772639,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; prefix=17M"
+dylo-louvain,30610000,1.664,0.767108,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; prefix=34M"
+dylo-louvain,37810000,1.784,0.764416,C++,this-artifact (harness/cpp/dylo),0,"DyLo cost-aware incremental Louvain (Alg 1 affected-region + open-set DP, Alg 2). Refine=identity. Tracks louvain-cpp-static (same C++ base, from-scratch per batch) within eps; facebook ~25x same-impl speedup (1.9 vs 47.3 ms/batch); ~157x vs Java louvain-static. lambda via DYLO_LAMBDA env (default 0).; ok; prefix=42M"
+dynamo,7210000,71687.700,0.787416,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok; prefix=8M
+dynamo,15310000,142407.100,0.769541,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok; prefix=17M
+dynamo,30610000,265552.700,0.764099,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok; prefix=34M
+dynamo,37810000,333304.100,0.760822,Java,nogrady/dynamo,4a94453c,DynaMo (Zhuang et al 2021); incremental modularity; flat; ok; prefix=42M
+leiden-static,7210000,406060.000,0.789784,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok; prefix=8M
+leiden-static,15310000,653697.300,0.771892,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok; prefix=17M
+leiden-static,30610000,1035585.400,0.764006,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok; prefix=34M
+leiden-static,37810000,1214397.100,0.761493,Python,vtraag/leidenalg,c08884a4,static reference; re-run per batch; flat; ok; prefix=42M
+slm-static,7210000,233074.653,0.803444,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok; prefix=8M"
+slm-static,15310000,429259.185,0.784212,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok; prefix=17M"
+slm-static,30610000,741364.042,0.772105,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok; prefix=34M"
+slm-static,37810000,929286.402,0.769921,Java,deepminder/SLM4J,eed958f6,"genuine SLM (Smart Local Moving, Waltman & van Eck 2013) via SLM4J Modularity Optimizer algo=3; from-scratch per batch; flat; ok; prefix=42M"

@@ -1,0 +1,9 @@
+dataset,method,kind,batches,n_used,cost_norm,cost_abs,status,sec
+livejournal,batch,flat,200,200,0.8338865098957134,3951194.325,ok,352.4
+livejournal,df-leiden,flat,200,200,0.9770759019590607,4629666.96,ok,315.4
+livejournal,df-louvain,flat,200,200,0.8459072330621923,4008132.385,ok,316.3
+livejournal,ds-louvain,flat,200,200,0.810605047472724,3840825.965,ok,321.2
+livejournal,dynamo,flat,200,200,0.9679762926628618,4692333.805,ok,453.7
+livejournal,gremod,flat,200,200,0.628814017920992,2979514.13,ok,356.4
+livejournal,leiden-static,flat,200,200,0.9906614822156503,4694038.65,ok,346.7
+livejournal,qca,flat,200,200,0.7731039251686699,3663184.85,ok,355.0

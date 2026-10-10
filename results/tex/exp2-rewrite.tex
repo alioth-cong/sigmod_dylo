@@ -1,0 +1,100 @@
+% ============================================================================
+% Exp-2 rewrite: every contribution has a corresponding arm instead of being attributed by "consistent with".
+%
+% Responds to review B13 ("Exp-2 ablates only three implementation optimizations; no contribution has a
+% corresponding arm"). The new structure splits the four arms into two groups: V1/V2/V3 are the implementation optimizations of Section 6,
+% and V4 is the only contribution-level arm (the accrual ledger's source price).
+%
+% The arm comparing the exact DP with per-destination greedy is **not in the table**: on the three datasets the committed sets are
+% bit-identical with zero difference in C(D) (GREEDY=1 vs 0, driver_r2greedy.cxx). The DP has been folded into C1
+% (a corollary of the asymmetric freshness rule: single anchor -> the exact selector collapses from min-cut to a linear
+% tree DP), so it is no longer ablated as a separate contribution. One sentence in the text covers it.
+%
+% Data: results/exp2_full.json (six arms x triplets, full stream with native batches, lambda=1e-1)
+%       results/validate_peel_rate.json (1,437 rounds, 0 rejections, 0 Peel)
+%       results/seed_rep.json (dispersion over 5 seeds x 18 groups)
+% Differences from the original draft: the speed-up factors and V3's cost effect were re-measured; the original triplet .116/.038/.320
+% cannot be reproduced with the current code base, so re-measured values are used throughout.
+%
+% Note: this ablation's baseline V0 enables source deferral (DEFER=1), otherwise the accrual ledger is not observable;
+%   the main-table runs used the eager setting, whose C(D) is lower.
+% ============================================================================
+
+\begin{table}[tb]\centering
+\caption{\textbf{Exp-2.} Ablation. Every cell is an Epinions/Flickr/YouTube
+triplet; latency is per batch. Modularity is identical to four decimals in every
+arm and on every graph ($.4559/.6692/.7277$) and is therefore not repeated per
+row. $V_1$ and $V_2$ leave the committed set bit-identical, so they buy time
+alone; $V_3$ and $V_4$ change it.}
+\label{tab:ablation}
+\begin{footnotesize}
+\setlength{\tabcolsep}{0.4em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}clrrc@{}}
+\toprule
+Variant & Removed & Latency (ms) & $\mathsf C(D)$ & Set \\
+\midrule
+$V_0$ & --- & $4.72/9.60/27.4$ & $.133/.046/.057$ & --- \\
+\midrule
+$V_1$ & certificates & $11.4/17.4/43.5$ & $.133/.046/.057$ & same \\
+$V_2$ & cost tree    & $6.07/15.9/57.9$ & $.133/.046/.057$ & same \\
+$V_3$ & pruning      & $7.66/13.0/39.3$ & $.144/.050/.061$ & \emph{changed} \\
+\midrule
+$V_4$ & source price & $4.48/9.48/27.3$ & $.156/.058/.061$ & \emph{changed} \\
+\bottomrule
+\end{tabular*}
+\end{footnotesize}
+\end{table}
+
+\stitle{Exp-2: Where the efficiency and the cost saving come from.}
+Table~\ref{tab:ablation} separates two questions that the same table is often
+asked to answer at once: which components make \DyLo{} fast, and which make it
+cheap. The first three variants remove the implementation techniques of
+Section~\ref{sec:impl}. Certificates ($V_1$) and incremental cost-tree
+maintenance ($V_2$) are \emph{exactly} neutral: removing either leaves the
+committed set bit-identical on every batch of all three streams and leaves
+$\mathsf C(D)$ unchanged to three decimals, while per-batch latency rises by
+$1.6$--$2.4\times$ and $1.3$--$2.1\times$ respectively. They buy time and
+nothing else, which is what a sound implementation optimization should do.
+Candidate pruning ($V_3$) is the one technique that is not neutral: it is a
+deliberate speed/quality trade, and removing it slows the system by
+$1.4$--$1.6\times$ while \emph{raising} $\mathsf C(D)$ by $6.1$--$8.6\%$,
+because the unpruned selector admits moves whose ancestor closures are more
+expensive to refresh.
+
+The last variant removes a contribution rather than an optimization. $V_4$
+disables the accrual ledger, so a move is priced by its destination alone and
+the deferred source's amortized share is never charged. This is the largest
+single effect in the table: the committed set changes on $41/41$, $320/321$ and
+$284/300$ batches, the selector admits $56\%$, $18\%$ and $3.8\%$ more moves,
+and $\mathsf C(D)$ rises by $17.3\%$, $24.2\%$ and $6.3\%$. The cost advantage
+of Section~\ref{sec:algo} is therefore attributable to a component we can switch
+off, not merely consistent with a theorem.
+
+\emph{The surrogate is sufficient, not just tractable.} Algorithm~\ref{alg:main}
+guards each committed round with a realized-$\Delta F$ check and repairs a
+rejected round by peeling. Across eight graphs and three instances the check
+rejected \emph{none} of the $1{,}437$ non-empty sets the surrogate proposed and
+the repair never fired, so on the evaluated suite solving the surrogate exactly
+also solves the objective it stands in for. Two graphs (Facebook, Twitter)
+contribute no rounds at $\lambda=10^{-1}$ and are excluded from that count.
+
+\emph{Exactness of the selector is not separately observable here.} Replacing
+\textsc{OpenSet} with a per-destination greedy that charges each accepted move
+its full ancestor closure yields a bit-identical committed set on all three
+graphs at $\lambda=10^{-1}$. The two selectors diverge only for
+$\lambda\in[10^{-3},3\times10^{-3}]$, where the exact program admits sets a
+greedy rejects and attains a $32$--$100\%$ higher objective; outside that window
+the affected region per round is too sparse for sibling subtrees to share an
+ancestor, and the two agree. We therefore present the tree program as the
+mechanism that makes the exact selector linear-time rather than as an
+independent source of the measured savings.
+
+\emph{Dispersion.} \DyLo{} is deterministic given its input and detector seed.
+To bound the effect of detector randomness we repeated all six graphs and three
+instances under five seeds: across the eighteen combinations the range of $Q$ is
+at most $3.3\times10^{-6}$ and of $\mathsf C(D)$ at most $1.0\%$, two orders of
+magnitude below the differences on which Table~\ref{tab:main} separates methods.
+Per-batch latency is noisier (up to $48\%$ range on the smallest graph, under
+$5\%$ on the largest), as expected for sub-millisecond timings.
+
+% Baseline footnote: this ablation enables source deferral while the main-table runs were eager; both C(D) values are in Table~\ref{tab:eps}.

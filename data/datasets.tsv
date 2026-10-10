@@ -1,0 +1,11 @@
+name	source	url	notes
+facebook	SNAP	https://snap.stanford.edu/data/facebook_combined.txt.gz	ego-Facebook combined, 4039 nodes
+gplus	SNAP	https://snap.stanford.edu/data/gplus_combined.txt.gz	ego-Gplus combined, directed -> treat undirected
+twitter	SNAP	https://snap.stanford.edu/data/twitter_combined.txt.gz	ego-Twitter combined, directed -> treat undirected
+epinions	SNAP	https://snap.stanford.edu/data/soc-Epinions1.txt.gz	soc-Epinions1, directed -> undirected
+livejournal	SNAP	https://snap.stanford.edu/data/soc-LiveJournal1.txt.gz	soc-LiveJournal1, directed -> undirected, ~68M edges
+cit-hepph	SNAP	https://snap.stanford.edu/data/cit-HepPh.txt.gz	citation
+cit-hepth	SNAP	https://snap.stanford.edu/data/cit-HepTh.txt.gz	citation
+dblp	SNAP	https://snap.stanford.edu/data/bigdata/communities/com-dblp.ungraph.txt.gz	com-DBLP undirected
+youtube	SNAP	https://snap.stanford.edu/data/bigdata/communities/com-youtube.ungraph.txt.gz	com-Youtube undirected
+flickr	NetworkRepository	https://nrvis.com/download/data/soc/soc-flickr.zip	socfb-Flickr; from network repo

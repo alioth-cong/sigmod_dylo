@@ -1,0 +1,11 @@
+method,dataset,mean_volA_over_E,max_volA_over_E,note
+dylo-leiden,facebook,0.01191,0.05170,margin-gated affected region; single-thread
+dylo-leiden,cit-hepth,0.02816,0.10900,margin-gated affected region; single-thread
+dylo-leiden,cit-hepph,0.01961,0.04930,margin-gated affected region; single-thread
+dylo-leiden,epinions,0.03392,0.17300,margin-gated affected region; single-thread
+dylo-leiden,dblp,0.00561,0.00740,margin-gated affected region; single-thread
+dylo-leiden,twitter,0.01121,0.02910,margin-gated affected region; single-thread
+dylo-leiden,flickr,0.00774,0.01400,margin-gated affected region; single-thread
+dylo-leiden,youtube,0.01097,0.04690,margin-gated affected region; single-thread
+dylo-leiden,gplus,0.02232,0.07720,margin-gated affected region; single-thread
+dylo-leiden,livejournal,0.00059,0.00100,margin-gated affected region; single-thread

@@ -1,0 +1,110 @@
+[
+ {
+  "name": "V0 default (PRUNE=1, leaf)",
+  "status": "ok",
+  "lat": 3.77692245,
+  "Q": 0.452497,
+  "cost": 4.25,
+  "norm": 5.505e-05,
+  "dir": "tmpruns/exp2probe/epinions/V0"
+ },
+ {
+  "name": "PRUNE=0 (off)",
+  "status": "ok",
+  "lat": 4.948345,
+  "Q": 0.452495,
+  "cost": 3.7,
+  "norm": 4.795e-05,
+  "dir": "tmpruns/exp2probe/epinions/PRUNE0"
+ },
+ {
+  "name": "PRUNE=1, MODE=comm",
+  "status": "ok",
+  "lat": 3.7453817000000003,
+  "Q": 0.452497,
+  "cost": 4.25,
+  "norm": 5.505e-05,
+  "dir": "tmpruns/exp2probe/epinions/PRUNE1"
+ },
+ {
+  "name": "DISABLE_BUCKET",
+  "status": "ok",
+  "lat": 3.7378202,
+  "Q": 0.452497,
+  "cost": 4.25,
+  "norm": 5.505e-05,
+  "dir": "tmpruns/exp2probe/epinions/DISABLE_BUCKET"
+ },
+ {
+  "name": "V1 no certificates",
+  "status": "ok",
+  "lat": 9.943964900000001,
+  "Q": 0.452497,
+  "cost": 4.25,
+  "norm": 5.505e-05,
+  "dir": "tmpruns/exp2probe/epinions/V1"
+ },
+ {
+  "name": "V2 no inc cost-tree",
+  "status": "ok",
+  "lat": 4.8127696,
+  "Q": 0.452497,
+  "cost": 4.25,
+  "norm": 5.505e-05,
+  "dir": "tmpruns/exp2probe/epinions/V2"
+ },
+ {
+  "name": "lambda=0 (no cost term)",
+  "status": "ok",
+  "lat": 6.9628274999999995,
+  "Q": 0.456949,
+  "cost": 64400.65,
+  "norm": 0.8578522,
+  "dir": "tmpruns/exp2probe/epinions/lambda0"
+ },
+ {
+  "name": "lambda=1e-3",
+  "status": "ok",
+  "lat": 4.32867935,
+  "Q": 0.453357,
+  "cost": 6425.4,
+  "norm": 0.08321075,
+  "dir": "tmpruns/exp2probe/epinions/lambda1e-3"
+ },
+ {
+  "name": "lambda=1e-2",
+  "status": "ok",
+  "lat": 4.00415665,
+  "Q": 0.452536,
+  "cost": 24.1,
+  "norm": 0.00031135,
+  "dir": "tmpruns/exp2probe/epinions/lambda1e-2"
+ },
+ {
+  "name": "PRUNE=0 + lambda=0",
+  "status": "ok",
+  "lat": 7.00169,
+  "Q": 0.456949,
+  "cost": 64400.65,
+  "norm": 0.8578522,
+  "dir": "tmpruns/exp2probe/epinions/PRUNE0"
+ },
+ {
+  "name": "PRUNE=0 + lambda=1e-2",
+  "status": "ok",
+  "lat": 5.35654275,
+  "Q": 0.452534,
+  "cost": 23.55,
+  "norm": 0.0003043,
+  "dir": "tmpruns/exp2probe/epinions/PRUNE0"
+ },
+ {
+  "name": "PRUNE=0 + lambda=3e-2",
+  "status": "ok",
+  "lat": 5.51836685,
+  "Q": 0.452523,
+  "cost": 13.7,
+  "norm": 0.00017779999999999998,
+  "dir": "tmpruns/exp2probe/epinions/PRUNE0"
+ }
+]

@@ -1,0 +1,112 @@
+[
+ {
+  "name": "From-scratch Leiden",
+  "method": "leiden-static",
+  "latency_ms": 1332285.805,
+  "Q_mean": 0.7610343601811697,
+  "Q_end": 0.7636633060858025,
+  "ncomm": 9528,
+  "cost": 0.9906614822156503,
+  "rss_gb": 15.2
+ },
+ {
+  "name": "DynaMo",
+  "method": "dynamo",
+  "latency_ms": 333820.8,
+  "Q_mean": 0.7602461934930926,
+  "Q_end": 0.7607966260854593,
+  "ncomm": 116947,
+  "cost": 0.9679762926628618,
+  "rss_gb": 48.5
+ },
+ {
+  "name": "Batch",
+  "method": "batch",
+  "latency_ms": 28229.19,
+  "Q_mean": 0.7503400209546089,
+  "Q_end": 0.7507759928703308,
+  "ncomm": 8641,
+  "cost": 0.8338865098957134,
+  "rss_gb": 54.5
+ },
+ {
+  "name": "DF-Leiden",
+  "method": "df-leiden",
+  "latency_ms": 3554.67152468,
+  "Q_mean": 0.72395501,
+  "Q_end": 0.726369,
+  "ncomm": 15649,
+  "cost": 0.9770759019590607,
+  "rss_gb": 4.2
+ },
+ {
+  "name": "Δ-screen",
+  "method": "ds-louvain",
+  "latency_ms": 594.872124025,
+  "Q_mean": 0.731077905,
+  "Q_end": 0.731477,
+  "ncomm": 20098,
+  "cost": 0.810605047472724,
+  "rss_gb": 4.5
+ },
+ {
+  "name": "QCA",
+  "method": "qca",
+  "latency_ms": 137.355,
+  "Q_mean": 0.7601674738526344,
+  "Q_end": 0.7602155208587646,
+  "ncomm": 9260,
+  "cost": 0.7731039251686699,
+  "rss_gb": 29.8
+ },
+ {
+  "name": "DF-Louvain",
+  "method": "df-louvain",
+  "latency_ms": 9.36444997,
+  "Q_mean": 0.71879295,
+  "Q_end": 0.720712,
+  "ncomm": 20098,
+  "cost": 0.8459072330621923,
+  "rss_gb": 4.5
+ },
+ {
+  "name": "GreMod",
+  "method": "gremod",
+  "latency_ms": 9.115,
+  "Q_mean": 0.74969426,
+  "Q_end": 0.749629,
+  "ncomm": 8992,
+  "cost": 0.628814017920992,
+  "rss_gb": 18.7
+ },
+ {
+  "name": "DyLo-Louvain",
+  "method": "dylo-louvain",
+  "latency_ms": 17.380999315,
+  "Q_mean": 0.7579399651741293,
+  "Q_end": 0.7579,
+  "ncomm": 10429,
+  "cost": 0.00971942961084684,
+  "rss_gb": 9.5
+ },
+ {
+  "name": "DyLo-Slm",
+  "method": "dylo-slm",
+  "latency_ms": 22.04534538,
+  "Q_mean": 0.7710560497512438,
+  "Q_end": 0.771005,
+  "ncomm": 9740,
+  "cost": 0.009684326400981986,
+  "rss_gb": 9.5
+ },
+ {
+  "name": "DyLo-Leiden",
+  "method": "dylo-leiden",
+  "latency_ms": 21.20580454,
+  "Q_mean": 0.7675366119402985,
+  "Q_end": 0.767486,
+  "ncomm": 9511,
+  "cost": 0.009712202416404542,
+  "rss_gb": 9.5
+ }
+]

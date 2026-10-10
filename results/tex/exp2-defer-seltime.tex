@@ -1,0 +1,92 @@
+% ============================================================================
+% Exp-2 supplement: direct evidence for the asymmetric refresh rule (C1) -- the single-anchor reduction linearizes the exact selector.
+%
+% The paper's causal chain (abstract / Section 5): asymmetric freshness -> removal-only sources are
+% deferred -> each action has one anchor -> the exact selector collapses from max-weight-closure/min-cut to a
+% standard linear-time tree DP. Previously no contribution had a corresponding arm in Exp-2,
+% and the cost advantage was attributed by "consistent with Theorem" (review B13). This section gives direct measurements.
+%
+% Two earlier measurement errors are corrected, and all data were re-measured:
+%
+% (1) Cost accounting. hier_cost.py re-derives cost from **partitions**: once a source community loses a vertex its member set changes,
+%     and it is charged whether or not the driver deferred its refresh, so the effect of deferral is invisible to it --
+%     the comment at driver_std4.cxx:243 warns about exactly this. Measuring with it yields the artifact "enabling deferral
+%     raises cost by 0-44.8%" (third group of the table below); the correct source is the refresh plan the driver itself
+%     emits, resum.tsv, under which 23 of 24 groups are bit-identical, with a maximum difference of +0.01%.
+%
+% (2) Timing granularity. The selection phase is only 0.05%-1.9% of the end-to-end per-batch latency and is completely buried
+%     in the total latency of Table~\ref{tab:main} under graph building/certificates/output. driver_seltime.cxx accumulates the time of the DP path and
+%     the min-cut path separately (verified bit-identical to std4).
+%
+% Data: results/defer_seltime.json (4 datasets x DEFER{0,1} x 3 seeds)
+%       results/resum_main_defer{0,1}.csv (8 datasets x 3 instances, full stream with native batches)
+% ============================================================================
+
+\begin{table}[tb]\centering
+\caption{\textbf{Exp-2b.} What the single-anchor reduction buys. Selection is the
+phase that solves the frozen same-level surrogate; with source deferral disabled
+some rounds carry two anchors and fall back to the max-weight-closure solver,
+with it enabled every round takes the tree DP. Medians over three detector seeds,
+full native streams at $\lambda=10^{-1}$. $\mathsf C(D)$ is read from the refresh
+schedule the driver emits, not inferred from partitions.}
+\label{tab:defer-seltime}
+\begin{footnotesize}
+\setlength{\tabcolsep}{0.35em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcrrrr@{}}
+\toprule
+& & \multicolumn{2}{c}{Rounds on DP} & \multicolumn{2}{c}{Selection (ms)} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6}
+Graph & Defer & count & share & total & per round \\
+\midrule
+\multirow{2}{*}{Epinions}
+ & off & $17/42$   & $.405$  & $1.99$   & $.0758^{\dagger}$ \\
+ & on  & $41/41$   & $1.000$ & $0.19$   & $.0047$ \\
+\multirow{2}{*}{DBLP}
+ & off & $48/57$   & $.842$  & $0.70$   & $.0569^{\dagger}$ \\
+ & on  & $39/39$   & $1.000$ & $0.16$   & $.0041$ \\
+\multirow{2}{*}{Flickr}
+ & off & $255/314$ & $.812$  & $18.6$   & $.2851^{\dagger}$ \\
+ & on  & $301/301$ & $1.000$ & $1.93$   & $.0064$ \\
+\multirow{2}{*}{YouTube}
+ & off & $126/300$ & $.420$  & $151.5$  & $.8605^{\dagger}$ \\
+ & on  & $300/300$ & $1.000$ & $3.85$   & $.0128$ \\
+\midrule
+\multicolumn{2}{l}{All rounds, DP} & $2{,}043$ & --- & --- & $.0086$ \\
+\multicolumn{2}{l}{All rounds, min-cut} & $801$ & --- & --- & $.6338$ \\
+\bottomrule
+\end{tabular*}
+\end{footnotesize}
+\\[2pt]
+{\footnotesize $^{\dagger}$ per-round cost of the \emph{min-cut} rounds only.}
+\end{table}
+
+\stitle{Exp-2b: The single-anchor reduction, measured.}
+Deferring removal-only sources leaves one anchor per action, and the exact
+selector then collapses from a max-weight-closure solve to the tree program of
+Theorem~\ref{thm:dp}. Table~\ref{tab:defer-seltime} measures that collapse
+directly. With deferral enabled every round takes the DP path---$2{,}043$ of
+$2{,}043$ across the four streams---and selection time falls by $77\%$ on DBLP,
+$90\%$ on Epinions, $90\%$ on Flickr and $97.5\%$ on YouTube. Pooling all rounds,
+a min-cut round costs $0.634$\,ms against the DP's $0.0086$\,ms, a $73.9\times$
+gap that widens with graph size: on YouTube the two are $0.861$ and
+$0.0128$\,ms.
+
+\emph{This is invisible in the end-to-end numbers, and we report it separately
+for that reason.} Selection accounts for $0.05\%$--$1.9\%$ of per-batch latency;
+the remainder is graph maintenance, certificate upkeep and index emission. Total
+per-batch latency is therefore unchanged to within seed noise
+($4.28$ against $4.38$\,ms on Epinions, $26.4$ against $26.4$ on YouTube), which
+is why Table~\ref{tab:main} does not separate the two configurations. Reporting
+selection time alone in the main table would not be meaningful either: the
+incremental baselines solve no cost-aware selection problem, so the phase has no
+counterpart there.
+
+\emph{Deferral does not raise cost.} Read from the refresh schedule the driver
+emits, $\mathsf C(D)$ is bit-identical between the two configurations on $23$ of
+$24$ (graph, instance) pairs, and differs by $+0.01\%$ on the remaining one
+(Epinions/\Louvain{}); modularity agrees to five decimals throughout. We
+highlight this because a scorer that infers cost from partitions alone reaches
+the opposite conclusion---it charges a source community as soon as its member set
+changes, whether or not that refresh was actually executed---and reports
+increases of up to $44.8\%$ that never occur. The distinction matters for any
+system whose contribution is a refresh \emph{schedule} rather than a partition.

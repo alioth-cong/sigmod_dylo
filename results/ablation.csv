@@ -1,0 +1,6 @@
+variant,latency_ms,modularity_Q,resumm_cost,note
+DyLo-Leiden (full),0.580,0.83824,0.09955,"default: lambda=0.1, region-bound, batch=1000, drift-monitor"
+- cost-aware DP (lambda=0),0.580,0.83824,0.72424,re-summ cost inflates 7.3x (commits every dirty community)
+- affected-region bound,62809.0,0.83980,0.99649,re-optimize whole graph (from-scratch): latency inflates 108291x
+- batch processing (|dE|=1),19.346,0.84144,823.6/edge,"edge-at-a-time: per-edge latency 19.35 vs 0.52 us (37x), per-edge cost 824 vs 210 (3.9x)"
+- drift monitor (never rebuild),0.580,0.83320,0.09955,"no rebuild: modularity decays, drift gap grows to +0.0050 over the stream"

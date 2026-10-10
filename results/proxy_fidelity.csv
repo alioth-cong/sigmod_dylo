@@ -1,0 +1,7 @@
+corpus,level,pearson_r,spearman_r,n
+narrativeqa,0,0.9962,0.8204,7415
+narrativeqa,1,0.9916,0.4756,4948
+narrativeqa,2,0.9906,0.2136,4536
+narrativeqa,3,0.7670,0.1261,4507
+narrativeqa,4,0.2902,0.0365,4505
+narrativeqa,all,0.9803,0.1917,25911

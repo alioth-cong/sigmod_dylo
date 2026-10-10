@@ -1,0 +1,6 @@
+batch_size,n_batches,latency_ms_per_batch,us_per_edge,resumm_cost_per_edge,modularity_Q,dataset,note
+1,600,0.019,19.346,823.5950,0.84144,dblp(capped),DyLo-Leiden incremental; cost = flat re-summ weight (lambda=0 structural)
+10,600,0.034,3.426,704.1278,0.84123,dblp(capped),DyLo-Leiden incremental; cost = flat re-summ weight (lambda=0 structural)
+100,101,0.091,0.914,577.7747,0.84107,dblp(capped),DyLo-Leiden incremental; cost = flat re-summ weight (lambda=0 structural)
+1000,11,0.516,0.516,209.8472,0.84104,dblp(capped),DyLo-Leiden incremental; cost = flat re-summ weight (lambda=0 structural)
+10000,2,2.513,0.251,15.4169,0.84094,dblp(capped),DyLo-Leiden incremental; cost = flat re-summ weight (lambda=0 structural)

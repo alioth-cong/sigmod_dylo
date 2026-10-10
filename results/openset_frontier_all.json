@@ -1,0 +1,631 @@
+[
+ {
+  "ds": "facebook",
+  "lam": "1e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8360545,
+  "cost": 0.14334621222497124,
+  "F": 11.914571999999998,
+  "nsel": 16,
+  "sec": 0.3
+ },
+ {
+  "ds": "facebook",
+  "lam": "1e-1",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8359316,
+  "cost": 0.06852326354725188,
+  "F": 0,
+  "nsel": 0,
+  "sec": 0.3
+ },
+ {
+  "ds": "facebook",
+  "lam": "3e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8359746,
+  "cost": 0.10152029032995188,
+  "F": 3.9576619999999996,
+  "nsel": 5,
+  "sec": 0.3
+ },
+ {
+  "ds": "facebook",
+  "lam": "3e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8359746,
+  "cost": 0.10152029032995188,
+  "F": 3.9576619999999996,
+  "nsel": 5,
+  "sec": 0.3
+ },
+ {
+  "ds": "facebook",
+  "lam": "1e-1",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8359316,
+  "cost": 0.06852326354725188,
+  "F": 0,
+  "nsel": 0,
+  "sec": 0.3
+ },
+ {
+  "ds": "facebook",
+  "lam": "1e-2",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8359446,
+  "cost": 0.07002647858709325,
+  "F": 0.7852520000000001,
+  "nsel": 2,
+  "sec": 0.3
+ },
+ {
+  "ds": "facebook",
+  "lam": "1e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8360545,
+  "cost": 0.14334621222497124,
+  "F": 11.914571999999998,
+  "nsel": 16,
+  "sec": 0.3
+ },
+ {
+  "ds": "facebook",
+  "lam": "1e-2",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8359446,
+  "cost": 0.07002647858709325,
+  "F": 0.7852520000000001,
+  "nsel": 2,
+  "sec": 0.3
+ },
+ {
+  "ds": "cit-hepth",
+  "lam": "1e-1",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.6668312432432433,
+  "cost": 0.05061310685162721,
+  "F": 6.299945999999999,
+  "nsel": 11,
+  "sec": 4.8
+ },
+ {
+  "ds": "cit-hepth",
+  "lam": "1e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.6668770810810811,
+  "cost": 0.09634082824858708,
+  "F": 50.1481094,
+  "nsel": 38,
+  "sec": 4.8
+ },
+ {
+  "ds": "cit-hepth",
+  "lam": "1e-2",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.6668313783783784,
+  "cost": 0.05211961531015591,
+  "F": 10.529943,
+  "nsel": 11,
+  "sec": 4.9
+ },
+ {
+  "ds": "cit-hepth",
+  "lam": "3e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.6668363783783784,
+  "cost": 0.05689954552999333,
+  "F": 14.251589,
+  "nsel": 19,
+  "sec": 4.9
+ },
+ {
+  "ds": "cit-hepth",
+  "lam": "1e-2",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.6668313783783784,
+  "cost": 0.05211961531015591,
+  "F": 10.529943,
+  "nsel": 11,
+  "sec": 5.0
+ },
+ {
+  "ds": "cit-hepth",
+  "lam": "3e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.6668363783783784,
+  "cost": 0.05689954552999333,
+  "F": 14.251589,
+  "nsel": 19,
+  "sec": 6.5
+ },
+ {
+  "ds": "cit-hepth",
+  "lam": "1e-1",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.6668312432432433,
+  "cost": 0.05061310685162721,
+  "F": 6.299945999999999,
+  "nsel": 11,
+  "sec": 6.6
+ },
+ {
+  "ds": "cit-hepph",
+  "lam": "3e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.7339946590909091,
+  "cost": 0.09775486293524542,
+  "F": 4.0542679999999995,
+  "nsel": 5,
+  "sec": 6.8
+ },
+ {
+  "ds": "cit-hepth",
+  "lam": "1e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.6668770810810811,
+  "cost": 0.09634082824858708,
+  "F": 50.1481094,
+  "nsel": 38,
+  "sec": 8.0
+ },
+ {
+  "ds": "cit-hepph",
+  "lam": "1e-1",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.7339925,
+  "cost": 0.0906130302053844,
+  "F": 1.799988,
+  "nsel": 3,
+  "sec": 7.8
+ },
+ {
+  "ds": "cit-hepph",
+  "lam": "3e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.7339946590909091,
+  "cost": 0.09775486293524542,
+  "F": 4.0542679999999995,
+  "nsel": 5,
+  "sec": 8.1
+ },
+ {
+  "ds": "cit-hepph",
+  "lam": "1e-2",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.7339929772727273,
+  "cost": 0.0906130302053844,
+  "F": 2.879988,
+  "nsel": 3,
+  "sec": 8.5
+ },
+ {
+  "ds": "cit-hepph",
+  "lam": "1e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.7339937727272727,
+  "cost": 0.09836026258187536,
+  "F": 8.033976699999998,
+  "nsel": 17,
+  "sec": 9.0
+ },
+ {
+  "ds": "cit-hepph",
+  "lam": "1e-1",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.7339925,
+  "cost": 0.0906130302053844,
+  "F": 1.799988,
+  "nsel": 3,
+  "sec": 9.1
+ },
+ {
+  "ds": "cit-hepph",
+  "lam": "1e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.7339937727272727,
+  "cost": 0.09836026258187536,
+  "F": 8.033976699999998,
+  "nsel": 17,
+  "sec": 9.2
+ },
+ {
+  "ds": "cit-hepph",
+  "lam": "1e-2",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.7339929772727273,
+  "cost": 0.0906130302053844,
+  "F": 2.879988,
+  "nsel": 3,
+  "sec": 9.3
+ },
+ {
+  "ds": "epinions",
+  "lam": "3e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.45586738095238094,
+  "cost": 0.15468940551650553,
+  "F": 54.012512,
+  "nsel": 55,
+  "sec": 11.3
+ },
+ {
+  "ds": "epinions",
+  "lam": "1e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.45598914285714287,
+  "cost": 0.180939982294109,
+  "F": 405.96652,
+  "nsel": 653,
+  "sec": 11.6
+ },
+ {
+  "ds": "epinions",
+  "lam": "1e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.45593957142857144,
+  "cost": 0.14605678210602507,
+  "F": 307.02930000000003,
+  "nsel": 410,
+  "sec": 12.0
+ },
+ {
+  "ds": "epinions",
+  "lam": "1e-2",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.45586738095238094,
+  "cost": 0.15468940551650553,
+  "F": 47.047512000000005,
+  "nsel": 55,
+  "sec": 12.2
+ },
+ {
+  "ds": "epinions",
+  "lam": "3e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.45589383333333333,
+  "cost": 0.13645782050732444,
+  "F": 108.193462,
+  "nsel": 205,
+  "sec": 13.1
+ },
+ {
+  "ds": "epinions",
+  "lam": "1e-2",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.45586738095238094,
+  "cost": 0.15468940551650553,
+  "F": 47.047512000000005,
+  "nsel": 55,
+  "sec": 13.2
+ },
+ {
+  "ds": "epinions",
+  "lam": "1e-1",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.45585935714285714,
+  "cost": 0.13295121593563997,
+  "F": 9.999825,
+  "nsel": 25,
+  "sec": 13.5
+ },
+ {
+  "ds": "epinions",
+  "lam": "1e-1",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.45585935714285714,
+  "cost": 0.13295121593563997,
+  "F": 9.999825,
+  "nsel": 25,
+  "sec": 13.2
+ },
+ {
+  "ds": "twitter",
+  "lam": "3e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8110192720588235,
+  "cost": 0.08230456619382065,
+  "F": 7.3555821,
+  "nsel": 18,
+  "sec": 71.2
+ },
+ {
+  "ds": "twitter",
+  "lam": "3e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8110192720588235,
+  "cost": 0.08230456619382065,
+  "F": 7.3555821,
+  "nsel": 18,
+  "sec": 72.9
+ },
+ {
+  "ds": "twitter",
+  "lam": "1e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8110266911764706,
+  "cost": 0.08382345559573588,
+  "F": 44.73801731,
+  "nsel": 106,
+  "sec": 74.3
+ },
+ {
+  "ds": "twitter",
+  "lam": "1e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8110267132352941,
+  "cost": 0.08391393797153004,
+  "F": 44.740573309999995,
+  "nsel": 107,
+  "sec": 75.2
+ },
+ {
+  "ds": "twitter",
+  "lam": "1e-1",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8110169705882353,
+  "cost": 0.07826936990885643,
+  "F": 0,
+  "nsel": 0,
+  "sec": 75.3
+ },
+ {
+  "ds": "twitter",
+  "lam": "1e-2",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8110169705882353,
+  "cost": 0.07826936990885643,
+  "F": 0.129675,
+  "nsel": 1,
+  "sec": 76.7
+ },
+ {
+  "ds": "twitter",
+  "lam": "1e-1",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8110169705882353,
+  "cost": 0.07826936990885643,
+  "F": 0,
+  "nsel": 0,
+  "sec": 76.9
+ },
+ {
+  "ds": "twitter",
+  "lam": "1e-2",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8110169705882353,
+  "cost": 0.07826936990885643,
+  "F": 0.129675,
+  "nsel": 1,
+  "sec": 81.5
+ },
+ {
+  "ds": "dblp",
+  "lam": "3e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.834801037735849,
+  "cost": 0.11985003842036795,
+  "F": 49.95075499999998,
+  "nsel": 61,
+  "sec": 98.8
+ },
+ {
+  "ds": "dblp",
+  "lam": "1e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8348060283018868,
+  "cost": 0.115913571744937,
+  "F": 116.57670830000004,
+  "nsel": 248,
+  "sec": 100.4
+ },
+ {
+  "ds": "dblp",
+  "lam": "1e-2",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8347993490566038,
+  "cost": 0.11795299499191572,
+  "F": 37.90955500000001,
+  "nsel": 42,
+  "sec": 97.3
+ },
+ {
+  "ds": "dblp",
+  "lam": "1e-1",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8347991226415095,
+  "cost": 0.11403964810724719,
+  "F": 12.1998953,
+  "nsel": 31,
+  "sec": 97.2
+ },
+ {
+  "ds": "dblp",
+  "lam": "1e-3",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8348078018867925,
+  "cost": 0.11665390201096727,
+  "F": 118.92097609999998,
+  "nsel": 302,
+  "sec": 101.7
+ },
+ {
+  "ds": "dblp",
+  "lam": "3e-3",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.834801037735849,
+  "cost": 0.11985003842036795,
+  "F": 49.95075499999998,
+  "nsel": 61,
+  "sec": 100.9
+ },
+ {
+  "ds": "dblp",
+  "lam": "1e-2",
+  "sel_kind": "dp",
+  "status": "ok",
+  "Q": 0.8347993490566038,
+  "cost": 0.11795299499191572,
+  "F": 37.90955500000001,
+  "nsel": 42,
+  "sec": 102.2
+ },
+ {
+  "ds": "dblp",
+  "lam": "1e-1",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.8347991226415095,
+  "cost": 0.11403964810724719,
+  "F": 12.1998953,
+  "nsel": 31,
+  "sec": 100.6
+ },
+ {
+  "ds": "flickr",
+  "lam": "1e-2",
+  "sel_kind": "gr",
+  "status": "IndexError"
+ },
+ {
+  "ds": "flickr",
+  "lam": "1e-3",
+  "sel_kind": "dp",
+  "status": "IndexError"
+ },
+ {
+  "ds": "flickr",
+  "lam": "1e-1",
+  "sel_kind": "gr",
+  "status": "IndexError"
+ },
+ {
+  "ds": "flickr",
+  "lam": "1e-3",
+  "sel_kind": "gr",
+  "status": "IndexError"
+ },
+ {
+  "ds": "flickr",
+  "lam": "3e-3",
+  "sel_kind": "dp",
+  "status": "IndexError"
+ },
+ {
+  "ds": "flickr",
+  "lam": "3e-3",
+  "sel_kind": "gr",
+  "status": "IndexError"
+ },
+ {
+  "ds": "flickr",
+  "lam": "1e-1",
+  "sel_kind": "dp",
+  "status": "IndexError"
+ },
+ {
+  "ds": "flickr",
+  "lam": "1e-2",
+  "sel_kind": "dp",
+  "status": "IndexError"
+ },
+ {
+  "ds": "youtube",
+  "lam": "1e-3",
+  "sel_kind": "dp",
+  "status": "ValueError"
+ },
+ {
+  "ds": "youtube",
+  "lam": "1e-1",
+  "sel_kind": "dp",
+  "status": "IndexError"
+ },
+ {
+  "ds": "youtube",
+  "lam": "3e-3",
+  "sel_kind": "dp",
+  "status": "IndexError"
+ },
+ {
+  "ds": "youtube",
+  "lam": "1e-2",
+  "sel_kind": "dp",
+  "status": "IndexError"
+ },
+ {
+  "ds": "youtube",
+  "lam": "3e-3",
+  "sel_kind": "gr",
+  "status": "IndexError"
+ },
+ {
+  "ds": "youtube",
+  "lam": "1e-3",
+  "sel_kind": "gr",
+  "status": "IndexError"
+ },
+ {
+  "ds": "youtube",
+  "lam": "1e-1",
+  "sel_kind": "gr",
+  "status": "IndexError"
+ },
+ {
+  "ds": "youtube",
+  "lam": "1e-2",
+  "sel_kind": "gr",
+  "status": "ok",
+  "Q": 0.7282049624060151,
+  "cost": 0.0436358254081039,
+  "F": 801.4347760000002,
+  "nsel": 989,
+  "sec": 745.5
+ }
+]

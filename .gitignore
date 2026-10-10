@@ -1,0 +1,14 @@
+# generated streams and raw downloads
+data/raw/
+data/edges/
+data/runs/
+external/
+tmpruns/
+# build outputs
+harness/cpp/dylo/dylo_driver_*
+harness/cpp/dylo/selector_verify
+harness/cpp/dylo_driver
+harness/cpp/dylo_leiden_driver
+harness/java/build/
+__pycache__/
+*.pyc

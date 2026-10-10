@@ -1,0 +1,4 @@
+arm,question_set,n,judge_mean,judge_sd,f1
+from-scratch,fresh,3,1.667,0.471,0.000
+stale,fresh,3,3.667,2.357,0.067
+GAP(scratch-stale),fresh,3,-2.000,,-0.067

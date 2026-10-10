@@ -1,0 +1,166 @@
+% ============================================================================
+% Appendix: the sense-making question sets and the corpus source.
+% Two sets of 60 questions each, both produced by GraphRAG's own question-generation protocol (5 potential users x 3
+% tasks x 4 questions); the generator's only input is a textual description of the corpus -- it sees no index,
+% community partition, or any method's answers, so it is structurally unbiased toward the evaluated methods. The difference between the two sets comes
+% from two independent samples at temperature=0.7 happening to fall into different question styles: the first set starts with how/what
+% (asking for cross-community synthesis), the second with identify/determine (asking for locating and enumerating).
+% This difference systematically changes the middle of the ranking (see the discussion of Table~\ref{tab:arena-appendix}).
+% ============================================================================
+\section{Question sets and corpus provenance}
+\label{app:questions}
+
+\stitle{Corpus.} All end-to-end experiments use MultiHop-RAG~\cite{tang2024multihoprag},
+the news collection GraphRAG itself evaluates on. It contains $609$ English news
+articles published between 2023-09-26 and 2023-12-25 and drawn from $49$ outlets,
+the largest being Sporting News ($101$ articles), TechCrunch ($97$), The Verge
+($45$), Polygon ($44$) and The Guardian ($29$). By category the corpus is
+sports ($211$), technology ($172$), entertainment ($114$), business ($81$), science ($21$) and health ($10$).
+We index the first $304$ articles in publication order and ingest the next $23$
+as one update batch, giving the $327$-document index of Section~\ref{sec:exp:e2e}.
+
+\stitle{Question generation.} GraphRAG ships no question set with reference
+answers; its own evaluation protocol instead asks a language model to imagine
+potential users of a corpus, tasks each would perform, and questions each task
+raises, given only a short prose description of the corpus. We follow that
+protocol verbatim with $5$ users $\times$ $3$ tasks $\times$ $4$ questions, run
+twice at temperature $0.7$ to obtain two independent sets of $60$. The generator
+sees only the corpus description---never an index, a community partition, or any
+system's answer---so it cannot favour a method by construction. What the two runs
+did not hold fixed is interrogative style, and that turned out to matter: the
+first set opens with \emph{how} ($26$), \emph{what} ($16$) and \emph{can} ($15$),
+the second with \emph{identify} ($12$), \emph{determine} ($8$), \emph{analyze}
+($6$) and \emph{evaluate} ($5$). Median question length is $96$ and $88$
+characters respectively.
+
+\subsection{Set A: synthesis questions (\texorpdfstring{$q_0$--$q_{59}$}{q0-q59})}
+\begin{footnotesize}
+\begin{enumerate}\setlength{\itemsep}{1pt}
+\item What are the most frequently mentioned entities across all categories from September to December 2023?
+\item How has the frequency of articles on specific topics changed from September to December 2023?
+\item Can you detect any patterns in the type of articles (e.g., opinion pieces vs. news reports) over the four months?
+\item Which categories saw the highest increase in article count from September to December 2023?
+\item What is the overall sentiment towards major corporations mentioned in the business category?
+\item How does public sentiment towards a particular celebrity change from September to December 2023?
+\item Can you determine if there is a correlation between positive mentions of a technology company and their stock performance?
+\item What is the sentiment towards environmental issues as reported in the health and science category?
+\item How do the most common themes in the entertainment category compare with those in the technology category?
+\item What are the key differences in the types of entities discussed in sports versus business articles?
+\item Can you identify any significant overlaps in the entities discussed in health and science articles compared to technology articles?
+\item How does the frequency of articles about international events differ between the sports and business categories?
+\item How consistent is the use of sources across different categories?
+\item What is the distribution of original reporting versus rehashing of press releases or other media?
+\item Can you assess the diversity of viewpoints presented in the articles?
+\item How often do articles reference the same entities, and what does this imply about the scope of coverage?
+\item How did major global events (e.g., political elections, natural disasters) influence the content of the articles across categories?
+\item What are the top three most covered events or issues in each category, and how did these topics evolve over the four months?
+\item Can you identify any long-term trends in the coverage of certain events that may indicate a shift in editorial focus?
+\item How does the coverage of local events compare with that of global events in the sports and technology categories?
+\item What themes have emerged consistently across different categories throughout the period?
+\item How do the themes in the entertainment category compare with those in the health and science category?
+\item Can you identify any thematic shifts in the coverage of business news from September to December 2023?
+\item How do the thematic focuses of the sports category differ from those in the technology category?
+\item What are the most popular topics among readers based on the frequency of mentions?
+\item How do consumer interests vary between different categories?
+\item What emerging trends can be identified from the data that could inform marketing strategies?
+\item Can you determine which entities are most likely to drive consumer interest in the business category?
+\item Which brands have seen the highest increase in visibility across the four months?
+\item How does brand visibility differ across the various categories?
+\item Can you identify any brands that have maintained consistent visibility throughout the period?
+\item Which brands are most associated with positive sentiment in the technology category?
+\item How does the coverage of a specific industry (e.g., healthcare, tech) affect its visibility and perception?
+\item What are the most influential companies in terms of driving industry-wide discussions?
+\item Can you determine if there is a correlation between increased coverage and changes in stock prices for listed companies?
+\item How does the coverage of a particular industry compare with its actual market performance?
+\item What are the most frequently discussed health-related issues during the period?
+\item How do public health concerns in the news compare with those in medical journals?
+\item Can you identify any trends in the coverage of new health technologies or treatments?
+\item How does the coverage of mental health issues compare with that of physical health issues?
+\item What is the public's sentiment towards specific health issues (e.g., obesity, diabetes)?
+\item How does the coverage of a particular health issue affect public awareness and behavior?
+\item Can you determine if there is a correlation between the volume of articles and public health outcomes?
+\item How does the coverage of a specific health issue (e.g., vaccination campaigns) vary across different regions?
+\item What are the most discussed technological advancements in healthcare during the period?
+\item How do these technological advancements compare with their actual adoption rates in clinical practice?
+\item Can you identify any trends in the integration of technology into healthcare practices?
+\item How does the coverage of telemedicine compare with traditional healthcare methods?
+\item What are the most frequently discussed technological advancements during the period?
+\item How do these technological advancements compare with the latest innovations in the tech industry?
+\item Can you identify any emerging trends in the tech sector that could present new opportunities?
+\item How does the coverage of a specific technology (e.g., AI, blockchain) compare with its actual adoption rate?
+\item What are the most discussed tech companies during the period, and how do they compare with each other?
+\item How does the coverage of a specific tech company (e.g., Apple, Google) affect its market position?
+\item Can you determine if there is a correlation between increased coverage and market share growth for specific tech companies?
+\item How does the coverage of a particular tech trend (e.g., cybersecurity) vary across different industries?
+\item What is the public's sentiment towards specific technologies (e.g., smartphones, smart homes)?
+\item How does the coverage of a particular technology (e.g., electric vehicles) affect consumer perception and behavior?
+\item Can you identify any trends in the adoption of new technologies based on the coverage?
+\item How does the coverage of a specific technology (e.g., virtual reality) compare with its actual usage rates?
+\end{enumerate}
+\end{footnotesize}
+
+\subsection{Set B: enumeration questions (\texorpdfstring{$q_{60}$--$q_{119}$}{q60-q119})}
+\begin{footnotesize}
+\begin{enumerate}\setlength{\itemsep}{1pt}\setcounter{enumi}{60}
+\item How has the frequency of coverage on specific topics changed from September to December?
+\item What are the most common themes across different categories of news articles?
+\item Which entities have been covered consistently across multiple categories, and why might this be significant?
+\item Identify any emerging or declining trends in the types of stories being reported.
+\item Can you identify any biases in the reporting based on the tone and language used?
+\item How does the coverage of major events differ between categories?
+\item Are there any discrepancies in the portrayal of certain entities across different news articles?
+\item Examine if there is a correlation between the source of information and the angle of reporting.
+\item How have global events influenced the local news coverage during the period?
+\item Identify any news articles that were directly affected by international developments.
+\item Compare the impact of domestic versus international news events on the local audience.
+\item Determine if there are any patterns in how different categories of news articles respond to the same global event.
+\item Calculate the overall sentiment score for each category of news articles over the period.
+\item Identify any significant shifts in sentiment scores for specific entities over time.
+\item Compare the sentiment scores of different entities within the same category to see if there are any notable differences.
+\item Analyze the relationship between the volume of news articles and the overall sentiment score.
+\item Using clustering algorithms, group similar articles together based on their content and topics.
+\item Determine the number of clusters that best represent the diversity of the dataset.
+\item Evaluate the coherence of the clusters formed, ensuring they align with expected categories.
+\item Identify any outliers or anomalies within the clusters and explain their presence.
+\item Based on the historical data, predict which topics are likely to gain more attention in the next quarter.
+\item Assess the predictive power of certain features (e.g., entity mentions, article length) in forecasting future trends.
+\item Evaluate the accuracy of your predictions using a validation set of recent articles.
+\item Discuss any challenges in predicting future trends based on the current dataset.
+\item Which demographic segments are most likely to engage with the news articles in each category?
+\item Analyze the content to determine which topics are most appealing to different age groups.
+\item Identify any gaps in the current coverage that could attract new audiences.
+\item Determine the effectiveness of the current targeting strategies based on the engagement levels.
+\item Which types of articles tend to perform better on social media platforms?
+\item Analyze the engagement metrics to identify the most effective headlines and formats.
+\item Determine the optimal posting times for maximizing reach and engagement.
+\item Evaluate the impact of multimedia elements (e.g., images, videos) on article performance.
+\item Based on the dataset, what content themes should be prioritized in future articles to maintain high engagement?
+\item Identify any underrepresented topics that could be included to diversify the content portfolio.
+\item Assess the balance between different categories to ensure a well-rounded content strategy.
+\item Develop a plan for incorporating trending topics into the content calendar.
+\item Track changes in public opinion on specific issues over the period based on the articles.
+\item Identify any shifts in public sentiment towards certain entities or topics.
+\item Analyze the role of influential figures in shaping public opinion through the articles.
+\item Determine the effectiveness of news articles in influencing public opinion on key issues.
+\item Examine the extent to which news articles have influenced policy decisions during the period.
+\item Identify any instances where news coverage led to policy changes or public debates.
+\item Assess the role of media in highlighting or downplaying certain issues in the policy agenda.
+\item Discuss the implications of media influence on policy-making processes.
+\item Analyze the relationship between the news coverage and societal trends during the period.
+\item Identify any correlations between news articles and changes in societal attitudes or behaviors.
+\item Explore the impact of news articles on public discourse and cultural norms.
+\item Discuss the broader implications of the findings for understanding the role of media in society.
+\item Review the consistency and quality of reporting across different categories.
+\item Identify any areas where the reporting standards could be improved or standardized.
+\item Assess the accuracy and reliability of the information presented in the articles.
+\item Determine the effectiveness of fact-checking processes in maintaining editorial integrity.
+\item Analyze the factors that contribute to higher reader engagement in different categories.
+\item Identify strategies to increase the reach and impact of news articles.
+\item Determine the most effective ways to integrate multimedia elements into the articles.
+\item Evaluate the impact of interactive features (e.g., polls, quizzes) on reader engagement.
+\item Assess the balance between different types of content (e.g., opinion pieces, investigative reports) in the current mix.
+\item Identify any gaps in the current content mix that could be filled to better serve the audience.
+\item Determine the most effective ways to incorporate user-generated content into the news articles.
+\item Evaluate the potential for partnerships with other media outlets to enhance the content mix.
+\end{enumerate}
+\end{footnotesize}

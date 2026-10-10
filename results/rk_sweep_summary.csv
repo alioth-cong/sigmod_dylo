@@ -1,0 +1,7 @@
+dataset,ref_rho,ref_K,paper_default_cr,best_fixedK,best_fixedK_cr,best_audited_K,best_audited_cr,drift_monitor_K1_cr
+facebook,0.0015,8,1.000,16,1.000,1,1.000,1.000
+cit-hepth,0.0015,8,1.429,64,1.429,1,1.429,1.441
+cit-hepph,0.0015,8,2.413,8,4.251,4,2.413,1.405
+epinions,0.0015,8,1.000,64,1.000,1,1.000,1.000
+dblp,0.0015,8,6.249,4,7.863,1,1.323,1.312
+twitter,0.0015,8,13.907,64,10.209,1,13.907,2.726

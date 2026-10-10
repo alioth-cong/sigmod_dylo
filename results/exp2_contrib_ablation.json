@@ -1,0 +1,44 @@
+{
+ "epinions": [
+  {
+   "name": "V0 full",
+   "status": "ok",
+   "lat": 4.39049687804878,
+   "Q": 0.45585935714285714,
+   "Q_end": 0.452951,
+   "ncomm": "1105",
+   "cost": 0.13295121593563997,
+   "dir": "tmpruns/exp2contrib/epinions/V0"
+  },
+  {
+   "name": "R2 greedy (no OpenSet)",
+   "status": "ok",
+   "lat": 4.4669077560975605,
+   "Q": 0.45585935714285714,
+   "Q_end": 0.452951,
+   "ncomm": "1105",
+   "cost": 0.13295121593563997,
+   "dir": "tmpruns/exp2contrib/epinions/R2"
+  },
+  {
+   "name": "R3 flush (no defer)",
+   "status": "ok",
+   "lat": 4.428295341463414,
+   "Q": 0.45585588095238094,
+   "Q_end": 0.452944,
+   "ncomm": "1105",
+   "cost": 0.11733046342885417,
+   "dir": "tmpruns/exp2contrib/epinions/R3"
+  },
+  {
+   "name": "R2+R3",
+   "status": "ok",
+   "lat": 4.335324902439025,
+   "Q": 0.45585588095238094,
+   "Q_end": 0.452944,
+   "ncomm": "1105",
+   "cost": 0.11733046342885417,
+   "dir": "tmpruns/exp2contrib/epinions/R2+R3"
+  }
+ ]
+}

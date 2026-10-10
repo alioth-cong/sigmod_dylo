@@ -1,0 +1,9 @@
+policy,dataset,inst,rho,n_rebuilds,mean_gap,max_gap,total_cost,competitive_ratio,batches
+never,dblp,leiden,0.0015,0,0.00215,0.00504,0.22560,24.586,105
+fixedK4,dblp,leiden,0.0015,26,0.00032,0.00297,0.07215,7.863,105
+fixedK8,dblp,leiden,0.0015,13,0.00055,0.00348,0.07723,8.416,105
+fixedK16,dblp,leiden,0.0015,6,0.00078,0.00348,0.09092,9.909,105
+drift-monitor,dblp,leiden,0.0015,5,0.00004,0.00065,0.01204,1.312,105
+optimal-offline,dblp,leiden,0.0015,4,0.00003,0.00120,0.00918,1.000,105
+always,dblp,leiden,0.0015,105,0.00000,0.00000,0.15750,17.164,105
+gremod,dblp,-,0.0015,0,0.01783,0.02115,,,105

@@ -1,0 +1,11 @@
+dataset,dylo_louvain_ms,dylo_leiden_ms,df_louvain_ms_1T,speedup_louvain_vs_df,speedup_leiden_vs_df,threads,note
+facebook,0.044,0.045,0.077,1.73,1.69,1,DyLo fast incremental path; DF-Louvain committed single-thread; captured earlier in this session under low system load (isolated, before shared-server contention from another user's job)
+cit-hepth,0.243,0.235,0.427,1.76,1.82,1,DyLo fast incremental path; DF-Louvain committed single-thread; captured earlier in this session under low system load (isolated, before shared-server contention from another user's job)
+cit-hepph,0.232,0.234,0.349,1.50,1.49,1,DyLo fast incremental path; DF-Louvain committed single-thread; captured earlier in this session under low system load (isolated, before shared-server contention from another user's job)
+epinions,0.355,0.330,0.665,1.87,2.01,1,DyLo fast incremental path; DF-Louvain committed single-thread; captured earlier in this session under low system load (isolated, before shared-server contention from another user's job)
+dblp,0.607,0.580,0.931,1.53,1.61,1,DyLo fast incremental path; DF-Louvain committed single-thread; captured earlier in this session under low system load (isolated, before shared-server contention from another user's job)
+twitter,0.357,0.354,0.720,2.02,2.03,1,DyLo fast incremental path; DF-Louvain committed single-thread; captured earlier in this session under low system load (isolated, before shared-server contention from another user's job)
+flickr,0.796,0.788,1.533,1.92,1.94,1,DyLo fast incremental path; DF-Louvain committed single-thread; captured earlier in this session under low system load (isolated, before shared-server contention from another user's job)
+youtube,1.320,1.289,3.550,2.69,2.75,1,DyLo fast incremental path; DF-Louvain committed single-thread; captured earlier in this session under low system load (isolated, before shared-server contention from another user's job)
+gplus,1.661,1.880,3.350,2.02,1.78,1,DyLo fast incremental path; DF-Louvain committed single-thread; captured earlier in this session under low system load (isolated, before shared-server contention from another user's job)
+livejournal,1.799,1.462,nan,nan,nan,1,DyLo fast incremental path; df-louvain TLE'd at 4h budget on this machine (matches original failures.tsv's neighboring df-leiden/livejournal TLE); no DF-Louvain reference available
