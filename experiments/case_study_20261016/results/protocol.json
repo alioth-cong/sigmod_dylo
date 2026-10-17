@@ -1,0 +1,164 @@
+{
+  "status": "CPU_validated",
+  "methods": [
+    "hit-leiden",
+    "dynamo",
+    "qca",
+    "df-louvain",
+    "ds-louvain"
+  ],
+  "data_source": "Exact Table5 DyLo archived304->327 graph, supplied identically to all3 arms; no raw document re-extraction in this experiment",
+  "graph_semantic_sha256": "cee9752bf403ba8390692cb8928ad5ce0d3037983b3778a86fbf2caca8c196f9",
+  "tables": {
+    "documents": 327,
+    "entities": 13264,
+    "relationships": 12925,
+    "text_units": 833
+  },
+  "source_sha256": {
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/base/relationships.parquet": "8443f0079e23e26f4530335a2fe51bd7b64e8fc432dd54b03ebf36e05f20f223",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/base/text_units.parquet": "ea204932cae573fe849e4e87ed2100f7854d258d424ddbb39859515c295ca6d6",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/base/community_reports.parquet": "01dde70935a9c20df31425dcd0a70e53a15e7065f248197871bb131bdd2cb7a9",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/base/entities.parquet": "c22d20342a53dcd42be6ef11f9bfab65741c3876e4a0e1bc9f8baab2412fb29d",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/base/documents.parquet": "fa6ed977d1c96da5e49af576db5420992ccf571676ae5c2662aa7476a2d2e251",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/base/communities.parquet": "099d7e1f781288cc98b28c3343517e8b597767c2e045bce88a445dd5cd3881e8",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/delta/relationships.parquet": "e854631f8defcc33c03bfc394a7d516b0d47b2f0c1cb52c3bc8718f7a53ea8f4",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/delta/text_units.parquet": "2a491ed2f6f674734fcec95fe425f53f0c37bc880d5c720dd314c119dce2177b",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/delta/community_reports.parquet": "eca2f31fd3a33158d19cc7641da80b6fffef2635c6892f51e3e7681fc2f82c60",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/delta/entities.parquet": "80296a81f24d88a8b753646a95e662ec25568d15d25f2657fae01ba5cc4730d4",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/delta/documents.parquet": "443af20e17597abeac096050a6414e559ad76e77c9014b87eb59ac2bc22d398a",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/delta/communities.parquet": "ea82bae1b206c53352006348826ea0802ff22f510735be9bcf0b3b358d812b0b",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/merged/relationships.parquet": "933aa0b2c58428c3ff5c6d5d253b253f0130f70ee01695712de71c6b22e3a291",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/merged/text_units.parquet": "4dc3f7cf6675ebd0caf8e6a4bc67c7584742b0890ed9db873f3f3305d93e6b64",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/merged/community_reports.parquet": "6c835d34847edeb8cee99b40a5f26194d98147b8792a0d5ae0e6c6adb28c7dba",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/merged/entities.parquet": "024e0d4b4d62e232fc74d7679f76fea5e006899e95a1acb1ef3a8626ffacbc06",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/merged/documents.parquet": "bd8751ae8e14b01ca7d3a57caef07ed73535e99b14acc027d045227d4d4bc77c",
+    "experiments/case_study_20261016/work/table5-std4-20261016/data/merged/communities.parquet": "66dacbe16cac31f50b0993230c3a1f5646b3fa02312ac35c90333fa647ea248f",
+    "experiments/case_study_20261016/data/legacy/dylo/stream/initial.txt": "09d78e03913021ea2ef5104041770a923d7f14e58ab846d3a355df9a3fc16872",
+    "experiments/case_study_20261016/data/legacy/dylo/stream/inc_1.txt": "e947a8fdb69b27115101635095d8f9c8dd4d93b48578918217f1a3e39a8e4974",
+    "experiments/case_study_20261016/data/legacy/dylo/stream/init_part.txt": "4bb08373b5ba63dcf1dbf2d26a6bbba7f3bf9c473f81671b3143e77a756cf481",
+    "experiments/case_study_20261016/data/legacy/dylo/stream/id2name.json": "136c014b247081949d8b5b373cc4895570a421c196285109f84a6d25f2088298"
+  },
+  "original_std4_binary_sha256": "40c104c5ca826190b259b3413262ba01b58e9d78281cb518196b5d345dbf9b7d",
+  "dylo_original_partition_replayed_exactly": true,
+  "checks": {
+    "hit-leiden": {
+      "status": "passed",
+      "model_calls": 0,
+      "communities": 1622,
+      "merged_refresh_targets": 739,
+      "delta_summary_targets": 26,
+      "initial_missing_repairs": 44,
+      "net_update_targets_including_delta": 721,
+      "inherited": 883,
+      "C0_reports": 67,
+      "covered_entities": 7841,
+      "planning_times_s": {
+        "community_update_or_rebuild_s": 1.1297567090950906,
+        "refresh_selection_s": 0.056879456038586795,
+        "context_prepare_s": 18.641772654023953
+      }
+    },
+    "dynamo": {
+      "status": "passed",
+      "model_calls": 0,
+      "communities": 1622,
+      "merged_refresh_targets": 730,
+      "delta_summary_targets": 26,
+      "initial_missing_repairs": 39,
+      "net_update_targets_including_delta": 717,
+      "inherited": 892,
+      "C0_reports": 71,
+      "covered_entities": 7841,
+      "planning_times_s": {
+        "community_update_or_rebuild_s": 0.9753538609948009,
+        "refresh_selection_s": 0.05736477696336806,
+        "context_prepare_s": 18.571168301044963
+      }
+    },
+    "qca": {
+      "status": "passed",
+      "model_calls": 0,
+      "communities": 1636,
+      "merged_refresh_targets": 714,
+      "delta_summary_targets": 26,
+      "initial_missing_repairs": 45,
+      "net_update_targets_including_delta": 695,
+      "inherited": 922,
+      "C0_reports": 67,
+      "covered_entities": 7840,
+      "planning_times_s": {
+        "community_update_or_rebuild_s": 1.2753037370275706,
+        "refresh_selection_s": 0.05903000896796584,
+        "context_prepare_s": 18.920252940966748
+      }
+    },
+    "df-louvain": {
+      "status": "passed",
+      "model_calls": 0,
+      "communities": 1620,
+      "merged_refresh_targets": 728,
+      "delta_summary_targets": 26,
+      "initial_missing_repairs": 37,
+      "net_update_targets_including_delta": 717,
+      "inherited": 892,
+      "C0_reports": 69,
+      "covered_entities": 7841,
+      "planning_times_s": {
+        "community_update_or_rebuild_s": 1.1085666459985077,
+        "refresh_selection_s": 0.05749485001433641,
+        "context_prepare_s": 18.915488230995834
+      }
+    },
+    "ds-louvain": {
+      "status": "passed",
+      "model_calls": 0,
+      "communities": 1640,
+      "merged_refresh_targets": 743,
+      "delta_summary_targets": 26,
+      "initial_missing_repairs": 37,
+      "net_update_targets_including_delta": 732,
+      "inherited": 897,
+      "C0_reports": 78,
+      "covered_entities": 7841,
+      "planning_times_s": {
+        "community_update_or_rebuild_s": 0.6863657620269805,
+        "refresh_selection_s": 0.057218390982598066,
+        "context_prepare_s": 18.79623100697063
+      }
+    }
+  },
+  "reuse_rule": "DyLo and Batch use same original member-set-only rule; Rebuild regenerates every report. No same-members/input-changed extra refresh. Original GraphRAG materialization retained, including its edge-free filtering; no new singleton coverage repair.",
+  "timing": "Each actual trial reexecutes native community update/rebuild, membership-only selection and context preparation inside its timer; then real summary calls, embeddings and publication. Record per-phase wall seconds and percentages. Original GraphRAG304-document setup, model load and raw extraction excluded. Separately measured initial missing-report repair excluded from net-maintenance denominator; archive-style total also preserved.",
+  "tokens": "Successful Qwen native prompt+completion usage, with input and output columns; failed usage separate; logicalcl100k historical2513684 shown only as archive reference, not actual usage.",
+  "model": "Existing repaired English Qwen2.5-7B-Instruct,2048-token output cap,8concurrency,seed17,no response/prefix cache; model prompt repair retained, not an exact replay of old8192-output generation.",
+  "quality": "Same frozen15 questions, same repaired English GraphRAG C0 map-reduce and independent calibrated GPT-oss judge, both answer orders and four criteria",
+  "unchanged_sources": {
+    "experiments/case_study_20261016/work/fast-summary-20261016/lib/benchmark.py": "a7ff4f79b211e846a2e169cdc2f104f8be6110ec54868e07a6c2f16eeeda86bd",
+    "experiments/case_study_20261016/work/fast-summary-20261016/lib/qwen_model.py": "db11f8944b04d6bad564c209b46c1b7dacc3cb302bebe59d1f0ce91cc67777c9",
+    "experiments/case_study_20261016/work/fast-summary-20261016/quick_run.py": "89adf7de8bd310b9e83e3ca3f364bf65158a5972e5c8557f5f4a4b89c5b5471b",
+    "experiments/case_study_20261016/work/fast-summary-20261016/community_report_graph.txt": "5cbe6be5b965a5f4ca422d3ac1275df447496cb6e503e4b4aa0a3624d217553d"
+  },
+  "model_calls": 0,
+  "phase_names": [
+    "data_load_s",
+    "community_update_or_rebuild_s",
+    "refresh_selection_s",
+    "context_prepare_s",
+    "delta_summary_s",
+    "merged_refresh_s",
+    "embedding_write_publish_s",
+    "other_s"
+  ],
+  "phase_percentage_denominator": "same-run elapsed maintenance wall clock minus the separately timed, sequential initial-missing-report repair phase; no subtraction of overlapping request times",
+  "no_required_outcome": "No presupposed DyLo win or dominance of summary time; actual measured phase shares and quality decide.",
+  "original_three_method_results_preserved": true,
+  "native_adapters": {
+    "hit-leiden": "Existing gated HIT driver, P3/gamma5",
+    "qca": "Existing gated QCA driver, same base membership partition",
+    "df-louvain": "Existing gated DF driver",
+    "dynamo": "Original harness DynaMo incremental adapter, own native initialization",
+    "ds-louvain": "Original harness delta-screen DS adapter"
+  },
+  "timing_scope": "Graph-ready update through published index; original304 build, common extraction and model load excluded. No estimated raw-document E2E is reported."
+}

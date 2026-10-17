@@ -1,0 +1,32 @@
+\stitle{Reference-answer check.}
+On a separate $609$-article, $20$-batch stream, \DyLo{}-Leiden has the highest
+token-$F_1$ point estimate across $414$ final-snapshot questions
+(Figure~\ref{fig:knee}(e)). Unadjusted paired $95\%$ intervals support gains over
+from-scratch Leiden, \Batch{}, \DynaMo{}, and \GreMod{}; comparisons with
+\QCA{} and from-scratch \Louvain{} remain inconclusive
+(Appendix~\ref{app:groundtruth}).
+
+% Temporarily hidden at the author's request, 2026-09-24.
+\begin{comment}
+\begin{table}[!htbp]\centering
+\caption{Reference-answer freshness controls.}
+\label{tab:mhrag-controls}
+\begin{footnotesize}
+\setlength{\tabcolsep}{0.7em}
+\begin{tabular}{lrr}
+\toprule
+Check & Token-$F_1$ change & $p$ \\
+\midrule
+Selective deferral & $|\Delta F_1|=.0007$ & $1.000$ \\
+Mask-$40$ blanking & $\Delta F_1=-.0644$ & $<10^{-3}$ \\
+\bottomrule
+\end{tabular}
+\end{footnotesize}
+\end{table}
+
+Table~\ref{tab:mhrag-controls} detects the loss from summary blanking but no
+significant difference between selective deferral and its fresh-summary
+control. This establishes measurement sensitivity and complements the arena's
+open-ended synthesis test.
+\end{comment}
+\FloatBarrier

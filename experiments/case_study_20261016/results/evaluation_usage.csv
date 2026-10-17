@@ -1,0 +1,12 @@
+source,kind,revision,stage,status,calls,input_tokens,output_tokens,sum_request_elapsed_s,excluded_from_maintenance
+original_three_methods,sensemaking_generation,legacy,global_map,error,121,1033373,88575,1232.073840379715,True
+original_three_methods,sensemaking_generation,legacy,global_map,ok,53,414455,14467,400.11321473121643,True
+original_three_methods,sensemaking_generation,legacy,global_reduce,ok,5,14153,1992,18.573086261749268,True
+original_three_methods,sensemaking_generation,legacy,global_reduce,error,2,4475,809,7.519654035568237,True
+original_three_methods,sensemaking_generation,2.1,global_map,ok,267,2033921,61411,1265.795381784439,True
+original_three_methods,sensemaking_generation,2.1,global_reduce,ok,41,57020,13532,125.51164770126343,True
+original_three_methods,sensemaking_judge,legacy,sensemaking_judge_excluded_from_maintenance,ok,252,263796,35055,461.0442795753479,True
+additional_five_baselines,sensemaking_generation,2.1,global_map,ok,2460,18665523,524155,9359.952023267746,True
+additional_five_baselines,sensemaking_generation,2.1,global_reduce,ok,424,511324,141820,1292.1466717720032,True
+additional_five_baselines,sensemaking_generation,2.1,global_map,error,1,0,0,0.006654262542724609,True
+additional_five_baselines,sensemaking_judge,legacy,sensemaking_judge_excluded_from_maintenance,ok,3064,3293248,439763,5090.399138450623,True

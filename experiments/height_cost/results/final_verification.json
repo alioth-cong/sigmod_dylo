@@ -1,0 +1,37 @@
+{
+  "disabled": {
+    "final_binary_native_output_equal_to_measured_run": true,
+    "files": 14
+  },
+  "heightstruct": {
+    "final_binary_native_output_equal_to_measured_run": true,
+    "files": 14
+  },
+  "heightcap": {
+    "final_binary_native_output_equal_to_measured_run": true,
+    "files": 14
+  },
+  "b1": {
+    "final_binary_native_output_equal_to_measured_run": true,
+    "files": 14
+  },
+  "unit_count": {
+    "passed": true,
+    "stdout": "height, subtree size, saturation, positive weights and fixed scaling: PASS\n",
+    "stderr": ""
+  },
+  "unit_heightstruct": {
+    "passed": true,
+    "stdout": "height, subtree size, saturation, positive weights and fixed scaling: PASS\n",
+    "stderr": "[wmodel] model=heightstruct fixed_scale=0.000668880891175 initial_nodes=6 initial_count_weight=11 park=0\n[wmodel] height=0 cap=5903 intercept=2028.12101762 slope=76.9093901595\n[wmodel] height=1 cap=6000 intercept=2522.88226456 slope=335.221004386\n[wmodel] height=2 cap=5965.46153846 intercept=2888.61614989 slope=479.758135497\n[wmodel] height=3 cap=5963.07692308 intercept=3389.67647254 slope=430.161763764\n"
+  },
+  "unit_heightcap": {
+    "passed": true,
+    "stdout": "height, subtree size, saturation, positive weights and fixed scaling: PASS\n",
+    "stderr": "[wmodel] model=heightcap fixed_scale=0.000794401986891 initial_nodes=6 initial_count_weight=11 park=0\n[wmodel] height=0 cap=5903 intercept=2028.12101762 slope=76.9093901595\n[wmodel] height=1 cap=5918.6 intercept=2064.27398731 slope=78.4958835947\n[wmodel] height=2 cap=5940.32142857 intercept=2250.75580766 slope=75.1325648463\n[wmodel] height=3 cap=5964.64 intercept=3066.54033759 slope=45.0377498673\n"
+  },
+  "original_preserved": {
+    "files": 14,
+    "backups_and_original_sources_unchanged": true
+  }
+}

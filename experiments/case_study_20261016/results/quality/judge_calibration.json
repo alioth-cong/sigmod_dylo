@@ -1,0 +1,146 @@
+{
+  "status": "passed",
+  "model": "openai/gpt-oss-120b",
+  "identical_ties": 4,
+  "identical_cases": 4,
+  "padding_favored": 0,
+  "padding_cases": 8,
+  "directness_prefers_original_in_both_orders": true,
+  "padding_order_agreement": 1.0,
+  "gate_predeclared": "all calls valid; >=3/4 identical ties; never favor irrelevant padding; directness prefers original in both orders; >=3/4 padding dimensions order-consistent",
+  "cases": [
+    {
+      "control": "identical",
+      "dimension": "comprehensiveness",
+      "order": 0,
+      "verdict": {
+        "status": "ok",
+        "winner": 0,
+        "reasoning": "Answer 1 and Answer 2 are essentially identical, providing the same level of detail and coverage of the question, so neither is better.",
+        "call_id": "1792154652857702200"
+      }
+    },
+    {
+      "control": "padding",
+      "dimension": "comprehensiveness",
+      "order": 0,
+      "verdict": {
+        "status": "ok",
+        "winner": 1,
+        "reasoning": "Answer 1 provides the same relevant detail as Answer 2 but without the extraneous filler text. The additional irrelevant content in Answer 2 does not add value and detracts from the completeness of the response, making Answer 1 the more comprehensive and focused answer.",
+        "call_id": "1792154656462438392"
+      }
+    },
+    {
+      "control": "padding",
+      "dimension": "comprehensiveness",
+      "order": 1,
+      "verdict": {
+        "status": "ok",
+        "winner": 2,
+        "reasoning": "Answer 2 provides the same comprehensive coverage of article types as Answer 1 but omits the long block of irrelevant filler text, making it more concise and focused on the question.",
+        "call_id": "1792154658553294526"
+      }
+    },
+    {
+      "control": "identical",
+      "dimension": "diversity",
+      "order": 0,
+      "verdict": {
+        "status": "ok",
+        "winner": 0,
+        "reasoning": "Answer 1 and Answer 2 are essentially identical, providing the same perspectives, evidence, and level of detail; therefore, neither is richer or more varied than the other.",
+        "call_id": "1792154659236433619"
+      }
+    },
+    {
+      "control": "padding",
+      "dimension": "diversity",
+      "order": 0,
+      "verdict": {
+        "status": "ok",
+        "winner": 1,
+        "reasoning": "Answer 1 and Answer 2 contain the same substantive content, but Answer 2 adds a long block of unrelated filler text that does not provide additional perspectives or evidence. This extra irrelevant material reduces the diversity and richness of the answer, making Answer 1 the better, more focused response.",
+        "call_id": "1792154659735131456"
+      }
+    },
+    {
+      "control": "padding",
+      "dimension": "diversity",
+      "order": 1,
+      "verdict": {
+        "status": "ok",
+        "winner": 2,
+        "reasoning": "Answer 2 provides the same range of observations and evidence as Answer 1 but without the repetitive filler text that adds no new perspective. Both answers offer similar viewpoints and citations, but Answer 2 is more concise and focused, making its diversity of insight clearer.",
+        "call_id": "1792154660453920472"
+      }
+    },
+    {
+      "control": "identical",
+      "dimension": "empowerment",
+      "order": 0,
+      "verdict": {
+        "status": "ok",
+        "winner": 0,
+        "reasoning": "Answer 1 and Answer 2 are essentially identical in content, reasoning, and source citations, so neither is better than the other.",
+        "call_id": "1792154661268996402"
+      }
+    },
+    {
+      "control": "padding",
+      "dimension": "empowerment",
+      "order": 0,
+      "verdict": {
+        "status": "ok",
+        "winner": 1,
+        "reasoning": "Answer 1 presents the same relevant analysis as Answer 2 but without the extraneous filler text that adds no value and could confuse the reader. Its concise explanation and use of data sources better help the reader understand the patterns without distraction.",
+        "call_id": "1792154662599477927"
+      }
+    },
+    {
+      "control": "padding",
+      "dimension": "empowerment",
+      "order": 1,
+      "verdict": {
+        "status": "ok",
+        "winner": 2,
+        "reasoning": "Answer 2 presents the same clear analysis and supporting data as Answer 1 but without the extraneous filler paragraphs that add no value and could confuse the reader. This makes Answer 2 more concise and better at helping the reader understand the patterns without distraction.",
+        "call_id": "1792154664191307175"
+      }
+    },
+    {
+      "control": "identical",
+      "dimension": "directness",
+      "order": 0,
+      "verdict": {
+        "status": "ok",
+        "winner": 0,
+        "reasoning": "Both answers are essentially the same and provide the same level of detail and clarity in addressing the question, so neither is better than the other.",
+        "call_id": "1792154664884403353"
+      }
+    },
+    {
+      "control": "padding",
+      "dimension": "directness",
+      "order": 0,
+      "verdict": {
+        "status": "ok",
+        "winner": 1,
+        "reasoning": "Answer 1 directly addresses the question with a clear analysis of article types and patterns, without any irrelevant filler. Answer 2 includes the same content but adds unnecessary repetitive filler that does not answer the question, making it less concise and clear.",
+        "call_id": "1792154666240807984"
+      }
+    },
+    {
+      "control": "padding",
+      "dimension": "directness",
+      "order": 1,
+      "verdict": {
+        "status": "ok",
+        "winner": 2,
+        "reasoning": "Answer 2 provides the same clear analysis of article type patterns without the irrelevant filler text present in Answer 1, making it more concise and directly focused on the question.",
+        "call_id": "1792154667817932077"
+      }
+    }
+  ],
+  "scope": "Small process calibration, not proof that judge reproduces GPT-4 or human preferences"
+}

@@ -1,0 +1,94 @@
+% Compact Table 4: one column per retained dataset.
+% Each cell reports Q / per-batch graph latency (ms) / abstract structural refresh cost.
+\begin{table*}[t]
+\centering
+\caption{\textbf{Exp-1.} Modularity, latency, and structural re-summarization cost on ten graphs.}
+\label{tab:main}
+{\scriptsize
+\setlength{\tabcolsep}{0.25pt}
+\renewcommand{\arraystretch}{1.06}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccccccc@{}}
+\toprule
+Method & Facebook & Cit-Th & Cit-Ph & Epin. & Twitter & DBLP & GPlus$^*$ & Flickr$^*$ & YouTube$^*$ & LiveJ.$^{*\ddagger}$ \\
+\midrule
+\multicolumn{11}{l}{\emph{From-scratch, re-run per batch (cross-tool reference)}} \\
+\Louvain{}
+  & $.835/47.3/1.000$ & $.656/664/1.000$ & $.724/1021/1.000$
+  & $.441/1380/1.000$ & $.806/\mathrm{TLE}/1.000$ & $.823/9753/1.000$
+  & $.475/\mathrm{TLE}/1.000$ & $.665/\mathrm{TLE}/1.000$ & $.722/\mathrm{TLE}/1.000$ & $\text{--}/\text{--}/1.000$ \\
+SLM
+  & $.836/107/1.000$ & $.666/2854/1.000$ & $.737/3849/1.000$
+  & $.454/4774/1.000$ & $.811/\mathrm{TLE}/1.000$ & $.837/25654/1.000$
+  & $\mathrm{TLE}/\mathrm{TLE}/1.000$ & $.671/\mathrm{TLE}/1.000$ & $.733/\mathrm{TLE}/1.000$ & $\text{--}/\text{--}/1.000$ \\
+Leiden
+  & $.836/110/1.000$ & $.663/1880/1.000$ & $.734/2831/1.000$
+  & $.445/4833/1.000$ & $.807/\mathrm{TLE}/1.000$ & $.828/21047/1.000$
+  & $.477/\mathrm{TLE}/1.000$ & $.670/\mathrm{TLE}/1.000$ & $.732/\mathrm{TLE}/1.000$ & $.761/1332286/1.000$ \\
+\midrule
+Reuse-aware Leiden
+  & $.836/285/.673$ & $.663/2275/.985$ & $.734/2841/.995$
+  & $.445/2764/.964$ & $.807/6981/.980$ & $.828/19437/.996$
+  & $.477^{\dagger}/66504^{\dagger}/\text{--}$ & $.670/28769/\text{--}$ & $.732/45397/\text{--}$ & $.761/\text{--}/.991$ \\
+\DynaMo{}
+  & $.836/15.7/.599$ & $.661/198/.982$ & $.722/269/.993$
+  & $.452/249/.938$ & $.810/700/.957$ & $.827/2285/.989$
+  & $.477/3739/.990$ & $.668/4091/.916$ & $.727/8721/.933$ & $.760/333821/.968$ \\
+\Batch{}
+  & $.835/101/.288$ & $.660/131/.899$ & $.732/131/.930$
+  & $.435/169/.898$ & $.808/339/.579$ & $.822/475/.775$
+  & $.475/4592/.479$ & $.665/1630/.802$ & $.722/2351/.935$ & $.750/28229/.834$ \\
+\QCA{}
+  & $.835/8.11/.452$ & $.661/10.4/.907$ & $.734/6.02/.934$
+  & $.437/77.5/.825$ & $.808/9.79/.571$ & $.822/6.67/.711$
+  & $.475/4973/.776$ & $.665/42.3/.705$ & $.722/75.2/.852$ & $.760/137/.773$ \\
+DF-Leiden
+  & $.835/4.51/.570$ & $.659/26.1/.981$ & $.730/35.4/.988$
+  & $.442/39.5/.936$ & $.805/99.1/.763$ & $.823/212/.994$
+  & $.476/690/.789$ & $.660/295/.844$ & $.719/560/.946$ & $.724/3555/.977$ \\
+$\Delta$-screen
+  & $.836/2.91/.330$ & $.656/13.0/.884$ & $.734/15.9/.923$
+  & $.439/19.3/.861$ & $.782/61.4/.504$ & $.821/79.0/.693$
+  & $.475/496/.393$ & $.658/186/.626$ & $.716/294/.842$ & $.731/595/.811$ \\
+DF-\Louvain{}
+  & $.835/2.24/.251$ & $.654/9.43/.883$ & $.731/11.5/.926$
+  & $.438/13.9/.862$ & $.781/43.5/.527$ & $.819/54.6/.692$
+  & $.475/380/.419$ & $.657/139/.628$ & $.713/213/.842$ & $.719/9.36/.846$ \\
+\GreMod{}
+  & $.835/2.22/.096$ & $.652/2.69/.204$ & $.727/2.74/.235$
+  & $.434/3.44/.795$ & $.807/2.90/.185$ & $.820/4.88/.460$
+  & $.475/4.89/.059$ & $.663/5.24/.674$ & $.720/8.10/.850$ & $.750/9.12/.629$ \\
+HIT-Leiden
+  & $.836/0.60/.275$ & $.665/6.95/.815$ & $.733/4.36/.875$
+  & $.455/23.8/.875$ & $.811/14.6/.510$ & $.837/21.9/.742$
+  & $.477/363/.482$ & $.667/111/.735$ & $.726/230/.883$ & $.768/217/.750$ \\
+\midrule
+\DyLo{}-\Louvain{}
+  & $.835/0.39/.068$ & $.663/1.68/.051$ & $.730/1.60/.078$
+  & $.445/3.97/.115$ & $.808/2.41/.080$ & $.820/4.36/.110$
+  & $.471/3.43/.022$ & $.664/7.79/.037$ & $.718/20.5/.050$ & $.758/17.4/.010$ \\
+\DyLo{}-SLM
+  & $.836/0.39/.068$ & $.665/1.58/.051$ & $.735/1.65/.075$
+  & $.452/3.82/.116$ & $.810/2.43/.077$ & $.831/4.16/.111$
+  & $.477/3.70/.024$ & $.668/7.76/.037$ & $.724/21.6/.056$ & $.771/22.0/.010$ \\
+\DyLo{}-Leiden
+  & $.836/0.39/.069$ & $.666/1.59/.051$ & $.733/1.69/.091$
+  & $.457/3.60/.117$ & $.811/2.43/.078$ & $.836/4.21/.113$
+  & $.477/3.66/.026$ & $.668/7.89/.038$ & $.726/22.4/.056$ & $.768/21.2/.010$ \\
+\bottomrule
+\end{tabular*}
+}
+\begin{minipage}{\textwidth}
+\scriptsize
+Cells report five-run means where available of $Q$ / graph latency (ms per batch) / normalized
+structural re-summarization cost, not token usage; $Q$ and cost are shown to
+three decimals; $Q$ in the Epinions, Twitter, and DBLP columns is the stream mean of the runs in Figure~\ref{fig:qtrend}, except for \Louvain{}, SLM, \DyLo{}-\Louvain{}, and \DyLo{}-SLM. A complete reset costs $1.000$. All methods use the same
+$r_{\mathrm{int}}=1$ structural metric, not fitted token weights. Structural
+scores do not measure actual LLM execution or end-to-end latency. For the 18 \DyLo{} cells in the six unstarred
+columns, the maximum seed range is
+$3.3\times10^{-6}$ in $Q$ and $1.0\%$ relative to mean structural cost.
+$*$: latency and structural cost come from separate measurement series.
+$\ddagger$: LiveJournal, single run over the first $200$ batches; from-scratch \Louvain{} and SLM were not run. \textsc{tle}: time limit exceeded; $\dagger$: completed batches at
+the time cap; \textbf{--}: not measured. All unmarked values cover the complete
+update stream.
+\end{minipage}
+\end{table*}

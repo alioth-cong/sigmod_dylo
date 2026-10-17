@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "GPU_calls": 0,
+  "checks": {
+    "dylo": {
+      "status": "passed",
+      "net_tasks": 344,
+      "old_missing_repairs_to_be_absorbed_in_setup": 50,
+      "community_count": 1465
+    },
+    "batch": {
+      "status": "passed",
+      "net_tasks": 712,
+      "old_missing_repairs_to_be_absorbed_in_setup": 40,
+      "community_count": 1625
+    },
+    "rebuild": {
+      "status": "passed",
+      "net_tasks": 1637,
+      "old_missing_repairs_to_be_absorbed_in_setup": 0,
+      "community_count": 1637
+    }
+  },
+  "initial_context_coverage": 1554,
+  "stability_cases_frozen": true,
+  "all_prior_sources_unchanged": true
+}

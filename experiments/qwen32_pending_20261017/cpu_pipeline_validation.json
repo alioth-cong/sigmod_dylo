@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "real_model_calls": 0,
+  "format_checks_use_historical_outputs_only": true,
+  "new32B_namespace_for_all_formal_checkpoints": true,
+  "summary_and_answer_request_model_routing32B": true,
+  "old7B_initial_reports_rejected": true,
+  "format_checks": [
+    {
+      "qid": 2,
+      "stage": "global_map",
+      "historical_valid_output_accepted": true,
+      "tool_marker_and_malformed_JSON_rejected": true
+    },
+    {
+      "qid": 2,
+      "stage": "global_reduce",
+      "historical_valid_output_accepted": true,
+      "tool_marker_and_malformed_JSON_rejected": true
+    },
+    {
+      "qid": 6,
+      "stage": "global_map",
+      "historical_valid_output_accepted": true,
+      "tool_marker_and_malformed_JSON_rejected": true
+    },
+    {
+      "qid": 6,
+      "stage": "global_reduce",
+      "historical_valid_output_accepted": true,
+      "tool_marker_and_malformed_JSON_rejected": true
+    }
+  ],
+  "original60_questions_unchanged": true,
+  "formal_counts": [
+    344,
+    712,
+    1637
+  ]
+}

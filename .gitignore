@@ -12,3 +12,27 @@ harness/cpp/dylo_leiden_driver
 harness/java/build/
 __pycache__/
 *.pyc
+
+# New experiment builds, unpacked inputs/observations, and fresh replay outputs
+experiments/corrected_std/bin/
+experiments/corrected_std/small/*/louvain/
+experiments/corrected_std/small/*/slm/
+experiments/corrected_std/small/*/leiden/
+experiments/corrected_std/*_results.json
+experiments/corrected_std/*_validation.json
+experiments/corrected_std/selector_scaling.csv
+experiments/case_study_20261016/observed/
+experiments/case_study_20261016/data/
+experiments/case_study_20261016/outputs/
+experiments/case_study_20261016/verification/
+experiments/case_study_20261016/work/*/data/
+experiments/case_study_20261016/work/*/initial/
+experiments/case_study_20261016/work/*/native/
+experiments/case_study_20261016/work/*/runs/
+experiments/case_study_20261016/work/*/plans/
+experiments/case_study_20261016/work/*/cache/
+experiments/height_cost/src/dylo_height
+experiments/height_cost/src/test_weights
+# Also ignore local validation dependency symlinks (without trailing slashes).
+/external
+/harness/java/build

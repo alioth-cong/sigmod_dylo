@@ -1,0 +1,8 @@
+{
+  "snapshot_date": "2026-10-17",
+  "historical_graph_experiments": "harness/",
+  "measured_case_study": "experiments/case_study_20261016",
+  "corrected_std_status": "candidate; not the manuscript case-study driver",
+  "freshness_candidate_status": "invalid chronological mapping; rebuild required",
+  "qwen32_status": "in progress; no performance or quality result included"
+}

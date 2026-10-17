@@ -1,0 +1,869 @@
+\clearpage
+\nobalance
+\appendix
+
+\section{Additional experimental details}
+
+\subsection{Benchmark domains}
+\label{app:dataset-details}
+
+The ten graph benchmarks comprise social networks (Facebook, GPlus, Twitter,
+Flickr, YouTube, and LiveJournal), a trust network (Epinions), citation networks (Cit-HepPh
+and Cit-HepTh), and a co-authorship network (DBLP). Vertices correspond to
+users, papers, and authors, respectively; edges encode social or trust links,
+citations, and co-authorship relations. They represent the graph after entity
+and relation extraction. Directed source relations are symmetrized, and all
+experiments process undirected graphs. MultiHop-RAG instead supplies the
+document-ingestion and downstream question-answering workloads.
+
+\subsection{Execution and accounting defaults}
+\label{app:exp-defaults}
+
+% Main-table configuration: source deferral enabled, epsilon=0.05.
+% Component-ablation values retain their archived partition-derived cost.
+% The revised epsilon sweep separately reports executed schedule cost.
+Structural weights count entities at leaves and children at internal nodes;
+the complete full-index rebuild normalizes their sum to $1$. Main-table
+maintenance latency excludes batch parsing and partition output; Exp-2b
+driver timings include index emission. The main-table configuration enables
+source deferral with $\varepsilon=0.05$. The paired deferral comparison
+uses the same threshold; Exp-5 retains its archived eager-source configuration.
+Main-table structural scores and schedule-plus-balance accrual costs are
+distinguished in Section~\ref{sec:exp:setup}; partition changes alone do not
+recover a deferred execution schedule.
+
+All reported \DyLo{} runs use the current marginal bucket test of
+Section~\ref{sec:opt:pruning}, with $\bar w_t(B)$ rather than the static weight
+$w(B)$. Across the 18 \DyLo{} detector--graph configurations in the six jointly
+measured columns of Table~\ref{tab:main}, the seed-to-seed latency range reaches
+$48\%$ on the smallest graph but stays below $5\%$ on the largest, where
+sub-millisecond timing noise matters less.
+
+LiveJournal ($4.8$M vertices, $69.0$M edges) is run once per method over the
+first $200$ of its $6{,}900$ batches; from-scratch Leiden alone needs $74$ hours
+for these batches, and from-scratch \Louvain{} and SLM were not run. Baseline
+structural costs are recomputed from the saved per-batch partitions. Peak
+memory is $9.5$\,GB for all three \DyLo{} instances and $4.2$--$54.5$\,GB for
+the baselines.
+
+\subsection{Motivating measurements}
+\label{app:motivation}
+
+Figure~\ref{fig:span} and Figure~\ref{fig:share} replay HIT-Leiden's per-batch
+partitions on the $|\Delta E|=10^3$ streams of Table~\ref{tab:main}, using the
+first $40$ batches of each graph (all batches of Facebook and Cit-HepTh). Because the baseline stores only a flat partition, we build its
+hierarchy by repeatedly contracting the leaf partition, as GraphRAG does when
+it refines a flat partition hierarchically; $w(c)$ follows
+Definition~\ref{def:cost}, and $\mathrm{Anc}(c)$ is the full root path.
+
+\emph{Recurring refreshes.} Under simulated eager refresh, every source
+community that loses a member in a batch refreshes its root path. A
+source-side refresh of node $c$ is recurring if $c$ was already refreshed for
+the same reason in an earlier batch; Figure~\ref{fig:span} reports the
+recurring share of source-side refresh cost.
+
+\emph{Shared refreshes.} For the moves accepted in a batch,
+Figure~\ref{fig:share} divides
+$\sum_a w\bigl(\mathrm{Anc}(\mathrm{src}(a))\cup\mathrm{Anc}(\mathrm{dst}(a))\bigr)$
+by $w\bigl(\bigcup_a\mathrm{Anc}(\mathrm{src}(a))\cup\mathrm{Anc}(\mathrm{dst}(a))\bigr)$,
+which is at least one, and averages over batches; the axis is logarithmic
+because the ratio spans three orders of magnitude.
+
+\emph{Locality of flipped decisions.} On ten sampled batches per graph, we
+compute each vertex's best-move raw gain on the pre-batch partition, apply the
+batch with the partition fixed, update $m$ and the community volumes, and
+recompute the gain. On every graph, no vertex whose gain turns from
+non-positive to positive lies more than two hops from an inserted edge. Gains
+of untouched vertices change only through $m$ and the community volumes, by
+amounts too small to flip their sign in these measurements. A variant that asks
+which vertices of the post-batch graph prefer to move under the old partition
+finds $0.0$--$0.9\%$ of them beyond two hops.
+
+\subsection{Certified-frontier statistics}
+\label{app:frontier}
+
+Table~\ref{tab:frontier} reports per-batch frontier sizes and certificate
+events under the configuration of Table~\ref{tab:main} ($\lambda=10^{-1}$),
+over the first $40$ batches of each graph (all batches of Facebook and
+Cit-HepTh). The frontier counts the vertices re-examined in a batch; the skip
+rate is the share of certificate checks that end without a recheck.
+
+\begin{table}[tb]\centering
+\caption{Certified frontier and certificate events per batch.}
+\label{tab:frontier}
+\begin{footnotesize}
+\setlength{\tabcolsep}{0.3em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrr@{}}
+\toprule
+Graph & Frontier (med.) & Range & Expired & Skip (\%) & Certificates \\
+\midrule
+Facebook  & $3$   & $0$--$9$     & $0$  & $100.0$ & $2{,}662$ \\
+Cit-HepTh & $24$  & $0$--$33$    & $2$  & $99.8$  & $53{,}227$ \\
+Cit-HepPh & $20$  & $10$--$34$   & $4$  & $99.8$  & $48{,}149$ \\
+Epinions  & $134$ & $117$--$154$ & $18$ & $99.1$  & $84{,}885$ \\
+DBLP      & $90$  & $72$--$111$  & $1$  & $100.0$ & $180{,}505$ \\
+Twitter   & $11$  & $5$--$17$    & $0$  & $100.0$ & $92{,}825$ \\
+Flickr    & $103$ & $85$--$138$  & $8$  & $99.6$  & $306{,}354$ \\
+YouTube   & $277$ & $244$--$315$ & $12$ & $99.4$  & $494{,}420$ \\
+GPlus     & $2$   & $0$--$6$     & $2$  & $99.9$  & $347{,}580$ \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Expired: certificates expired per batch; Certificates: live certificates after
+the last batch.
+\end{footnotesize}
+\end{table}
+
+\subsection{Exp-2b: Selector timing and accounting audit}
+\label{app:defer-seltime}
+
+The updated timing comparison toggles source deferral, not source pricing.
+With deferral off, actions requiring both source and destination anchors
+use maximum-weight closure solved by min-cut; single-anchor rounds can
+still use DP. With deferral on, every action has one immediate anchor.
+Table~\ref{tab:selector-real} covers eight full native graph streams.
+The hardware matches the setup; solver and driver timing boundaries are
+distinguished below.
+
+\begin{table}[tb]\centering
+\caption{\textbf{Exp-2b.} Updated real-stream selector timings.
+Medians over three detector seeds at $\lambda=10^{-1}$.
+Selection columns are full-stream totals; driver columns are per-batch
+latencies including index emission. All times are in milliseconds.}
+\label{tab:selector-real}
+\label{tab:defer-seltime}
+\begin{footnotesize}
+\setlength{\tabcolsep}{0.3em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{Selection total} & \multicolumn{2}{c}{Driver / batch} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+Graph & off & on & off & on \\
+\midrule
+Facebook & $0.00$ & $0.00$ & $0.46$ & $0.46$ \\
+Cit-HepTh & $0.05$ & $0.03$ & $2.34$ & $2.25$ \\
+Cit-HepPh & $0.02$ & $0.01$ & $1.94$ & $2.18$ \\
+Epinions & $2.07$ & $0.19$ & $4.66$ & $4.85$ \\
+Twitter & $0.01$ & $0.00$ & $2.99$ & $3.01$ \\
+DBLP & $0.71$ & $0.15$ & $6.23$ & $6.15$ \\
+Flickr & $19.0$ & $1.90$ & $9.69$ & $9.62$ \\
+YouTube & $155.4$ & $3.99$ & $27.2$ & $26.9$ \\
+\bottomrule
+\end{tabular*}
+\end{footnotesize}
+\end{table}
+
+All $2{,}079$ reported enabled-arm rounds use DP. The supplied pooled
+min-cut timing is $0.6455$\,ms over $804$ disabled-arm rounds; the reported
+pooled DP timing is $0.0085$\,ms. Their approximately $76\times$ ratio is
+descriptive, not a matched-input solver speed-up: the pools comprise
+different optimization instances. The same-instance evidence is instead
+Figure~\ref{fig:knee}(c), whose timings Table~\ref{tab:selector-exact} lists.
+Facebook and Twitter contribute no informative
+nonempty selection workload according to the supplied report; near-zero
+rounded timings are not used to claim percentage improvements.
+
+% Moved from the main text (2026-10-03); plotted as Figure fig:knee(c).
+\begin{table}[tb]\centering
+\caption{\textbf{Exp-2b.} Frozen-tree selector runtime.}
+\label{tab:selector-exact}
+\begin{footnotesize}
+\setlength{\tabcolsep}{0.4em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}crrrrr@{}}
+\toprule
+& \multicolumn{3}{c}{Time per solve (ms)} & \multicolumn{2}{c}{Speed-up over DP} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-6}
+$n$ & Enumeration & Closure & DP & Enumeration & Closure \\
+\midrule
+$\le 8$  & $0.0021$ & $0.0007$ & $\mathbf{0.0004}$ & $5\times$ & $1.7\times$ \\
+$\le 12$ & $0.0242$ & $0.0010$ & $\mathbf{0.0004}$ & $54\times$ & $2.3\times$ \\
+$\le 16$ & $0.1927$ & $0.0012$ & $\mathbf{0.0005}$ & $364\times$ & $2.3\times$ \\
+$\le 20$ & $3.9625$ & $0.0018$ & $\mathbf{0.0009}$ & $4{,}615\times$ & $2.1\times$ \\
+$\le 22$ & $13.681$ & $0.0021$ & $\mathbf{0.0011}$ & $12{,}699\times$ & $2.0\times$ \\
+\midrule
+$50$      & --- & $0.0076$ & $\mathbf{0.0027}$ & --- & $2.8\times$ \\
+$200$     & --- & $0.0316$ & $\mathbf{0.0108}$ & --- & $2.9\times$ \\
+$1{,}000$ & --- & $0.1816$ & $\mathbf{0.0500}$ & --- & $3.6\times$ \\
+$5{,}000$ & --- & $1.0172$ & $\mathbf{0.2873}$ & --- & $3.5\times$ \\
+$20{,}000$& --- & $5.6968$ & $\mathbf{1.2407}$ & --- & $4.6\times$ \\
+\bottomrule
+\end{tabular*}
+\end{footnotesize}
+\end{table}
+
+\stitle{Timing boundary.} Selection counters accumulate solver-path time
+over the entire stream, while driver latency is reported per batch and
+includes graph maintenance, certificate upkeep, and index emission. The
+driver denominator differs from Table~\ref{tab:main}'s maintenance-only
+latency, which excludes partition output. Selection totals cannot be
+divided directly by per-batch driver times to obtain a phase share.
+The driver point estimates in Table~\ref{tab:selector-real} show no
+comparable overall speed-up; no significance or equivalence claim is made.
+
+\stitle{Corrected cost boundary.} The separate earlier paired cost check covers eight graphs
+and all three detector instances over their full native streams. It uses
+the driver's emitted refresh plan (\texttt{resum.tsv}) and the final pending
+balance, i.e., $\mathsf K_T$ in Eq.~\ref{eq:cumulative-ledger}, including
+unsettled work rather than assigning it zero cost. The two arms have identical
+cost on $23$ of the $24$ graph--instance pairs; Epinions/\Louvain{} differs by
+$+0.01\%$, and every pair agrees in $Q$ to five decimal places.
+
+The earlier scorer (\texttt{hier\_cost.py}) reconstructed refresh work from
+partition changes. It charged a removal-only source whenever its member set
+changed, even if the driver had deferred its regeneration, producing apparent
+increases of up to $44.8\%$. The paired deferral comparison therefore uses
+schedule-plus-balance accounting. Table~\ref{tab:ablation} instead retains
+the archived partition-derived structural scores and single-run timings;
+its cost column is not a recomputed execution-plus-balance ledger.
+The archived ablation runner launches six single-threaded jobs concurrently,
+so these timings are descriptive rather than isolated-run measurements.
+% Temporarily hidden with Exp-2c (2026-09-23); restore with tabepssweep.tex.
+% Table~\ref{tab:eps} instead reports executed schedule cost and retained
+% membership entries separately; its cost excludes the closing pending-share balance.
+Comparing the component ablation's
+internal control with Table~\ref{tab:main} is not a controlled defer-on/off
+experiment: the main table already enables deferral.
+The paired comparison above is the evidence for deferral's cost effect.
+
+\subsection{Exp-3: Batch size and ingestion rate}
+\label{app:exp3-detail}
+
+We sweep batch sizes $E\in\{1,10,100,1000\}$ on MultiHop-RAG
+($24.2$K edges; stream/base ratio $.91$) and Cit-HepPh
+($420.9$K edges; stream/base ratio $.11$). Frontier labels in
+Figure~\ref{fig:exp3} identify $E$.
+The measured extraction rate is $r_{\mathrm{in}}=6.04$ edges/s. Under a fixed
+batch size $E$, the plotted continuous-arrival approximation is
+$E/(2r_{\mathrm{in}})$; summary generation proceeds at $0.945$ reports/s.
+For fixed equally spaced arrivals, the exact mean batch-closing wait is
+$(E-1)/(2r_{\mathrm{in}})$, including zero wait for $E=1$.
+The plotted waiting time excludes subsequent maintenance and report generation,
+and is not an end-to-end freshness measurement.
+
+With $\lambda=0$, increasing $E$ from $1$ to $1000$ lowers MultiHop-RAG's
+structural cost per edge from $113.5$ to $7.74$, while mean batch-closing delay
+rises from $0.08$ to $82.8$\,s. Larger batches therefore amortize work but delay
+index freshness. This trade-off is relevant to
+delay-tolerant document-management workloads, where $E$ can be chosen from an
+explicit latency budget. With the default $\lambda=10^{-1}$, however, cost-aware
+selection removes most uneconomical openings before batching can amortize them:
+singleton processing already costs $0.611$ per edge. This reduces the
+incentive to use large batches solely to amortize refresh work.
+
+Lazy evaluation further favors small batches when updates are localized. It
+reduces singleton cost by $43\%$ on Cit-HepPh, whereas its effect is negligible
+when the MultiHop-RAG increment perturbs most of the graph. Thus, lazy evaluation
+complements cost-aware selection precisely when the update stream leaves enough
+state reusable.
+
+\subsection{Exp-4: Exchange-rate sweep}
+\label{app:exp4-detail}
+
+Figure~\ref{fig:knee} sweeps
+$\lambda \in \{0, 10^{-3}, 10^{-2}, 10^{-1}, 0.3, 1, 3, 10, \infty\}$ on the six
+graphs with an archived sweep. The source records $20$ batch iterations
+per graph, a different horizon from the native stream lengths in
+Table~\ref{tab:datasets}. We report relative structural cost
+$\mathrm{Cost}(\lambda)/\mathrm{Cost}(0)$ and modularity loss
+$Q(0)-Q(\lambda)$ over that recorded horizon;
+Proposition~\ref{prop:mono} concerns a fixed frozen round and does not imply
+monotonicity across the resulting trajectories.
+
+All six curves are nearly flat from $\lambda=10^{-2}$ on; Cit-HepPh, DBLP,
+and Flickr are already close to their floor at $\lambda=10^{-3}$.
+Increasing the rate by a further three orders of magnitude, to $\lambda=10$,
+changes normalized structural cost by at most $0.0045$ and modularity by less than
+$10^{-4}$. At the knee, the cost term removes about $86$--$89\%$ of the
+structural re-summarization work on five graphs
+($\mathrm{Cost}(10^{-2})/\mathrm{Cost}(0)=0.110$--$0.137$), with modularity
+losses of $0.06$--$0.67\times10^{-3}$. Thus, the location of the knee is stable
+even though its magnitude varies by graph.
+
+Facebook is the main cost-side exception: its normalized structural cost falls to $0.402$.
+It has only $4{,}039$ vertices but average degree $43.7$, producing relatively
+few, large communities and leaving less avoidable re-summarization work.
+Epinions is the quality-side exception: it loses $0.67\times10^{-3}$ modularity,
+compared with at most $0.19\times10^{-3}$ elsewhere, and still has normalized
+structural cost $0.804$ at $\lambda=10^{-3}$.
+The three reported Epinions values refer to different configurations:
+$0.441$ is the full-graph
+from-scratch \Louvain{} descriptor, $0.445$ is the from-scratch/reuse-aware
+Leiden reference, and $0.458$ is the cost-oblivious sweep point here.
+
+We use $\lambda=10^{-1}$, one decade beyond the common knee, as a shared default
+rather than tuning it per dataset. A deployment may instead choose $\lambda$
+from held-out update batches; the observed plateau confines the useful search
+to the neighborhood of $10^{-2}$--$10^{-1}$.
+
+\subsection{Post-hoc fidelity validation of structural weights}
+\label{app:proxy-cal}
+
+% Moved from Section 7.4 (2026-10-05).
+\begin{table}[tb]
+\centering
+\caption{Structural weights versus measured summarizer input tokens.}
+\label{tab:proxy-validation}
+\begin{footnotesize}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrr@{}}
+\toprule
+\textbf{Diagnostic} & \textbf{Retained} & \textbf{Rebuilt} \\
+\midrule
+Leaf / internal samples & $944/91$ & $1{,}002/162$ \\
+Leaf $R^2$ & $.851$ & $.859$ \\
+Internal $R^2$ & $.380$ & $.437$ \\
+\midrule
+All-node $R^2$, $r_{\mathrm{int}}=1$ & $.222$ & $.143$ \\
+All-node $R^2$, rescaled & $.675$ & $.738$ \\
+Spearman $\rho$, $r_{\mathrm{int}}=1$ & $.746$ & $.623$ \\
+Spearman $\rho$, rescaled & $.913$ & $.931$ \\
+Fitted $r_{\mathrm{int}}$ & $3.41$ & $4.43$ \\
+\bottomrule
+\end{tabular*}
+\end{footnotesize}
+\end{table}
+
+The benchmark's structural re-summarization cost is defined by entity and
+child counts, not by a fitted token predictor. We validate its relationship to
+measured summarizer inputs on the retained and fresh-rebuild versions of the
+$327$-document MultiHop-RAG index. For each call in
+\texttt{cache/community\_reporting}, we read
+\texttt{usage.prompt\_tokens}. Because the cache key is a content hash, we map a
+generated report back to \texttt{community\_reports.parquet} through its title
+and retain only uniquely titled communities. This recovers $1{,}035/1{,}300$
+communities ($80\%$) from the retained index and $1{,}164/1{,}300$ ($90\%$) from
+the fresh-rebuild index; the diagnostic is limited to these matched samples.
+
+\stitle{Fidelity and its limits.} We fit $\mathrm{tokens}=a+bn$ separately
+to leaf entity counts and internal child counts. Table~\ref{tab:proxy-validation}
+shows strong leaf fits and substantially weaker internal fits. Leaves dominate
+the matched node counts, but these proportions do not measure token or refresh
+cost mass. The leaf slopes are $78.4/81.8$ tokens per unit and the internal
+slopes $267.3/362.9$. Their ratio gives the diagnostic multiplier
+$r_{\mathrm{int}}=b_{\mathrm{internal}}/b_{\mathrm{leaf}}$; it is distinct from
+the ledger ownership fraction $\alpha_{A,c}$. Post-hoc rescaling improves
+all-node fit and rank agreement, but neither the remaining prediction error nor
+the index-dependent multiplier supports a universal token conversion.
+The rescaled correlations are validation results, not the fidelity claimed
+for Table~\ref{tab:main}'s unchanged $r_{\mathrm{int}}=1$ weights.
+
+\stitle{Relevance to selection.} The selector trades modularity gain against
+structural cost through $g-\lambda w$, rather than predicting an absolute token
+bill. A common multiplicative cost scale can be absorbed into $\lambda$.
+Rank agreement therefore supports the proxy's ability to distinguish cheaper
+from more expensive nodes, but is not sufficient to guarantee identical
+decisions: $g-\lambda w$ also depends on cost magnitudes. The exactness result
+concerns the stated structural objective, not a token-optimal objective.
+Exp-5 supplies separate measured summary-token and maintenance-time ledgers;
+this validation does not establish an absolute-token budget guarantee.
+
+\stitle{Sensitivity to internal weighting.} Let $L,I$ denote the leaf and
+internal contributions of DyLo's fixed refresh trace, including closing
+liabilities, and $L_T,I_T$ the full-index totals. Post-hoc normalized cost is
+\[
+  C_{\mathrm{norm}}(r)=\frac{L+rI}{L_T+rI_T}.
+\]
+The multiplier enters both numerator and denominator, which can attenuate its
+effect but does not make it cancel. On Epinions, changing $r_{\mathrm{int}}$
+from $1$ to $3.41$ or $4.43$ changes DyLo's cost from $.132951$ to
+$.137344$ or $.138955$, only $+3.3\%$ or $+4.5\%$. This one-sided sensitivity
+check reweights only DyLo's fixed trace: baseline values, committed decisions,
+$Q$, and latency are unchanged, and DyLo remains below every evaluated
+incremental baseline in structural cost on this graph. It neither replaces
+the main-table measurements nor asserts that every method ranking or selection
+would survive re-optimization with new weights. We retain $r_{\mathrm{int}}=1$
+as the common structural metric; Exp-5 separately measures native update-summary tokens and elapsed maintenance time.
+
+\subsection{Exp-5: Matched-graph maintenance and sensemaking protocol}
+\label{app:exp5-detail}
+
+\stitle{Frozen workload and reuse.} The measured replay uses one archived
+DyLo graph: $327$ documents, $13{,}264$ entities, $12{,}925$ relationships,
+and $833$ text units, with the same $304$-document initial state and
+$23$-document update for every arm. The final graph's semantic SHA-256 is
+\texttt{cee9752bf403ba839}\allowbreak\texttt{0692cb8928ad5ce0}\allowbreak
+\texttt{d3037983b3778a86}\allowbreak\texttt{fbf2caca8c196f9}.
+DyLo replays the original \texttt{std4} binary and its archived partition,
+using $\lambda=0.1$, $\sigma=0.2$, and hierarchy parameter $\gamma=5$.
+The initial community reports are those of the shared archived DyLo index.
+Baselines use their existing native adapters, including native partition
+initialization where required. This is an update from one common archived
+index, rather than a comparison of separately maintained per-method histories.
+All incremental arms apply the archived lookup rule: take the first old
+community with the same entity-membership set and reuse its report if present.
+An input-content change without a membership
+change does not trigger an additional refresh in this replay. We retain the
+original materialization rule that filters communities without internal edges;
+we do not add a singleton-coverage repair to this experiment. Complete report
+coverage means every materialized community has a report row, not that every
+extracted entity belongs to a retained root community. Rebuild regenerates
+every materialized report. These choices reproduce the archived refresh rule
+and may retain stale evidence in reused reports; they do not implement a
+stricter evidence-change policy.
+
+\stitle{Generation and timing.} Qwen2.5-7B-Instruct runs in BF16 with an
+English structured report prompt requiring five findings, an output cap of
+$2{,}048$ tokens, seed $17$, and eight concurrent requests. Response and
+prefix caching are disabled for measured maintenance. Report source contexts
+use a shared $4{,}000$-token \texttt{cl100k\_base} budget, while reported usage
+uses Qwen's native tokenizer. The original three arms
+use H100 GPU0 and the remaining five use H100 GPU1, with the same server
+settings; resource-isolation logs are checked for every measured arm.
+Embeddings use \texttt{BAAI/bge-small-en-v1.5}~\cite{xiao2024cpack}.
+The graph-ready wall clock includes input loading, actual native detector
+bootstrap and update, refresh selection, context preparation, summary
+generation and retries, embedding, writing, and queryability validation.
+It excludes initial index construction, model loading, raw-document extraction,
+old-report repair, and all evaluation calls. We report one measured run per
+arm, not repeated-run means or uncertainty estimates for timing.
+\begin{table*}[tb]\centering
+\caption{Graph-ready maintenance time by stage (percent of each arm's total).}
+\label{tab:maintenance-phases}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrr@{}}
+\toprule
+Method & Graph & Context & $\Delta$ reports & Merged reports & Publish & Other \\
+\midrule
+Rebuild & 0.04 & 0.91 & 0.00 & 98.66 & 0.34 & 0.04 \\
+HIT-Leiden & 0.13 & 1.96 & 3.41 & 93.85 & 0.55 & 0.10 \\
+\DynaMo{} & 0.15 & 1.92 & 3.32 & 94.01 & 0.51 & 0.10 \\
+\QCA{} & 0.14 & 2.02 & 3.55 & 93.70 & 0.50 & 0.10 \\
+DF-\Louvain{} & 0.12 & 1.93 & 3.40 & 93.97 & 0.49 & 0.10 \\
+$\Delta$-screen & 0.11 & 1.91 & 3.29 & 94.06 & 0.52 & 0.10 \\
+\Batch{} & 0.15 & 2.00 & 3.55 & 93.67 & 0.52 & 0.10 \\
+\DyLo{} & 0.18 & 3.70 & 6.25 & 88.96 & 0.75 & 0.16 \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Graph includes native bootstrap and community maintenance. Publish includes embedding, index writing, and queryability checks. Other groups input loading, refresh selection, and residual overhead. Delta plus merged reports is the summary share in Table~\ref{tab:arena-main}.
+\end{table*}
+
+\stitle{Token accounting and exclusions.} Successful native prompt and
+completion usage is added only for update-caused delta and merged community
+reports. The $26$ delta reports are common to the incremental arms; Rebuild
+directly summarizes the final index. Reports absent before the update are
+repaired in a separately timed stage. The primary DyLo count is therefore
+$394-50=344$, rather than a claim that only $344$ requests occurred in total.
+\begin{table*}[tb]\centering
+\caption{Separate old-report repair and failed update-summary calls.}
+\label{tab:maintenance-exclusions}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrr@{}}
+\toprule
+Method & Repair calls & Repair (s) & Repair tok. (k) & Failed calls & Failed tok. (k) \\
+\midrule
+Rebuild & 0 & 0.0 & 0.0 & 0 & 0.000 \\
+HIT-Leiden & 44 & 84.3 & 137.3 & 1 & 6.439 \\
+\DynaMo{} & 39 & 74.7 & 116.9 & 0 & 0.000 \\
+\QCA{} & 45 & 83.4 & 135.2 & 0 & 0.000 \\
+DF-\Louvain{} & 37 & 77.4 & 107.3 & 1 & 6.431 \\
+$\Delta$-screen & 37 & 67.9 & 102.5 & 0 & 0.000 \\
+\Batch{} & 40 & 82.7 & 120.9 & 0 & 0.000 \\
+\DyLo{} & 50 & 85.7 & 150.0 & 0 & 0.000 \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Repair tokens are successful native input plus output. Failed tokens are excluded from the primary successful-token total; retry time is retained in maintenance time.
+\end{table*}
+\begin{table*}[tb]\centering
+\caption{Native root-report exposure, answer length, and successful maintenance token components.}
+\label{tab:case-study-exposure}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrr@{}}
+\toprule
+Method & Root reports & Covered entities & Mean words & Input tok. (k) & Output tok. (k) \\
+\midrule
+Rebuild & 67 & 7,840 & 196.3 & 1926.118 & 1039.829 \\
+HIT-Leiden & 67 & 7,841 & 205.7 & 1132.160 & 469.395 \\
+\DynaMo{} & 71 & 7,841 & 207.4 & 1146.060 & 470.043 \\
+\QCA{} & 67 & 7,840 & 198.8 & 1103.605 & 454.694 \\
+DF-\Louvain{} & 69 & 7,841 & 218.3 & 1159.725 & 469.162 \\
+$\Delta$-screen & 78 & 7,841 & 210.6 & 1174.995 & 478.749 \\
+\Batch{} & 70 & 7,841 & 208.6 & 1125.332 & 463.547 \\
+\DyLo{} & 151 & 7,521 & 214.0 & 918.156 & 239.070 \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Root cuts cover their materialized root entities, not every extracted entity. Input and output tokens here are community-maintenance usage, not answer-generation usage.
+\end{table*}
+
+There were $2$ failed update-summary calls consuming
+$12,870$ native tokens in total, excluded from the successful ledger.
+These failures reached the output cap and succeeded on retry.
+Earlier format-repair probes and downstream question-answering calls are
+outside maintenance accounting. The final answer-generation run records one
+transport failure without returned usage; its token cost is unknown, and its
+successful retry is retained. Preempted in-flight evaluation requests also
+have unknown usage and are not assigned zero cost.
+
+\stitle{Sensemaking, not reference-answer QA.} We use all $60$ archived
+questions $q_0$--$q_{59}$, including questions receiving no-evidence answers.
+They were frozen before generation on the new indices. The $15$-question
+pilot's validated answers are retained for the first three arms, rather than
+regenerated selectively. Each index supplies every report in its native
+level-$0$ root cut to GraphRAG's global-search map--reduce implementation.
+The same $8{,}000$-Qwen-token map and reduce evidence budgets apply to all
+methods; map output is capped at $2{,}048$ tokens and reduce output at
+$3{,}072$. Report counts and total query-token exposure are not matched across
+partitions. Map points carry usefulness scores; the reducer synthesizes useful
+points as English paragraphs. Structured outputs require a normal stop,
+complete valid JSON, and allowed report identifiers; tool markers and truncated
+outputs are rejected rather than stripped. Citations are rendered mechanically
+without rewriting prose. All $480$ final answers are accepted only after
+validation. Quality-generation time and tokens are outside maintenance totals.
+
+\stitle{Independent judge and uncertainty.} Local \texttt{gpt-oss-120b}
+uses temperature $0$, seed $17$, low reasoning effort, and a $2{,}048$-token
+output cap, separately from the Qwen answer generator. We use the four
+GraphRAG criteria~\cite{edge2024graphrag} and a blind pairwise prompt, permitting
+ties. Each DyLo--baseline pair is assessed in both answer orders for each
+question and criterion: $7\times60\times4\times2=3{,}360$ oriented cases.
+Identical prompts reuse validated verdicts, so this is not a count of distinct
+API calls. DyLo's win/tie/loss scores are $100/50/0$. We average both orders
+within each question and then average the $60$ questions, using question-level
+bootstrap intervals to preserve dependence between orders.
+\begin{table*}[tb]\centering
+\caption{DyLo preference scores and unadjusted $95\%$ question-bootstrap intervals.}
+\label{tab:sensemaking-ci}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}
+\toprule
+Opponent & Comprehensiveness & Diversity & Empowerment & Directness \\
+\midrule
+\Batch{} & 60.00 [50.83, 69.58] & 66.25 [57.08, 75.42] & 53.33 [43.32, 63.75] & 49.58 [39.58, 59.58] \\
+Rebuild & 56.67 [47.50, 65.42] & 61.25 [52.08, 70.42] & 48.33 [39.17, 57.50] & 48.33 [38.75, 57.92] \\
+HIT-Leiden & 57.50 [47.92, 67.08] & 62.08 [51.25, 72.50] & 51.67 [41.25, 61.67] & 57.50 [47.08, 67.92] \\
+\DynaMo{} & 64.17 [55.00, 72.92] & 63.75 [54.17, 73.33] & 52.50 [42.92, 61.67] & 55.00 [44.58, 65.42] \\
+\QCA{} & 69.58 [60.83, 77.92] & 75.83 [66.25, 84.58] & 53.75 [43.33, 64.17] & 53.75 [43.75, 63.75] \\
+DF-\Louvain{} & 55.00 [45.83, 63.75] & 56.25 [45.82, 66.67] & 52.50 [42.92, 62.08] & 47.08 [36.25, 57.92] \\
+$\Delta$-screen & 53.33 [44.17, 62.92] & 60.83 [50.83, 70.83] & 48.75 [39.17, 58.34] & 40.00 [31.67, 48.75] \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+$10{,}000$ resamples of the $60$ questions, seed $17$; both orders stay together within a question. Intervals are per comparison and criterion, without multiplicity correction.
+\end{table*}
+
+The predeclared process calibration passes: all four identical-answer controls
+tie, no irrelevant padding is favored in eight controls, and directness
+prefers the unpadded original in both orders. This small calibration does not
+establish agreement with human judges or validate every refusal-versus-answer
+case. Across the final comparisons, reversing answer order changes the
+oriented preference on $13$--$29$ of $60$ questions per criterion.
+Both orders are retained, rather than discarding inconsistent or unfavorable
+cases. The reported intervals are unadjusted and do not prove a prespecified
+non-inferiority margin. The $60$ questions are one fixed sample and answer
+generation is single-run; this evaluation measures local-judge preferences,
+not reference-answer accuracy or factual-grounding guarantees.
+
+\stitle{Raw-document end-to-end scope.} The matched-graph replay does not
+include fresh entity/relation extraction. A prior serial raw-document trial
+used a different extracted graph and refresh policy and omitted two failed
+text chunks; its timings cannot be added to this replay's maintenance results
+to create a measured full-update comparison. The full-update expression in
+Section~\ref{sec:exp:e2e} is conditional on a shared upstream ingestion stage
+and its maintenance fraction. A matched raw-document-to-queryable comparison
+is required to turn that implication into an observed end-to-end saving.
+
+\subsection{Archived Exp-5: Logical input work and ranked judging}
+\label{app:exp5-archived}
+
+This archived experiment is retained for provenance. It uses independently
+extracted graphs, incomplete report coverage, a different summary prompt and
+output cap, the latter $60$ synthesis questions, and a different judge and
+query-exposure protocol. Its logical tokens and mean ranks are not the native
+usage or preference scores of the new matched-graph replay.
+\begin{table}[tb]\centering
+\caption{\textbf{Exp-5.} Archived logical input work and answer ranks with matched report counts.}
+\label{tab:arena-archived}
+\footnotesize
+\setlength{\tabcolsep}{0.20em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{Input work} & \multicolumn{4}{c}{Mean rank ($\downarrow$)} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-7}
+Method & Targets & Tok. (k) & Comp. & Div. & Emp. & Dir. \\
+\midrule
+Rebuild         & $1{,}518$ & $5{,}493$ & $4.75$ & $4.75$ & $4.58$ & $\mathbf{3.81}$ \\
+HIT-Leiden      & $985$ & $4{,}944$ & $5.44$ & $5.38$ & $5.66$ & $4.40$ \\
+\DynaMo{}       & $825$ & $4{,}230$ & $4.64$ & $4.81$ & $4.53$ & $4.23$ \\
+\QCA{}          & $829$ & $4{,}224$ & $4.31$ & $4.32$ & $4.44$ & $4.79$ \\
+DF-\Louvain{}   & $821$ & $4{,}254$ & $3.92$ & $3.75$ & $3.53$ & $4.82$ \\
+$\Delta$-screen & $818$ & $4{,}328$ & $5.17$ & $5.24$ & $5.23$ & $4.48$ \\
+\Batch{}        & $777$ & $3{,}616$ & $4.72$ & $4.68$ & $4.60$ & $3.93$ \\
+\midrule
+\DyLo{} & $\mathbf{394}$ & $\mathbf{2{,}514}$ & $\mathbf{3.04}$ & $\mathbf{3.08}$ & $\mathbf{3.43}$ & $5.53$ \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Tok. (k): logical input tokens in thousands. Ranks use $472$ blind
+rankings across four criteria ($1$ = best of $8$); details in
+Appendix~\ref{app:exp5-archived}.
+\end{table}
+
+
+\stitle{Models and decoding.} Community summaries are generated with
+\texttt{Qwen/Qwen2.5-7B-Instruct}~\cite{yang2024qwen25} using the report
+model's \texttt{max\_tokens=8192}, a $4{,}000$-token source-context budget,
+and a $2{,}000$-word report limit. The extraction model separately uses
+\texttt{max\_tokens=2048}. Logical input-work accounting uses
+\texttt{cl100k\_base} before cache lookup; it is not native billed usage. Embeddings use
+\texttt{BAAI/bge-small-en-v1.5}~\cite{xiao2024cpack}, with inputs truncated to $512$ tokens. The
+blind judge is Opus~5.
+
+\stitle{Matched report exposure.} Each incremental partition seeds GraphRAG's
+\texttt{hierarchical\_leiden}. All arms use a common \texttt{max\_cluster\_size}.
+For answer generation, every arm's level-$\le1$ report pool is randomly
+downsampled to $453$ under a fixed seed, and all arms use the same response
+template with a $250$-word limit. This matches the number of available reports,
+not their content or token volume. The logical input ledger counts source-context and template tokens before
+cache lookup and before report-pool sampling. It excludes output tokens and
+API-level retries. Final report coverage and extracted graphs are not matched
+in these archived arms, unlike the new matched-graph replay.
+The final DyLo, Batch, and Rebuild indexes lack $82$, $107$, and $136$
+reports, respectively, so target counts are not successful-generation counts.
+
+\stitle{Blind ranked judging.} For each of the $60$ questions, the judge ranks
+the eight anonymized answers from best to worst, without ties, on each of the
+four criteria~\cite{edge2024graphrag}. The letter-to-arm mapping is redrawn
+independently for every question, which limits the position bias documented
+for LLM judges~\cite{zheng2023judging}. The full set is graded twice under two
+independent permutations, and only questions judged in both rounds are kept;
+each round is split into two batches, and the four batches are judged in
+mutually independent contexts. One question,
+on which all eight arms returned the same refusal, carries no signal and is
+excluded, leaving $59\times4\times2=472$ rankings. Mean ranks and pairwise win
+rates are computed from this same pool. Pooled over comprehensiveness,
+diversity, and empowerment, \DyLo{} wins $68.8\%$ of all pairwise comparisons
+and $60$--$76\%$ against each baseline; DF-\Louvain{} is second at $61.0\%$,
+and \QCA{}, \DynaMo{}, \Batch{}, and Rebuild lie within $46$--$54\%$ of one
+another. HIT-Leiden and $\Delta$-screen decline $11.9\%$ and $8.5\%$ of
+questions, versus $3.4$--$6.8\%$ for the other arms.
+
+\stitle{Protocol checks.} Across the two permutations, pairwise orderings agree on
+$90.5\%$ of arm pairs ($88.1$--$91.8\%$ per criterion). Comprehensiveness and
+diversity agree on $93.5\%$ of pairwise orderings, so they should be read as
+one finding rather than two; empowerment is more distinct ($82.4$--$83.7\%$)
+and directness nearly independent of the other three ($30.7$--$44.0\%$).
+
+DyLo's largest level-$\le1$ community contains $209$ entities, compared with
+$282$--$707$ for the baselines, while method-level medians lie between $10$ and
+$13$. The separate reference-answer experiment below
+provides retrieval-read measurements, which are not measurements of this arena.
+
+\subsection{Reference-answer quality at the final snapshot}
+\label{app:groundtruth}
+
+The reference-answer diagnostic uses the full $609$-article MultiHop-RAG
+corpus in publication order, starting with $304$ articles and ingesting the
+remaining $305$ in $20$ batches. The selected $414$ questions comprise $225$
+with incremental evidence and $189$ controls. As described in
+Section~\ref{sec:exp:e2e}, this is a separate community-summary retrieval
+pipeline rather than the GraphRAG global-search arena, evaluated only at the
+final snapshot. Qwen generates summaries from at most $6{,}000$ characters
+of community evidence, with a $180$-word instruction and $350$-token output
+limit. The $15$ nearest entities are retrieved with BGE embeddings;
+communities are selected by entity-hit count, with at most six summaries and
+$12{,}000$ characters supplied to Qwen for a $60$-token short answer.
+Token $F_1$ uses normalized word overlap and the best score over references. Unchanged member sets inherit initial-state summaries;
+changed communities use final-state evidence. This inheritance rule tests
+the archived membership-based policy, not a certificate of unchanged evidence.
+Table~\ref{tab:groundtruth-scores} reports the scores and paired
+normal-approximation intervals, which are exploratory and not adjusted for
+multiple comparisons. Zero-containing intervals do not establish
+equivalence or non-inferiority.
+
+\begin{table}[tb]\centering
+\caption{Reference-answer check: token $F_1$ and paired DyLo gains on $414$ questions.}
+\label{tab:groundtruth-scores}
+\begin{footnotesize}
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrr@{}}
+\toprule
+Method & $F_1$ & DyLo gain [95\% CI] \\
+\midrule
+\DyLo{}-Leiden & $.1866$ & --- \\
+\QCA{} & $.1723$ & $.0143\;[-.0090,.0375]$ \\
+FS \Louvain{} & $.1662$ & $.0204\;[-.0025,.0433]$ \\
+FS Leiden & $.1570$ & $.0296\;[.0028,.0564]$ \\
+\Batch{} & $.1546$ & $.0320\;[.0071,.0569]$ \\
+\DynaMo{} & $.1397$ & $.0469\;[.0220,.0718]$ \\
+\GreMod{} & $.0886$ & $.0980\;[.0683,.1277]$ \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Intervals are paired normal approximations
+$\bar d\pm1.96s_d/\sqrt{414}$, unadjusted for multiple comparisons.
+\end{footnotesize}
+\end{table}
+
+Report counts are similar: \DyLo{} reads $5.10$ summaries per query,
+versus $5.14$ for \QCA{} and $4.45$--$5.14$ across all baselines.
+These counts do not control retrieved-token volume or summary length.
+% Temporarily hidden with the reference-answer control table, 2026-09-24.
+% The same-partition controls in Table~\ref{tab:mhrag-controls} compare selective
+% deferral with refreshing every summary and with blanking $40\%$ of summaries.
+
+\section{Question set and corpus provenance}
+\label{app:questions}
+
+\stitle{Corpus.} The GraphRAG case studies use MultiHop-RAG~\cite{tang2024multihoprag},
+the news collection GraphRAG itself evaluates on. It contains $609$ English news
+articles published between 2023-09-26 and 2023-12-25 and drawn from $49$ outlets,
+the largest being Sporting News ($101$ articles), TechCrunch ($97$), The Verge
+($45$), Polygon ($44$), and The Guardian ($29$). By category, the corpus contains
+sports ($211$), technology ($172$), entertainment ($114$), business ($81$),
+science ($21$), and health ($10$) articles. For Exp-5, we index the first $304$ articles in
+publication order and ingest the next $23$ as one batch, giving the $327$-document
+arena index. Appendix~\ref{app:groundtruth} describes the separate full-corpus
+reference-answer stream.
+
+\stitle{Question generation.} MultiHop-RAG provides reference-answer queries,
+which we use for the ground-truth freshness check in
+Section~\ref{sec:exp:e2e}. The GraphRAG global-search evaluation~\cite{edge2024graphrag} does not
+provide reference answers for open-ended corpus-level synthesis; its protocol
+instead asks a language model to imagine potential corpus users, their tasks,
+and the questions raised by each task, given only a prose corpus description.
+We use the same corpus-description protocol to generate $120$ synthesis
+questions. The new measured Exp-5 uses the first $60$, $q_0$--$q_{59}$;
+the archived ranked experiment uses the latter $60$, $q_{60}$--$q_{119}$.
+Both sets are listed below. Repeated judging does not increase the number of
+questions. The generator never
+sees an index, community partition, or system answer.
+
+\subsection{Measured replay questions (\texorpdfstring{$q_0$--$q_{59}$}{q0-q59})}
+\begin{footnotesize}
+\begin{enumerate}[label={\(q_{\arabic*}\).},start=0]
+\setlength{\itemsep}{1pt}
+\item What are the most frequently mentioned entities across all categories from September to December 2023?
+\item How has the frequency of articles on specific topics changed from September to December 2023?
+\item Can you detect any patterns in the type of articles (e.g., opinion pieces vs. news reports) over the four months?
+\item Which categories saw the highest increase in article count from September to December 2023?
+\item What is the overall sentiment towards major corporations mentioned in the business category?
+\item How does public sentiment towards a particular celebrity change from September to December 2023?
+\item Can you determine if there is a correlation between positive mentions of a technology company and their stock performance?
+\item What is the sentiment towards environmental issues as reported in the health and science category?
+\item How do the most common themes in the entertainment category compare with those in the technology category?
+\item What are the key differences in the types of entities discussed in sports versus business articles?
+\item Can you identify any significant overlaps in the entities discussed in health and science articles compared to technology articles?
+\item How does the frequency of articles about international events differ between the sports and business categories?
+\item How consistent is the use of sources across different categories?
+\item What is the distribution of original reporting versus rehashing of press releases or other media?
+\item Can you assess the diversity of viewpoints presented in the articles?
+\item How often do articles reference the same entities, and what does this imply about the scope of coverage?
+\item How did major global events (e.g., political elections, natural disasters) influence the content of the articles across categories?
+\item What are the top three most covered events or issues in each category, and how did these topics evolve over the four months?
+\item Can you identify any long-term trends in the coverage of certain events that may indicate a shift in editorial focus?
+\item How does the coverage of local events compare with that of global events in the sports and technology categories?
+\item What themes have emerged consistently across different categories throughout the period?
+\item How do the themes in the entertainment category compare with those in the health and science category?
+\item Can you identify any thematic shifts in the coverage of business news from September to December 2023?
+\item How do the thematic focuses of the sports category differ from those in the technology category?
+\item What are the most popular topics among readers based on the frequency of mentions?
+\item How do consumer interests vary between different categories?
+\item What emerging trends can be identified from the data that could inform marketing strategies?
+\item Can you determine which entities are most likely to drive consumer interest in the business category?
+\item Which brands have seen the highest increase in visibility across the four months?
+\item How does brand visibility differ across the various categories?
+\item Can you identify any brands that have maintained consistent visibility throughout the period?
+\item Which brands are most associated with positive sentiment in the technology category?
+\item How does the coverage of a specific industry (e.g., healthcare, tech) affect its visibility and perception?
+\item What are the most influential companies in terms of driving industry-wide discussions?
+\item Can you determine if there is a correlation between increased coverage and changes in stock prices for listed companies?
+\item How does the coverage of a particular industry compare with its actual market performance?
+\item What are the most frequently discussed health-related issues during the period?
+\item How do public health concerns in the news compare with those in medical journals?
+\item Can you identify any trends in the coverage of new health technologies or treatments?
+\item How does the coverage of mental health issues compare with that of physical health issues?
+\item What is the public's sentiment towards specific health issues (e.g., obesity, diabetes)?
+\item How does the coverage of a particular health issue affect public awareness and behavior?
+\item Can you determine if there is a correlation between the volume of articles and public health outcomes?
+\item How does the coverage of a specific health issue (e.g., vaccination campaigns) vary across different regions?
+\item What are the most discussed technological advancements in healthcare during the period?
+\item How do these technological advancements compare with their actual adoption rates in clinical practice?
+\item Can you identify any trends in the integration of technology into healthcare practices?
+\item How does the coverage of telemedicine compare with traditional healthcare methods?
+\item What are the most frequently discussed technological advancements during the period?
+\item How do these technological advancements compare with the latest innovations in the tech industry?
+\item Can you identify any emerging trends in the tech sector that could present new opportunities?
+\item How does the coverage of a specific technology (e.g., AI, blockchain) compare with its actual adoption rate?
+\item What are the most discussed tech companies during the period, and how do they compare with each other?
+\item How does the coverage of a specific tech company (e.g., Apple, Google) affect its market position?
+\item Can you determine if there is a correlation between increased coverage and market share growth for specific tech companies?
+\item How does the coverage of a particular tech trend (e.g., cybersecurity) vary across different industries?
+\item What is the public's sentiment towards specific technologies (e.g., smartphones, smart homes)?
+\item How does the coverage of a particular technology (e.g., electric vehicles) affect consumer perception and behavior?
+\item Can you identify any trends in the adoption of new technologies based on the coverage?
+\item How does the coverage of a specific technology (e.g., virtual reality) compare with its actual usage rates?
+\end{enumerate}
+\end{footnotesize}
+
+\subsection{Archived synthesis questions
+(\texorpdfstring{$q_{60}$--$q_{119}$}{q60-q119})}
+\begin{footnotesize}
+\begin{enumerate}[label={\(q_{\arabic*}\).},start=60]
+\setlength{\itemsep}{1pt}
+\item How has the frequency of coverage on specific topics changed from September to December?
+\item What are the most common themes across different categories of news articles?
+\item Which entities have been covered consistently across multiple categories, and why might this be significant?
+\item Identify any emerging or declining trends in the types of stories being reported.
+\item Can you identify any biases in the reporting based on the tone and language used?
+\item How does the coverage of major events differ between categories?
+\item Are there any discrepancies in the portrayal of certain entities across different news articles?
+\item Examine if there is a correlation between the source of information and the angle of reporting.
+\item How have global events influenced the local news coverage during the period?
+\item Identify any news articles that were directly affected by international developments.
+\item Compare the impact of domestic versus international news events on the local audience.
+\item Determine if there are any patterns in how different categories of news articles respond to the same global event.
+\item Calculate the overall sentiment score for each category of news articles over the period.
+\item Identify any significant shifts in sentiment scores for specific entities over time.
+\item Compare the sentiment scores of different entities within the same category to see if there are any notable differences.
+\item Analyze the relationship between the volume of news articles and the overall sentiment score.
+\item Using clustering algorithms, group similar articles together based on their content and topics.
+\item Determine the number of clusters that best represent the diversity of the dataset.
+\item Evaluate the coherence of the clusters formed, ensuring they align with expected categories.
+\item Identify any outliers or anomalies within the clusters and explain their presence.
+\item Based on the historical data, predict which topics are likely to gain more attention in the next quarter.
+\item Assess the predictive power of certain features (e.g., entity mentions, article length) in forecasting future trends.
+\item Evaluate the accuracy of your predictions using a validation set of recent articles.
+\item Discuss any challenges in predicting future trends based on the current dataset.
+\item Which demographic segments are most likely to engage with the news articles in each category?
+\item Analyze the content to determine which topics are most appealing to different age groups.
+\item Identify any gaps in the current coverage that could attract new audiences.
+\item Determine the effectiveness of the current targeting strategies based on the engagement levels.
+\item Which types of articles tend to perform better on social media platforms?
+\item Analyze the engagement metrics to identify the most effective headlines and formats.
+\item Determine the optimal posting times for maximizing reach and engagement.
+\item Evaluate the impact of multimedia elements (e.g., images, videos) on article performance.
+\item Based on the dataset, what content themes should be prioritized in future articles to maintain high engagement?
+\item Identify any underrepresented topics that could be included to diversify the content portfolio.
+\item Assess the balance between different categories to ensure a well-rounded content strategy.
+\item Develop a plan for incorporating trending topics into the content calendar.
+\item Track changes in public opinion on specific issues over the period based on the articles.
+\item Identify any shifts in public sentiment towards certain entities or topics.
+\item Analyze the role of influential figures in shaping public opinion through the articles.
+\item Determine the effectiveness of news articles in influencing public opinion on key issues.
+\item Examine the extent to which news articles have influenced policy decisions during the period.
+\item Identify any instances where news coverage led to policy changes or public debates.
+\item Assess the role of media in highlighting or downplaying certain issues in the policy agenda.
+\item Discuss the implications of media influence on policy-making processes.
+\item Analyze the relationship between the news coverage and societal trends during the period.
+\item Identify any correlations between news articles and changes in societal attitudes or behaviors.
+\item Explore the impact of news articles on public discourse and cultural norms.
+\item Discuss the broader implications of the findings for understanding the role of media in society.
+\item Review the consistency and quality of reporting across different categories.
+\item Identify any areas where the reporting standards could be improved or standardized.
+\item Assess the accuracy and reliability of the information presented in the articles.
+\item Determine the effectiveness of fact-checking processes in maintaining editorial integrity.
+\item Analyze the factors that contribute to higher reader engagement in different categories.
+\item Identify strategies to increase the reach and impact of news articles.
+\item Determine the most effective ways to integrate multimedia elements into the articles.
+\item Evaluate the impact of interactive features (e.g., polls, quizzes) on reader engagement.
+\item Assess the balance between different types of content (e.g., opinion pieces, investigative reports) in the current mix.
+\item Identify any gaps in the current content mix that could be filled to better serve the audience.
+\item Determine the most effective ways to incorporate user-generated content into the news articles.
+\item Evaluate the potential for partnerships with other media outlets to enhance the content mix.
+\end{enumerate}
+\end{footnotesize}

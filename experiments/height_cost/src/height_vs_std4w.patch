@@ -1,0 +1,114 @@
+--- driver_std4w.cxx
++++ driver_height.cxx
+@@ -99,14 +99,28 @@
+ // The incremental cost-tree patch only knows the count model, so b1 forces
+ // DYLO_INC_TREE off (the tree is rebuilt exactly instead; latency only).
+ struct WModel {
+-  bool b1=false, park=false;
++  bool b1=false, park=false, height=false, structural=false;
++  std::vector<std::vector<double>> layers;
+   double A=2026.0, B=89.54, CAP=6239.0, S=-1.0;   // S<0: auto (mean-matched on first tree)
+ };
+ static WModel& wmodel(){
+   static WModel M = [](){
+     WModel m;
+     const char* e=std::getenv("DYLO_WMODEL");
+-    m.b1 = e && std::string(e)=="b1";
++    m.height = e && (std::string(e)=="heightcap" || std::string(e)=="heightstruct");
++    m.structural = e && std::string(e)=="heightstruct";
++    m.b1 = m.height || (e && std::string(e)=="b1");
++    if(m.height){
++      const char* path=std::getenv("DYLO_HEIGHT_PARAMS");
++      if(!path) throw std::runtime_error("DYLO_HEIGHT_PARAMS is required");
++      std::ifstream f(path); int h; double cap,a,b;
++      while(f>>h>>cap>>a>>b){
++        if(h!=(int)m.layers.size() || !std::isfinite(cap) || !std::isfinite(a) || !std::isfinite(b) || cap<=0 || a<=0 || b<0)
++          throw std::runtime_error("invalid height cost parameters");
++        m.layers.push_back({cap,a,b});
++      }
++      if(m.layers.size()!=4 || !f.eof()) throw std::runtime_error("expected four complete height rows");
++    }
+     if(const char* x=std::getenv("DYLO_WB1_A"))     m.A=std::atof(x);
+     if(const char* x=std::getenv("DYLO_WB1_B"))     m.B=std::atof(x);
+     if(const char* x=std::getenv("DYLO_WB1_CAP"))   m.CAP=std::atof(x);
+@@ -120,7 +134,15 @@
+   }();
+   return M;
+ }
+-static double b1_raw(double n){ const WModel& M=wmodel(); return std::min(M.CAP, M.A + M.B*n); }
++static double b1_raw(double n, int height=0, double structural=-1){
++  const WModel& M=wmodel();
++  if(M.height){
++    const auto& p=M.layers[std::min(height,3)];
++    const double x=M.structural && structural>=0 ? structural : n;
++    return std::min(p[0], p[1]+p[2]*x);
++  }
++  return std::min(M.CAP, M.A + M.B*n);
++}
+ // Cost of a node holding n entities in its subtree, in the driver's weight units.
+ static double node_cost_of_size(double n){
+   const WModel& M=wmodel();
+@@ -171,18 +193,26 @@
+     // internal node sums its children's, level by level from the bottom
+     const size_t N=out.parent.size();
+     std::vector<double> ent(N,0.0);
++    std::vector<int> height(N,0);
+     for(const auto& [c,id] : ids[0]) ent[id]=out.weight[id];
+     for(int li=0;li+1<nlev;li++)
+       for(const auto& [c,id] : ids[li])
+-        if(out.parent[id]>=0) ent[out.parent[id]]+=ent[id];
++        if(out.parent[id]>=0){
++          ent[out.parent[id]]+=ent[id];
++          height[out.parent[id]]=std::max(height[out.parent[id]],height[id]+1);
++        }
+     if(M.S<0.0){
+       double zc=0.0, zb=0.0;
+-      for(size_t i=0;i<N;i++){ zc+=out.weight[i]; zb+=b1_raw(ent[i]); }
++      for(size_t i=0;i<N;i++){ zc+=out.weight[i]; zb+=b1_raw(ent[i],height[i],out.weight[i]); }
+       M.S = zb>0.0 ? zc/zb : 1.0;
+-      fprintf(stderr,"[wmodel] b1 w=S*min(%.0f, %.0f + %.2f*n)  S=%.6g (auto: initial tree %zu nodes, count-model weight %.0f)  park=%d\n",
+-              M.CAP,M.A,M.B,M.S,N,zc,(int)M.park);
++      fprintf(stderr,"[wmodel] model=%s fixed_scale=%.12g initial_nodes=%zu initial_count_weight=%.12g park=%d\n",
++              M.height?(M.structural?"heightstruct":"heightcap"):"b1",M.S,N,zc,(int)M.park);
++      if(M.height){
++        for(size_t h=0;h<M.layers.size();h++)
++          fprintf(stderr,"[wmodel] height=%zu cap=%.12g intercept=%.12g slope=%.12g\n",h,M.layers[h][0],M.layers[h][1],M.layers[h][2]);
++      }else fprintf(stderr,"[wmodel] cap=%.12g intercept=%.12g slope=%.12g\n",M.CAP,M.A,M.B);
+     }
+-    for(size_t i=0;i<N;i++) out.weight[i]=M.S*b1_raw(ent[i]);
++    for(size_t i=0;i<N;i++) out.weight[i]=M.S*b1_raw(ent[i],height[i],out.weight[i]);
+   }
+   return out;
+ }
+@@ -853,6 +883,9 @@
+   const double STREAM_BUDGET = [](){ const char* e=std::getenv("DYLO_STREAM_BUDGET_S"); return e?std::atof(e):0.0; }();
+   const auto streamT0 = std::chrono::high_resolution_clock::now();
+   int batchesRun = 0;
++  // Measurement-only snapshot: expose actual unsettled source membership.
++  std::unordered_map<int,std::vector<int>> benchmarkInitialMembers;
++  for(int v=0;v<(int)leaf.size();v++) benchmarkInitialMembers[leaf[v]].push_back(v);
+   for(int k=1;k<=nB;k++){
+     if(STREAM_BUDGET>0.0){
+       double el=std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-streamT0).count();
+@@ -2097,6 +2130,21 @@
+           }
+         }
+       }
++      if(const char* exportPath=std::getenv("DYLO_BENCHMARK_SOURCE_STATE")){
++        std::ofstream state(exportPath);
++        for(const auto& item:staleCnt){
++          const int c=item.first;
++          const double inA=cinH.count(c)?cinH[c]:0.0;
++          const double sigA=ctotH.count(c)?ctotH[c]:0.0;
++          const double qNow=g.m2>0?(inA/g.m2-(sigA/g.m2)*(sigA/g.m2)):0.0;
++          state << c << "\t" << (qAtRefresh.count(c)?qAtRefresh[c]:0.0)
++                << "\t" << qNow << "\t" << batchDirty.count({0,c}) << "\t";
++          for(int v:benchmarkInitialMembers[c]) state << v << ",";
++          state << "\t";
++          for(int v=0;v<(int)leaf.size();v++) if(leaf[v]==c) state << v << ",";
++          state << "\n";
++        }
++      }
+       auto t1=std::chrono::high_resolution_clock::now();
+       double ms=std::chrono::duration<double,std::milli>(t1-t0).count();
+       // The batch's REALISED re-summarization cost, taken from the schedule the

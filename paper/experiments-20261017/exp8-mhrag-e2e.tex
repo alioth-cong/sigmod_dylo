@@ -1,0 +1,86 @@
+\stitle{Exp-5: Measured maintenance and sensemaking quality.}
+We update a MultiHop-RAG~\cite{tang2024multihoprag} index from $304$ to $327$
+articles, using the same extracted graph and
+Qwen2.5-7B-Instruct~\cite{yang2024qwen25} report generator across eight arms.
+Incremental arms reuse reports with unchanged community membership;
+Rebuild regenerates all reports. Each arm runs alone on an H100.
+Appendix~\ref{app:exp5-detail} details the original \texttt{std4} replay
+and accounting.
+
+\begin{table}[tb]\centering
+\caption{\textbf{Exp-5.} Measured maintenance on the same $304\!\to\!327$-document graph.}
+\label{tab:arena-main}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrr@{}}
+\toprule
+Method & Calls & $T_s$ (s) & $T_s/T_m$ (\%) & Tok. (k) & $T_m$ (s) \\
+\midrule
+Rebuild & 1637 & 2116.1 & 98.7 & 2,965.9 & 2144.7 \\
+HIT-Leiden & 721 & 934.9 & 97.3 & 1,601.6 & 961.1 \\
+\DynaMo{} & 717 & 948.8 & 97.3 & 1,616.1 & 974.8 \\
+\QCA{} & 695 & 936.7 & 97.2 & 1,558.3 & 963.1 \\
+DF-\Louvain{} & 717 & 964.7 & 97.4 & 1,628.9 & 990.8 \\
+$\Delta$-screen & 732 & 960.9 & 97.4 & 1,653.7 & 987.0 \\
+\Batch{} & 712 & 931.3 & 97.2 & 1,588.9 & 957.9 \\
+\DyLo{} & $\mathbf{344}$ & $\mathbf{521.7}$ & $\mathbf{95.2}$ & $\mathbf{1,157.2}$ & $\mathbf{547.9}$ \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+$T_s$: summarization time; $T_m$: graph-ready to queryable maintenance.
+Calls and tokens count successful update summaries (native input plus output).
+Initial construction, extraction, and old-report repair are excluded; retry
+time is included. One run per arm.
+\end{table}
+
+\emph{Maintenance savings.} Re-summarization accounts for $95.2$--$98.7\%$
+of graph-ready maintenance time, while community detection takes less than
+$0.2\%$ (Table~\ref{tab:arena-main}; Appendix~\ref{app:exp5-detail}).
+Reducing summary refreshes therefore targets the dominant bottleneck.
+By regenerating fewer reports, \DyLo{} reduces update-summary tokens by
+$27.2\%$ versus \Batch{} and $61.0\%$ versus Rebuild, with corresponding
+maintenance-time reductions of $42.8\%$ and $74.5\%$.
+
+\emph{Sensemaking quality.} We evaluate the first $60$ archived synthesis
+questions ($q_0$--$q_{59}$)
+with GraphRAG global search~\cite{edge2024graphrag}, using each index's
+complete root-report cut. An independent local \texttt{gpt-oss-120b} judge
+compares anonymized answers in both orders on comprehensiveness, diversity,
+empowerment, and directness.
+
+\begin{table}[tb]\centering
+\caption{\textbf{Exp-5.} DyLo preference against each baseline on $60$ synthesis questions ($\uparrow$).}
+\label{tab:sensemaking-current}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}
+\toprule
+Opponent & Comp. & Div. & Emp. & Dir. \\
+\midrule
+\Batch{} & 60.00 & 66.25 & 53.33 & 49.58 \\
+Rebuild & 56.67 & 61.25 & 48.33 & 48.33 \\
+HIT-Leiden & 57.50 & 62.08 & 51.67 & 57.50 \\
+\DynaMo{} & 64.17 & 63.75 & 52.50 & 55.00 \\
+\QCA{} & 69.58 & 75.83 & 53.75 & 53.75 \\
+DF-\Louvain{} & 55.00 & 56.25 & 52.50 & 47.08 \\
+$\Delta$-screen & 53.33 & 60.83 & 48.75 & 40.00 \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Win/tie/loss scores are $100/50/0$, averaged over both answer orders;
+$50$ denotes equal preference. Question-bootstrap intervals and order
+sensitivity are in Appendix~\ref{app:exp5-detail}.
+\end{table}
+
+\DyLo{}'s comprehensiveness and diversity point scores exceed $50$ against
+all seven baselines. Diversity scores against \Batch{} and Rebuild have
+unadjusted $95\%$ intervals above $50$, while empowerment and directness
+are mixed; directness falls to $40.00$ against $\Delta$-screen.
+Thus maintenance savings coexist with favorable synthesis preferences
+but no uniform quality advantage; native report exposure also differs
+across partitions.
+
+\emph{Implication for full updates.} With common upstream extraction,
+full-update savings equal $f_m r_m$, where $r_m$ is the relative maintenance
+reduction and $f_m$ is maintenance's share of baseline time. The benefit
+is greatest when maintenance dominates; full-update speedups were not measured.

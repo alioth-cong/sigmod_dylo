@@ -17,3 +17,15 @@ clean:
 	rm -f $(BINS)
 
 .PHONY: all clean
+
+# Updated artifact entry points; historical default build remains unchanged.
+check-artifact:
+	python3 scripts/validate_artifact.py
+
+case-study-audit:
+	python3 experiments/case_study_20261016/audit.py
+
+corrected-test:
+	$(MAKE) -C experiments/corrected_std test
+
+.PHONY: check-artifact case-study-audit corrected-test

@@ -1,0 +1,437 @@
+{
+  "question_count": 60,
+  "complete_baseline_comparisons": 5,
+  "quality_rows": [
+    {
+      "baseline": "batch",
+      "dimension": "comprehensiveness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 60.0,
+      "bootstrap95_percent": [
+        50.83333333333333,
+        69.58333333333333
+      ],
+      "position_disagreement_count": 25,
+      "oriented_wins": 69,
+      "oriented_ties": 6,
+      "oriented_losses": 45,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "batch",
+      "dimension": "diversity",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 66.25,
+      "bootstrap95_percent": [
+        57.08333333333333,
+        75.41666666666667
+      ],
+      "position_disagreement_count": 21,
+      "oriented_wins": 76,
+      "oriented_ties": 7,
+      "oriented_losses": 37,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "batch",
+      "dimension": "empowerment",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 53.333333333333336,
+      "bootstrap95_percent": [
+        43.32291666666668,
+        63.74999999999999
+      ],
+      "position_disagreement_count": 20,
+      "oriented_wins": 62,
+      "oriented_ties": 4,
+      "oriented_losses": 54,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "batch",
+      "dimension": "directness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 49.583333333333336,
+      "bootstrap95_percent": [
+        39.58333333333333,
+        59.583333333333336
+      ],
+      "position_disagreement_count": 22,
+      "oriented_wins": 54,
+      "oriented_ties": 11,
+      "oriented_losses": 55,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "rebuild",
+      "dimension": "comprehensiveness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 56.666666666666664,
+      "bootstrap95_percent": [
+        47.5,
+        65.41666666666667
+      ],
+      "position_disagreement_count": 27,
+      "oriented_wins": 66,
+      "oriented_ties": 4,
+      "oriented_losses": 50,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "rebuild",
+      "dimension": "diversity",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 61.25000000000001,
+      "bootstrap95_percent": [
+        52.083333333333336,
+        70.41666666666667
+      ],
+      "position_disagreement_count": 25,
+      "oriented_wins": 71,
+      "oriented_ties": 5,
+      "oriented_losses": 44,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "rebuild",
+      "dimension": "empowerment",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 48.333333333333336,
+      "bootstrap95_percent": [
+        39.166666666666664,
+        57.49999999999999
+      ],
+      "position_disagreement_count": 29,
+      "oriented_wins": 55,
+      "oriented_ties": 6,
+      "oriented_losses": 59,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "rebuild",
+      "dimension": "directness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 48.333333333333336,
+      "bootstrap95_percent": [
+        38.75,
+        57.91666666666667
+      ],
+      "position_disagreement_count": 24,
+      "oriented_wins": 53,
+      "oriented_ties": 10,
+      "oriented_losses": 57,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "hit-leiden",
+      "dimension": "comprehensiveness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 57.49999999999999,
+      "bootstrap95_percent": [
+        47.91666666666667,
+        67.08333333333333
+      ],
+      "position_disagreement_count": 23,
+      "oriented_wins": 67,
+      "oriented_ties": 4,
+      "oriented_losses": 49,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "hit-leiden",
+      "dimension": "diversity",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 62.083333333333336,
+      "bootstrap95_percent": [
+        51.24999999999999,
+        72.5
+      ],
+      "position_disagreement_count": 15,
+      "oriented_wins": 73,
+      "oriented_ties": 3,
+      "oriented_losses": 44,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "hit-leiden",
+      "dimension": "empowerment",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 51.66666666666667,
+      "bootstrap95_percent": [
+        41.25,
+        61.66666666666667
+      ],
+      "position_disagreement_count": 21,
+      "oriented_wins": 61,
+      "oriented_ties": 2,
+      "oriented_losses": 57,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "hit-leiden",
+      "dimension": "directness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 57.49999999999999,
+      "bootstrap95_percent": [
+        47.083333333333336,
+        67.91666666666667
+      ],
+      "position_disagreement_count": 18,
+      "oriented_wins": 64,
+      "oriented_ties": 10,
+      "oriented_losses": 46,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "dynamo",
+      "dimension": "comprehensiveness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 64.16666666666667,
+      "bootstrap95_percent": [
+        55.00000000000001,
+        72.91666666666666
+      ],
+      "position_disagreement_count": 25,
+      "oriented_wins": 75,
+      "oriented_ties": 4,
+      "oriented_losses": 41,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "dynamo",
+      "dimension": "diversity",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 63.74999999999999,
+      "bootstrap95_percent": [
+        54.166666666666664,
+        73.33333333333333
+      ],
+      "position_disagreement_count": 21,
+      "oriented_wins": 76,
+      "oriented_ties": 1,
+      "oriented_losses": 43,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "dynamo",
+      "dimension": "empowerment",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 52.5,
+      "bootstrap95_percent": [
+        42.916666666666664,
+        61.66666666666667
+      ],
+      "position_disagreement_count": 27,
+      "oriented_wins": 62,
+      "oriented_ties": 2,
+      "oriented_losses": 56,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "dynamo",
+      "dimension": "directness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 55.00000000000001,
+      "bootstrap95_percent": [
+        44.583333333333336,
+        65.41666666666667
+      ],
+      "position_disagreement_count": 19,
+      "oriented_wins": 61,
+      "oriented_ties": 10,
+      "oriented_losses": 49,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "qca",
+      "dimension": "comprehensiveness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 69.58333333333333,
+      "bootstrap95_percent": [
+        60.83333333333333,
+        77.91666666666667
+      ],
+      "position_disagreement_count": 23,
+      "oriented_wins": 79,
+      "oriented_ties": 9,
+      "oriented_losses": 32,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "qca",
+      "dimension": "diversity",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 75.83333333333333,
+      "bootstrap95_percent": [
+        66.25,
+        84.58333333333333
+      ],
+      "position_disagreement_count": 13,
+      "oriented_wins": 89,
+      "oriented_ties": 4,
+      "oriented_losses": 27,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "qca",
+      "dimension": "empowerment",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 53.75,
+      "bootstrap95_percent": [
+        43.333333333333336,
+        64.16666666666667
+      ],
+      "position_disagreement_count": 20,
+      "oriented_wins": 61,
+      "oriented_ties": 7,
+      "oriented_losses": 52,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    },
+    {
+      "baseline": "qca",
+      "dimension": "directness",
+      "question_count": 60,
+      "missing_question_pairs": 0,
+      "dylo_preference_score": 53.75,
+      "bootstrap95_percent": [
+        43.75,
+        63.74999999999999
+      ],
+      "position_disagreement_count": 20,
+      "oriented_wins": 55,
+      "oriented_ties": 19,
+      "oriented_losses": 46,
+      "score_definition": "100 win /0 loss /50 tie, average both orders per question then across questions",
+      "single_run_answer_generation": true
+    }
+  ],
+  "maintenance": [
+    {
+      "方法": "DyLo",
+      "重摘要耗时（秒）": 521.66,
+      "增量维护耗时（秒）": 547.91,
+      "成功摘要输入token": 918156,
+      "成功摘要输出token": 239070,
+      "成功摘要总token": 1157226,
+      "失败调用": 0,
+      "失败token另列": 0
+    },
+    {
+      "方法": "Batch",
+      "重摘要耗时（秒）": 931.34,
+      "增量维护耗时（秒）": 957.89,
+      "成功摘要输入token": 1125332,
+      "成功摘要输出token": 463547,
+      "成功摘要总token": 1588879,
+      "失败调用": 0,
+      "失败token另列": 0
+    },
+    {
+      "方法": "Rebuild",
+      "重摘要耗时（秒）": 2116.06,
+      "增量维护耗时（秒）": 2144.71,
+      "成功摘要输入token": 1926118,
+      "成功摘要输出token": 1039829,
+      "成功摘要总token": 2965947,
+      "失败调用": 0,
+      "失败token另列": 0
+    },
+    {
+      "方法": "HIT-Leiden",
+      "重摘要耗时（秒）": 934.91,
+      "增量维护耗时（秒）": 961.15,
+      "成功摘要输入token": 1132160,
+      "成功摘要输出token": 469395,
+      "成功摘要总token": 1601555,
+      "失败调用": 1,
+      "失败token另列": 6439
+    },
+    {
+      "方法": "DynaMo",
+      "重摘要耗时（秒）": 948.77,
+      "增量维护耗时（秒）": 974.84,
+      "成功摘要输入token": 1146060,
+      "成功摘要输出token": 470043,
+      "成功摘要总token": 1616103,
+      "失败调用": 0,
+      "失败token另列": 0
+    },
+    {
+      "方法": "QCA",
+      "重摘要耗时（秒）": 936.65,
+      "增量维护耗时（秒）": 963.14,
+      "成功摘要输入token": 1103605,
+      "成功摘要输出token": 454694,
+      "成功摘要总token": 1558299,
+      "失败调用": 0,
+      "失败token另列": 0
+    },
+    {
+      "方法": "DF-Louvain",
+      "重摘要耗时（秒）": 964.75,
+      "增量维护耗时（秒）": 990.79,
+      "成功摘要输入token": 1159725,
+      "成功摘要输出token": 469162,
+      "成功摘要总token": 1628887,
+      "失败调用": 1,
+      "失败token另列": 6431
+    },
+    {
+      "方法": "Δ-screen",
+      "重摘要耗时（秒）": 960.91,
+      "增量维护耗时（秒）": 987.02,
+      "成功摘要输入token": 1174995,
+      "成功摘要输出token": 478749,
+      "成功摘要总token": 1653744,
+      "失败调用": 0,
+      "失败token另列": 0
+    }
+  ],
+  "score": "DyLo win100/tie50/loss0; average both answer orders within question, then average60 questions",
+  "CI": "10000 query bootstrap resamples, seed17, per-dimension95% intervals",
+  "scope": "Original q0..q59, all retained including no-evidence responses; C0 global map-reduce, repaired English Qwen generation; independent local gpt-oss120b judge; single-run generation; prior15 answer and verdict reuse retained",
+  "limitations": [
+    "The C0 report exposure differs from archived Table5 matched453 level<=1 reports and250-word response template.",
+    "Graph-ready maintenance timing excludes raw-document extraction.",
+    "Preference intervals do not establish a prespecified noninferiority claim."
+  ],
+  "updated_at": "2026-10-16 23:22:03+0800"
+}
