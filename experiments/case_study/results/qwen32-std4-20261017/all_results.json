@@ -1,0 +1,51 @@
+{
+  "status": "complete",
+  "rows": [
+    {
+      "method": "dylo",
+      "net_summary_s": 1901.056271494017,
+      "net_graph_to_queryable_s": 1926.506998921861,
+      "summary_percent": 98.67830563537092,
+      "success_calls": 344,
+      "successful_input_tokens": 918156,
+      "successful_output_tokens": 165118,
+      "successful_total_tokens": 1083274,
+      "failed_calls": 0,
+      "known_failed_tokens": 0,
+      "unknown_usage_failed_calls": 0,
+      "initial_reports_all32B": true,
+      "concurrency": 4
+    },
+    {
+      "method": "batch",
+      "net_summary_s": 3438.852572518983,
+      "net_graph_to_queryable_s": 3464.8275294478517,
+      "summary_percent": 99.24977331956467,
+      "success_calls": 712,
+      "successful_input_tokens": 1125332,
+      "successful_output_tokens": 316818,
+      "successful_total_tokens": 1442150,
+      "failed_calls": 0,
+      "known_failed_tokens": 0,
+      "unknown_usage_failed_calls": 0,
+      "initial_reports_all32B": true,
+      "concurrency": 4
+    },
+    {
+      "method": "rebuild",
+      "net_summary_s": 7495.808476633974,
+      "net_graph_to_queryable_s": 7523.545075451839,
+      "summary_percent": 99.63096204011002,
+      "success_calls": 1637,
+      "successful_input_tokens": 1926118,
+      "successful_output_tokens": 704067,
+      "successful_total_tokens": 2630185,
+      "failed_calls": 0,
+      "known_failed_tokens": 0,
+      "unknown_usage_failed_calls": 0,
+      "initial_reports_all32B": true,
+      "concurrency": 4
+    }
+  ],
+  "scope": "32B graph-ready maintenance; initial304 setup, raw extraction and evaluation excluded; failed token usage separate, wall clock includes retries"
+}

@@ -1,0 +1,309 @@
+{
+  "status": "passed",
+  "at": "2026-10-18T09:28:35.905223+08:00",
+  "methods": 8,
+  "English_answers": 480,
+  "oriented_cases_audited": 3360,
+  "quality_rows": 28,
+  "all_scores_and_question_bootstrap_CIs_recomputed": true,
+  "completed_three_methods_unchanged": true,
+  "all_phase_percentages_sum100": true,
+  "bootstrap": {
+    "question_unit": 60,
+    "replications": 10000,
+    "seed": 17,
+    "multiple_comparison_adjusted": false
+  },
+  "evaluation_costs_excluded_from_maintenance": {
+    "generation_calls.jsonl": {
+      "ok": {
+        "calls": 2603,
+        "tokens": 16671171,
+        "unknown_usage_calls": 0
+      },
+      "error": {
+        "calls": 94,
+        "tokens": 727067,
+        "unknown_usage_calls": 0
+      }
+    },
+    "format_validation_calls.jsonl": {
+      "ok": {
+        "calls": 4,
+        "tokens": 24662,
+        "unknown_usage_calls": 0
+      },
+      "error": {
+        "calls": 0,
+        "tokens": 0,
+        "unknown_usage_calls": 0
+      }
+    },
+    "judge_calls.jsonl": {
+      "ok": {
+        "calls": 3164,
+        "tokens": 4293789,
+        "unknown_usage_calls": 0
+      },
+      "error": {
+        "calls": 0,
+        "tokens": 0,
+        "unknown_usage_calls": 0
+      }
+    }
+  },
+  "quality": [
+    {
+      "baseline": "batch",
+      "dimension": "comprehensiveness",
+      "score": 64.16666666666667,
+      "ci95": [
+        55.833333333333336,
+        72.5
+      ]
+    },
+    {
+      "baseline": "batch",
+      "dimension": "diversity",
+      "score": 59.166666666666664,
+      "ci95": [
+        49.166666666666664,
+        70.0
+      ]
+    },
+    {
+      "baseline": "batch",
+      "dimension": "empowerment",
+      "score": 60.83333333333333,
+      "ci95": [
+        50.83333333333333,
+        70.41666666666667
+      ]
+    },
+    {
+      "baseline": "batch",
+      "dimension": "directness",
+      "score": 61.25000000000001,
+      "ci95": [
+        52.083333333333336,
+        70.0
+      ]
+    },
+    {
+      "baseline": "rebuild",
+      "dimension": "comprehensiveness",
+      "score": 65.41666666666667,
+      "ci95": [
+        57.49999999999999,
+        73.33333333333333
+      ]
+    },
+    {
+      "baseline": "rebuild",
+      "dimension": "diversity",
+      "score": 57.08333333333333,
+      "ci95": [
+        47.91666666666667,
+        66.66666666666666
+      ]
+    },
+    {
+      "baseline": "rebuild",
+      "dimension": "empowerment",
+      "score": 63.33333333333333,
+      "ci95": [
+        55.00000000000001,
+        71.66666666666667
+      ]
+    },
+    {
+      "baseline": "rebuild",
+      "dimension": "directness",
+      "score": 63.74999999999999,
+      "ci95": [
+        54.58333333333333,
+        72.5
+      ]
+    },
+    {
+      "baseline": "hit-leiden",
+      "dimension": "comprehensiveness",
+      "score": 58.333333333333336,
+      "ci95": [
+        50.0,
+        66.66666666666666
+      ]
+    },
+    {
+      "baseline": "hit-leiden",
+      "dimension": "diversity",
+      "score": 49.583333333333336,
+      "ci95": [
+        39.58333333333333,
+        59.583333333333336
+      ]
+    },
+    {
+      "baseline": "hit-leiden",
+      "dimension": "empowerment",
+      "score": 58.75,
+      "ci95": [
+        50.0,
+        67.08333333333333
+      ]
+    },
+    {
+      "baseline": "hit-leiden",
+      "dimension": "directness",
+      "score": 57.91666666666667,
+      "ci95": [
+        48.333333333333336,
+        67.08333333333333
+      ]
+    },
+    {
+      "baseline": "dynamo",
+      "dimension": "comprehensiveness",
+      "score": 65.41666666666667,
+      "ci95": [
+        57.08333333333333,
+        73.33333333333333
+      ]
+    },
+    {
+      "baseline": "dynamo",
+      "dimension": "diversity",
+      "score": 56.25,
+      "ci95": [
+        45.0,
+        67.08333333333333
+      ]
+    },
+    {
+      "baseline": "dynamo",
+      "dimension": "empowerment",
+      "score": 67.91666666666667,
+      "ci95": [
+        59.583333333333336,
+        75.83333333333333
+      ]
+    },
+    {
+      "baseline": "dynamo",
+      "dimension": "directness",
+      "score": 56.25,
+      "ci95": [
+        47.083333333333336,
+        65.41666666666667
+      ]
+    },
+    {
+      "baseline": "qca",
+      "dimension": "comprehensiveness",
+      "score": 65.41666666666667,
+      "ci95": [
+        57.49999999999999,
+        73.33333333333333
+      ]
+    },
+    {
+      "baseline": "qca",
+      "dimension": "diversity",
+      "score": 64.16666666666667,
+      "ci95": [
+        55.00000000000001,
+        73.33333333333333
+      ]
+    },
+    {
+      "baseline": "qca",
+      "dimension": "empowerment",
+      "score": 60.416666666666664,
+      "ci95": [
+        51.24999999999999,
+        69.58333333333333
+      ]
+    },
+    {
+      "baseline": "qca",
+      "dimension": "directness",
+      "score": 58.75,
+      "ci95": [
+        50.0,
+        67.5
+      ]
+    },
+    {
+      "baseline": "df-louvain",
+      "dimension": "comprehensiveness",
+      "score": 67.5,
+      "ci95": [
+        59.166666666666664,
+        75.83333333333333
+      ]
+    },
+    {
+      "baseline": "df-louvain",
+      "dimension": "diversity",
+      "score": 60.416666666666664,
+      "ci95": [
+        49.583333333333336,
+        70.41666666666667
+      ]
+    },
+    {
+      "baseline": "df-louvain",
+      "dimension": "empowerment",
+      "score": 64.58333333333334,
+      "ci95": [
+        55.00000000000001,
+        73.75
+      ]
+    },
+    {
+      "baseline": "df-louvain",
+      "dimension": "directness",
+      "score": 66.66666666666666,
+      "ci95": [
+        57.91666666666667,
+        75.0
+      ]
+    },
+    {
+      "baseline": "ds-louvain",
+      "dimension": "comprehensiveness",
+      "score": 66.25,
+      "ci95": [
+        57.08333333333333,
+        75.0
+      ]
+    },
+    {
+      "baseline": "ds-louvain",
+      "dimension": "diversity",
+      "score": 60.416666666666664,
+      "ci95": [
+        50.0,
+        70.41666666666667
+      ]
+    },
+    {
+      "baseline": "ds-louvain",
+      "dimension": "empowerment",
+      "score": 64.58333333333334,
+      "ci95": [
+        55.00000000000001,
+        74.16666666666667
+      ]
+    },
+    {
+      "baseline": "ds-louvain",
+      "dimension": "directness",
+      "score": 61.25000000000001,
+      "ci95": [
+        52.5,
+        70.0
+      ]
+    }
+  ]
+}

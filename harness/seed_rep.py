@@ -3,7 +3,7 @@
 
 The original implementation hard-coded the detector seed to 123 (driver_std4.cxx:389), so DyLo is
 bit-deterministic for a given input -- repeating the same seed always gives zero variance. What must be measured is the effect of **the detector's own randomness**
-on the conclusions, hence repetitions with different seeds. driver_seedrep.cxx adds DYLO_SEED; the default 123
+on the conclusions, hence repetitions with different seeds. driver_seed_dispersion.cxx adds DYLO_SEED; the default 123
 is bit-identical to std4 (verified on 42/42 batches).
 
 Reports min-max and IQR for the dispersion columns of Tables 4/5.
@@ -32,7 +32,7 @@ def one(a):
     e=dict(os.environ); e.update(BASE); e["DYLO_SEED"]=str(seed)
     rec=dict(ds=ds,inst=inst,seed=seed)
     try:
-        subprocess.run([str(D/"dylo_driver_seedrep"),inst,
+        subprocess.run([str(D/"dylo_driver_seed_dispersion"),inst,
             str(R/f"data/runs/{ds}/initial.txt"),str(R/f"data/runs/{ds}/inc.txt"),
             str(nb),str(d)],env=e,stdout=subprocess.DEVNULL,
             stderr=open(d/"err","w"),check=True,timeout=21600)

@@ -37,7 +37,7 @@ def one(a):
     e=dict(os.environ); e.update(BASE); e.update(extra)
     rec=dict(ds=ds,arm=arm)
     try:
-        subprocess.run([str(D/"dylo_driver_r2greedy"),"leiden",
+        subprocess.run([str(D/"dylo_driver_greedy"),"leiden",
             str(R/f"data/runs/{ds}/initial.txt"),str(R/f"data/runs/{ds}/inc.txt"),
             str(nb),str(d)],env=e,stdout=subprocess.DEVNULL,
             stderr=open(d/"err","w"),check=True,timeout=21600)

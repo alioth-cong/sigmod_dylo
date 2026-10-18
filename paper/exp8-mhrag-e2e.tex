@@ -1,0 +1,88 @@
+\stitle{Exp-5: Measured maintenance and sensemaking quality.}
+We update a GraphRAG index from $304$ to $327$ articles drawn from the
+MultiHop-RAG news corpus~\cite{tang2024multihoprag}. All eight arms use
+the same extracted graph and Qwen2.5-32B-Instruct~\cite{yang2024qwen25}
+for both initial and updated community reports.
+Under the archived eager-source policy, incremental arms reuse reports with
+unchanged community membership; Rebuild regenerates all reports. Each arm
+runs alone on an H100 with four concurrent requests and both response and
+prefix caching disabled (Appendix~\ref{app:exp5-detail}).
+
+\begin{table}[tb]\centering
+\caption{\textbf{Exp-5.} Measured GraphRAG maintenance.}
+\label{tab:arena-main}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrr@{}}
+\toprule
+Method & Calls & $T_s$ (s) & $T_s/T_m$ (\%) & Tok. (k) & $T_m$ (s) \\
+\midrule
+Rebuild & 1637 & 7495.8 & 99.63 & 2,630.2 & 7523.5 \\
+HIT-Leiden & 721 & 3467.6 & 99.27 & 1,448.9 & 3493.1 \\
+\DynaMo{} & 717 & 3473.0 & 99.27 & 1,464.2 & 3498.7 \\
+\QCA{} & 695 & 3360.4 & 99.23 & 1,411.8 & 3386.3 \\
+DF-\Louvain{} & 717 & 3476.0 & 99.26 & 1,478.0 & 3501.8 \\
+$\Delta$-screen & 732 & 3565.0 & 99.29 & 1,501.1 & 3590.6 \\
+\Batch{} & 712 & 3438.9 & 99.25 & 1,442.2 & 3464.8 \\
+\DyLo{} & $\mathbf{344}$ & $\mathbf{1901.1}$ & 98.68 & $\mathbf{1,083.3}$ & $\mathbf{1926.5}$ \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+$T_s$: re-summarization time; $T_m$: graph-ready to queryable maintenance.
+Calls and tokens count successful update summaries (native input plus output).
+Initial construction, extraction, and old-report repair are excluded; retry
+time is included. One run per arm.
+\end{table}
+
+\emph{Maintenance savings.} Re-summarization takes $98.68$--$99.63\%$ of
+maintenance time (Table~\ref{tab:arena-main}). Relative to \QCA{}, the
+strongest incremental baseline, and Rebuild, \DyLo{} reduces
+re-summarization time by $43.4\%$ and $74.6\%$, and successful update-summary
+tokens by $23.3\%$ and $58.8\%$, respectively. Because re-summarization
+dominates wall time, these savings carry through to complete graph-ready
+maintenance.
+
+\emph{Sensemaking quality.} We evaluate the first $60$ archived synthesis
+questions ($q_0$--$q_{59}$)
+with GraphRAG global search~\cite{edge2024graphrag}, using each index's
+complete root-report cut and the 32B answer generator, with $8{,}000$-token
+budgets per map chunk and for reduce evidence. \DyLo{} uses eight map
+chunks per question; each baseline uses four
+(Appendix~\ref{app:exp5-detail}). An independent local \texttt{gpt-oss-120b} judge
+compares anonymized answers in both orders on comprehensiveness (coverage),
+diversity (perspectives), empowerment (support for informed judgment), and
+directness (focus on the question).
+
+\begin{table}[tb]\centering
+\caption{\textbf{Exp-5.} DyLo preference against each baseline ($\uparrow$).}
+\label{tab:sensemaking-current}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+% Equal superscript space keeps marked and unmarked scores aligned.
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}
+\toprule
+Opponent & Comp. & Div. & Emp. & Dir. \\
+\midrule
+\Batch{} & $64.17^{+}$ & $59.17^{\phantom{+}}$ & $60.83^{+}$ & $61.25^{+}$ \\
+Rebuild & $65.42^{+}$ & $57.08^{\phantom{+}}$ & $63.33^{+}$ & $63.75^{+}$ \\
+HIT-Leiden & $58.33^{\phantom{+}}$ & $49.58^{\phantom{+}}$ & $58.75^{\phantom{+}}$ & $57.92^{\phantom{+}}$ \\
+\DynaMo{} & $65.42^{+}$ & $56.25^{\phantom{+}}$ & $67.92^{+}$ & $56.25^{\phantom{+}}$ \\
+\QCA{} & $65.42^{+}$ & $64.17^{+}$ & $60.42^{+}$ & $58.75^{\phantom{+}}$ \\
+DF-\Louvain{} & $67.50^{+}$ & $60.42^{\phantom{+}}$ & $64.58^{+}$ & $66.67^{+}$ \\
+$\Delta$-screen & $66.25^{+}$ & $60.42^{\phantom{+}}$ & $64.58^{+}$ & $61.25^{+}$ \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Win/tie/loss scores are $100/50/0$, averaged over both orders within each
+question, then over $60$ questions; $50$ denotes equal preference. Unadjusted
+$95\%$ intervals use $10{,}000$ question-bootstrap resamples with both orders
+kept together; $^{+}/^{-}$ marks intervals wholly above/below $50$
+(Appendix~\ref{app:exp5-detail}).
+\end{table}
+
+The unadjusted $95\%$ intervals favor \DyLo{} in comprehensiveness and
+empowerment against \Batch{}, Rebuild, and \QCA{}, in directness against
+\Batch{} and Rebuild, and in diversity against \QCA{}. The remaining
+intervals for these three baselines and all four against HIT-Leiden
+include or touch $50$. These local-judge results support competitive
+sensemaking quality at lower maintenance cost.

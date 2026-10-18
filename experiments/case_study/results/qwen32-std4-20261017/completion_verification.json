@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "all3_initial_and_final_reports32B": true,
+  "all3_indices_verified": true,
+  "all180_answers_complete": true,
+  "oriented_judgments": 960,
+  "prior7B_sources_unchanged": true,
+  "raw_document_extraction_measured": false,
+  "at": 1792247532.0382216
+}

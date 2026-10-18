@@ -1,0 +1,46 @@
+{
+  "status": "complete",
+  "model": "Qwen/Qwen2.5-32B-Instruct",
+  "initial_documents": 304,
+  "reports": 1554,
+  "originally_missing_reports_now_regenerated": 134,
+  "all_reports_regenerated_with32B": true,
+  "initial_report_sha256": "52d2eda57a75280c215c9c96ee1fad524e0657efe9c8ce8b0e3925df63c72339",
+  "tokens": {
+    "successful": {
+      "calls": 1554,
+      "input_tokens": 1818976,
+      "output_tokens": 666234,
+      "total_tokens": 2485210,
+      "unknown_usage_calls": 0
+    },
+    "failed": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "unknown_usage_calls": 0
+    }
+  },
+  "attempt_wall_s": 7100.135432583978,
+  "publication_s": 26.452962839975953,
+  "vector_tables": {
+    "default-entity-description": {
+      "rows": 12621,
+      "embedded_rows": 12621,
+      "reused_vectors": 0
+    },
+    "default-text_unit-text": {
+      "rows": 783,
+      "embedded_rows": 783,
+      "reused_vectors": 0
+    },
+    "default-community-full_content": {
+      "rows": 1554,
+      "embedded_rows": 1554,
+      "reused_vectors": 0
+    }
+  },
+  "cost_scope": "initial304 setup only; all excluded from maintenance token and time",
+  "at": 1792209505.9371421
+}

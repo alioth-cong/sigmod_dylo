@@ -42,7 +42,7 @@ def one(a):
     e.update(DYLO_DEFER="1",DYLO_DEFER_MODE="quality",DYLO_DEFER_EPS=eps,DYLO_DRIFT_LOG="1")
     t0=time.time(); rec=dict(path=path,ds=ds,eps=eps)
     try:
-        subprocess.run([str(D/"dylo_driver_eps"),"leiden",str(base/"initial.txt"),
+        subprocess.run([str(D/"dylo_driver_deferral_trace"),"leiden",str(base/"initial.txt"),
             str(base/"inc.txt"),str(nb),str(d)],env=e,stdout=subprocess.DEVNULL,
             stderr=open(d/"err","w"),check=True,timeout=21600)
         m=[l.rstrip().split("\t") for l in open(d/"metrics.tsv")][1:]

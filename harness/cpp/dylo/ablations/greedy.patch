@@ -1,0 +1,45 @@
+--- driver_std4.cxx
++++ driver_greedy.cxx
+@@ -185,6 +185,15 @@
+   // Charge the deferred source's amortised re-summarization to the action.
+   const bool SRC_CHARGE = [](){ const char* e=std::getenv("DYLO_SRC_CHARGE"); return e?std::atoi(e)!=0:true; }();
+   const bool USE_TREE_DP = [](){ const char* e=std::getenv("DYLO_TREE_DP"); return e?std::atoi(e)!=0:true; }();
++  // R2 ablation arm (DYLO_GREEDY=1): replace the OpenSet DP with per-destination greedy.
++  // OpenSet (dp.hpp, Alg 2) gives the **exact** optimum over ancestor-closed dirty sets; it does two things
++  // greedy cannot:
++  //   (a) the cost of a shared ancestor is amortized across siblings -- k destinations under one parent pay w(parent) once;
++  //   (b) it can accept a parent with g-lambda*w < 0 as long as the surplus of its subtree pays it back
++  //       (exactly the sum max(open(child),0) term in open(c)).
++  // greedy decides each destination independently, each paying its whole ancestor chain, so (a)(b) are lost. It is
++  // the honest floor of "what if there were no Alg 2", not another speed switch.
++  const bool GREEDY = [](){ const char* e=std::getenv("DYLO_GREEDY"); return e && std::atoi(e)!=0; }();
+   const bool INC_TREE = [](){ const char* e=std::getenv("DYLO_INC_TREE"); return e?std::atoi(e)!=0:true; }();
+   const bool VALIDATE_TREE = std::getenv("DYLO_VALIDATE_TREE")!=nullptr;
+   const bool VALIDATE_QC   = std::getenv("DYLO_VALIDATE_QC")!=nullptr;
+@@ -1242,7 +1251,25 @@
+               else T.roots.push_back(i);
+             }
+             for(const auto& a : actions) T.g[nid[a.anchors[0]]] += a.gain;
+-            std::vector<char> d = open_set_dp(T, lambda);
++            std::vector<char> d;
++            if(GREEDY){
++              // each destination with gain decides independently: it pays its whole ancestor chain, shared with no sibling.
++              d.assign(NN, 0);
++              for(int i=0;i<NN;i++){
++                if(T.g[i] <= 0.0) continue;
++                double own = 0.0;
++                for(int c=back[i]; c>=0; c=costTree.parent[c]) own += costTree.weight[c];
++                if(T.g[i] - lambda*own >= 0.0)
++                  for(int c=i; c>=0; ){            // if accepted, close over ancestors
++                    d[c]=1;
++                    int par=costTree.parent[back[c]];
++                    auto it=(par>=0)?nid.find(par):nid.end();
++                    c = (it!=nid.end()) ? it->second : -1;
++                  }
++              }
++            } else {
++              d = open_set_dp(T, lambda);
++            }
+             chosen.dirty_nodes.assign(costTree.parent.size(),0);
+             for(int i=0;i<NN;i++) if(d[i]) chosen.dirty_nodes[back[i]]=1;
+             chosen.selected_actions.assign(actions.size(),0);

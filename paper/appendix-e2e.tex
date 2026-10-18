@@ -1,0 +1,504 @@
+% !TeX root = main.tex
+\section{Graph-benchmark protocols and diagnostics}\label{app:benchmarks}
+
+These experiments isolate structural refresh work and CPU graph maintenance.
+Section~\ref{app:exp5-detail} separately measures actual LLM time and tokens.
+
+\subsection{Benchmark domains}\label{app:dataset-details}
+
+The ten SNAP/Network Data Repository graphs~\cite{snapnets,nr} comprise
+social networks (Facebook, GPlus, Twitter, Flickr, YouTube, LiveJournal),
+a trust network (Epinions), citation networks (Cit-HepPh, Cit-HepTh), and
+a co-authorship network (DBLP). We symmetrize directed relations, remove
+self-loops, merge duplicate undirected edges, and count incident vertices.
+The resulting LiveJournal graph has $4{,}846{,}609$ vertices and
+$42{,}851{,}237$ edges.
+
+The initial graph contains $90\%$ of edges; the remaining $10\%$ arrive
+in batches of up to $1{,}000$ edges. Full streams contain $9$, $36$, $43$,
+$41$, $135$, $105$, $1{,}224$, $320$, and $299$ batches for Facebook,
+Cit-HepTh, Cit-HepPh, Epinions, Twitter, DBLP, GPlus, Flickr, and YouTube,
+respectively. LiveJournal uses the first $200$ of $4{,}286$ batches.
+Incremental methods retain the initialized partition; from-scratch (FS)
+references rerun the detector after every batch. DyLo wraps Louvain, SLM,
+or Leiden. Competitors are DynaMo, Batch, GreMod, QCA, $\Delta$-screening,
+DF-Louvain, DF-Leiden, HIT-Leiden, and reuse-aware rebuild. The last uses
+the FS Leiden partition while retaining unchanged reports.
+
+\subsection{Execution and accounting defaults}\label{app:exp-defaults}
+
+Graph benchmarks run memory-resident and single-threaded on Ubuntu~22.04,
+an AMD EPYC~9654, and $1.1$\,TiB RAM. DyLo and the four localized baselines
+use C++17 (GCC~11.4, \texttt{-O3 -march=native}); DynaMo, Batch, GreMod,
+and QCA use OpenJDK~21. Python~3.10 accounting runs offline.
+For $T$ updates, stream-mean modularity is
+$\bar Q=T^{-1}\sum_{t=1}^{T}Q_t$, excluding the initial graph.
+Latency and structural cost are also averaged over batches, then equally
+over repeated runs. Main comparisons and component ablations use five-run
+means where applicable; LiveJournal uses one run and selector timings use
+three-seed medians.
+
+Structural weights count entities at leaves and children internally
+($r_{\mathrm{int}}=1$), normalized so a complete reset costs $1$.
+They cover community-structure changes; evidence-only refreshes and LLM
+execution are outside this metric. Schedule-based ablations charge executed
+work plus closing minus opening pending liability
+(Eq.~\ref{eq:supp-ledger}). Graph-maintenance latency excludes parsing,
+partition output, and LLM generation; selector driver timings include output.
+Defaults are $\lambda=0.1$ and source deferral with $\varepsilon=0.05$;
+the 32B case study retains its archived eager-source policy.
+
+All DyLo runs prune using current unpaid marginal weights $\bar w_t$.
+Across three detector instances on Facebook, Cit-HepTh, Cit-HepPh,
+Epinions, Twitter, and DBLP, the maximum seed range is
+$3.3\times10^{-6}$ in $\bar Q$ and $1.0\%$ of mean structural cost.
+Latency ranges reach $48\%$ on Facebook and remain below $5\%$ on DBLP.
+GPlus, Flickr, YouTube, and LiveJournal combine separate latency and
+structural-cost series.
+
+\stitle{LiveJournal scope.} FS Leiden takes $74$ hours for the measured
+$200$ batches; FS Louvain and SLM were not run. Baseline costs are recomputed
+from saved partitions restricted to currently incident vertices.
+DynaMo's normalized cost is $0.990302$. Peak memory is $9.5$\,GB for each
+DyLo instance and $4.2$--$54.5$\,GB for the baselines.
+
+\stitle{Comparable cost units.} Partition-only baselines charge changed
+leaf member sets and normalize by current leaf weight. DyLo charges its
+hierarchy refreshes and pending balance, normalized by full hierarchy weight.
+The represented depths differ, so these normalized fractions are not directly
+ordered by their scope. A common leaf-only LiveJournal check gives
+$0.009723$, $0.009705$, and $0.009734$ for DyLo-Louvain, SLM, and Leiden,
+versus $0.628814$ for GreMod, the least expensive baseline in that scope.
+These seed-$42$ cold-start traces average updates $1$--$200$, normalize by
+current active vertices, exclude evidence-only refreshes, and have zero
+pending DyLo liability at every batch boundary.
+
+\subsection{Recurring and shared refresh measurements}\label{app:motivation}
+
+We replay HIT-Leiden partitions on the first $40$ batches of nine streams
+excluding LiveJournal (all $9$ for Facebook and $36$ for Cit-HepTh).
+Repeatedly contracting the flat partition supplies a hierarchy, with
+entity counts at leaves and child counts internally.
+Under simulated eager refresh, a source losing a member refreshes its
+root path. Refreshing a node already refreshed for this reason in an earlier
+batch is recurring work; it accounts for $44$--$96\%$ of source-side cost.
+For accepted moves $a$, shared-path multiplicity is
+\[
+\frac{\sum_a w(\mathrm{Anc}(\mathrm{src}(a))\cup
+                         \mathrm{Anc}(\mathrm{dst}(a)))}
+ {w(\bigcup_a[\mathrm{Anc}(\mathrm{src}(a))\cup
+                         \mathrm{Anc}(\mathrm{dst}(a))])},
+\]
+where $w(S)=\sum_{c\in S}w(c)$. Window means range from $5.9$ to $1{,}062$,
+quantifying duplicate charges when paths are priced separately.
+
+\subsection{Certified-frontier statistics}\label{app:frontier}
+
+Table~\ref{tab:frontier} uses DyLo-Leiden at $\lambda=0.1$ on the same
+nine-graph windows, starting from saved Leiden partitions of the initial
+$90\%$ graphs. A frontier counts distinct vertices entering gain proposal
+in a batch, once across repeated rounds. Skip rate measures gated endpoint
+recheck requests avoided. Instrumented and control runs agree in committed
+moves, refresh plans, cost ledgers, and final partitions.
+
+\begin{table}[tb]\centering
+\caption{Frontier sizes and endpoint recheck skips.}
+\label{tab:frontier}
+\begin{scriptsize}
+\setlength{\tabcolsep}{0.2em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}
+\toprule
+Graph & Median & Range & Skip (\%) & Live cert. \\
+\midrule
+Facebook & $1{,}287$ & $1{,}138$--$1{,}340$ & $99.9$ & $2{,}661$ \\
+Cit-HepTh & $2{,}066.5$ & $838$--$2{,}233$ & $99.6$ & $51{,}753$ \\
+Cit-HepPh & $2{,}112.5$ & $1{,}900$--$2{,}249$ & $99.7$ & $47{,}306$ \\
+Epinions & $2{,}705.5$ & $1{,}700$--$3{,}415$ & $94.9$ & $83{,}288$ \\
+DBLP & $2{,}998.5$ & $2{,}192$--$3{,}720$ & $97.5$ & $180{,}216$ \\
+Twitter & $2{,}033$ & $1{,}887$--$2{,}151$ & $99.8$ & $92{,}472$ \\
+Flickr & $3{,}097$ & $1{,}944$--$4{,}336$ & $97.3$ & $307{,}383$ \\
+YouTube & $5{,}450$ & $2{,}948$--$7{,}943$ & $91.8$ & $505{,}758$ \\
+GPlus & $1{,}955.5$ & $1{,}915$--$2{,}004$ & $99.9$ & $347{,}667$ \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Median and range: distinct vertices examined per batch.
+Skip: endpoint recheck requests avoided by certificate gating.
+Live cert.: certificates retained after the measured window.
+\end{scriptsize}
+\end{table}
+
+\subsection{Selector timing and deferral accounting}\label{app:defer-seltime}
+
+With source deferral off, actions requiring both source and destination
+anchors use maximum-weight closure solved by min-cut; single-anchor rounds
+can still use tree DP. With deferral on, every action has one immediate
+anchor. Table~\ref{tab:selector-real} compares both arms on eight full native
+streams at $\lambda=0.1$, with $\varepsilon=0.05$ in the enabled arm.
+All $2{,}079$ enabled-arm rounds use DP.
+
+\begin{table}[tb]\centering
+\caption{Real-stream selector timings.
+Medians over three detector seeds at $\lambda=10^{-1}$.
+Selection columns are full-stream totals; driver columns are per-batch
+latencies including index emission. All times are in milliseconds.}
+\label{tab:selector-real}
+\label{tab:defer-seltime}
+\begin{footnotesize}
+\setlength{\tabcolsep}{0.3em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{Selection total} & \multicolumn{2}{c}{Driver / batch} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+Graph & off & on & off & on \\
+\midrule
+Facebook & $0.00$ & $0.00$ & $0.46$ & $0.46$ \\
+Cit-HepTh & $0.05$ & $0.03$ & $2.34$ & $2.25$ \\
+Cit-HepPh & $0.02$ & $0.01$ & $1.94$ & $2.18$ \\
+Epinions & $2.07$ & $0.19$ & $4.66$ & $4.85$ \\
+Twitter & $0.01$ & $0.00$ & $2.99$ & $3.01$ \\
+DBLP & $0.71$ & $0.15$ & $6.23$ & $6.15$ \\
+Flickr & $19.0$ & $1.90$ & $9.69$ & $9.62$ \\
+YouTube & $155.4$ & $3.99$ & $27.2$ & $26.9$ \\
+\bottomrule
+\end{tabular*}
+\end{footnotesize}
+\end{table}
+
+\stitle{Identical-input solver check.} Synthetic forests maximize
+$\sum_{c\in D}(g(c)-\lambda\bar w_t(c))$ over ancestor-closed $D$, with
+fixed marginal weights, gains from $U(-10,10)$, and
+$\lambda\in\{0,0.1,0.5,1,2\}$. Enumeration, min-cut closure, and DP
+agree on all $5{,}000$ tests with at most $22$ nodes; DP and closure agree
+through $20{,}000$ nodes. At the latter size, mean solve times are
+$1.2407$\,ms for DP and $5.6968$\,ms for closure. This check holds the
+optimization instance fixed, whereas toggling deferral changes it.
+
+\stitle{Timing and ledger boundaries.} Selection counters accumulate over
+the full stream; driver times are per batch and include index emission.
+A time share requires a common denominator. The deferral cost comparison
+uses emitted refresh plans and Eq.~\ref{eq:supp-ledger}, with $P_0=0$,
+across eight graphs and three detector instances. Costs agree on $23/24$
+pairs; Epinions/Louvain differs by $+0.01\%$. Every pair agrees in
+$\bar Q$ to five decimal places, with unsettled work still charged.
+
+The component ablation uses its own internal control and the same ledger,
+independently removing certificates, incremental cost-tree maintenance,
+or pruning on Epinions, Flickr, and YouTube. Removing either of the first
+two preserves partitions and structural scores. Removing pruning can
+change committed sets and later trajectories while preserving the optimum
+value for a fixed candidate set.
+
+\subsection{Batch size and ingestion delay}\label{app:exp3-detail}
+
+Batch sizes $E\in\{1,10,100,1000\}$ are evaluated on a graph extracted
+from MultiHop-RAG news ($24.2$K edges; stream/base ratio $.91$) and
+Cit-HepPh ($420.9$K edges; ratio $.11$). The measured ingestion rate used
+for the delay axis is $r_{\mathrm{in}}=6.04$ edges/s. The plotted
+continuous-arrival approximation is $E/(2r_{\mathrm{in}})$;
+equally spaced arrivals have exact mean wait $(E-1)/(2r_{\mathrm{in}})$,
+including zero for $E=1$. This wait ends at batch closure, before graph
+maintenance and report generation.
+
+The rate-$0$ news curve shows batching amortization; at the default
+$\lambda=0.1$, singleton processing already costs $0.611$ structural units
+per edge, versus $113.5$ at rate $0$. Cost-aware selection therefore
+reduces the work left for batching to amortize. Lazy evaluation lowers
+singleton cost by $43\%$ on Cit-HepPh and has negligible effect on the
+news graph, where the large increment leaves less state reusable.
+
+\subsection{Exchange-rate sweep}\label{app:exp4-detail}
+
+We sweep $\lambda\in\{0,10^{-3},10^{-2},10^{-1},0.3,1,3,10,\infty\}$
+over the full Cit-HepPh, Cit-HepTh, DBLP, Epinions, Facebook, and Flickr
+streams. Cost ratios and modularity losses compare each run with the same
+detector's rate-$0$ run: $\mathrm{Cost}(\lambda)/\mathrm{Cost}(0)$ and
+$\bar Q(0)-\bar Q(\lambda)$. Each rate generates its own trajectory,
+whereas Proposition~\ref{prop:mono} holds candidates fixed.
+
+All six curves flatten from $10^{-2}$ onward. Increasing the rate from
+$10^{-2}$ to $10$ changes normalized structural cost by at most $0.0045$
+and modularity by less than $10^{-4}$, supporting the shared default $0.1$.
+Facebook retains a cost ratio of $0.402$ at the knee; Epinions has the
+largest modularity loss, $0.67\times10^{-3}$. The Epinions modularity
+values $0.441$, $0.445$, and $0.458$ refer respectively to FS Louvain,
+FS/reuse-aware Leiden, and this cost-oblivious sweep configuration.
+
+\subsection{Structural-weight fidelity}\label{app:proxy-cal}
+
+This post-hoc diagnostic uses archived retained and rebuilt
+$327$-document indices to test how structural weights track measured
+summarizer inputs. It is separate from the matched 32B maintenance replay
+in Section~\ref{app:exp5-detail}. Cached \texttt{usage.prompt\_tokens}
+are matched to reports by unique title, recovering $1{,}035/1{,}300$
+retained communities ($80\%$) and $1{,}164/1{,}300$ rebuilt communities
+($90\%$). Table~\ref{tab:proxy-validation} is restricted to these matches.
+
+\begin{table}[tb]
+\centering
+\caption{Structural weights versus measured summarizer input tokens.}
+\label{tab:proxy-validation}
+\begin{footnotesize}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrr@{}}
+\toprule
+\textbf{Diagnostic} & \textbf{Retained} & \textbf{Rebuilt} \\
+\midrule
+Leaf / internal samples & $944/91$ & $1{,}002/162$ \\
+Leaf $R^2$ & $.851$ & $.859$ \\
+Internal $R^2$ & $.380$ & $.437$ \\
+\midrule
+All-node $R^2$, $r_{\mathrm{int}}=1$ & $.222$ & $.143$ \\
+All-node $R^2$, rescaled & $.675$ & $.738$ \\
+Spearman $\rho$, $r_{\mathrm{int}}=1$ & $.746$ & $.623$ \\
+Spearman $\rho$, rescaled & $.913$ & $.931$ \\
+Fitted $r_{\mathrm{int}}$ & $3.41$ & $4.43$ \\
+\bottomrule
+\end{tabular*}
+\end{footnotesize}
+\end{table}
+
+Separate fits $\mathrm{tokens}=a+bn$ use leaf entity counts or internal
+child counts. Leaf slopes are $78.4/81.8$ tokens per unit and internal
+slopes $267.3/362.9$; their ratios give the fitted internal multipliers.
+Post-hoc rescaling improves all-node fit and rank agreement, with the
+scale varying by index. Benchmark decisions retain $r_{\mathrm{int}}=1$.
+Rank agreement supports distinguishing cheaper nodes; selection also
+depends on cost magnitudes, and its exactness concerns the stated
+structural objective.
+
+\section{32B GraphRAG maintenance and sensemaking}\label{app:exp5-detail}
+
+This case study compares DyLo, Batch, Rebuild, HIT-Leiden, DynaMo, QCA,
+DF-Louvain, and $\Delta$-screen on one frozen graph update. It measures
+re-summarization and publication time, successful update-summary tokens,
+and synthesis quality on the resulting queryable indices.
+
+\subsection{Frozen workload and report reuse}\label{app:case-workload}
+
+Documents come from MultiHop-RAG's English news corpus~\cite{tang2024multihoprag}.
+Every method starts from the same archived $304$-document index and receives
+the same $23$-document update. The final extracted graph contains $327$
+documents, $13{,}264$ entities, $12{,}925$ relationships, and $833$ text units.
+Its semantic SHA-256 is
+\texttt{cee9752bf403ba839}\allowbreak\texttt{0692cb8928ad5ce0}\allowbreak
+\texttt{d3037983b3778a86}\allowbreak\texttt{fbf2caca8c196f9}.
+
+DyLo uses the archived \texttt{std4} binary and partition, with
+$\lambda=0.1$, $\sigma=0.2$, hierarchy parameter $\gamma=5$, and eager
+source refresh. Baselines use their native adapters, including native
+partition initialization where required. All $1{,}554$ initial reports,
+including $134$ previously missing reports, are generated with
+Qwen2.5-32B-Instruct~\cite{yang2024qwen25} before maintenance.
+For each updated community, incremental methods reuse the first available
+old report with the same entity-membership set. This rule can retain
+earlier evidence when content changes within unchanged membership.
+Only communities with internal edges are materialized; every materialized
+community has a report. Rebuild regenerates all reports.
+
+\subsection{Generation, timing, and token accounting}\label{app:case-accounting}
+
+Qwen2.5-32B-Instruct runs in BF16 with an English structured prompt requiring
+five findings, a $2{,}048$-token output cap, seed $17$, and four concurrent
+requests. All eight arms run separately on the same H100 with identical
+settings and pass resource-isolation checks. Response and prefix caching
+are disabled. Source contexts have a $4{,}000$-token \texttt{cl100k\_base}
+budget; usage is measured with Qwen's native tokenizer. The model context
+limit is $16{,}384$ tokens and the model revision is
+\texttt{5ede1c97bbab6ce5}\allowbreak\texttt{cda5812749b4c0bdf79b18dd}.
+Embeddings use \texttt{BAAI/bge-small-en-v1.5}~\cite{xiao2024cpack}.
+
+The measured wall clock $T_m$ starts with the extracted graph increment and
+ends after the updated index passes queryability checks. It includes input
+loading, native detector bootstrap and update, refresh selection, context
+preparation, summary generation and retries, embedding, and writing.
+Initial construction, model loading, raw-document extraction, old-report
+repair, and evaluation are excluded. Each arm has one measured run.
+Table~\ref{tab:maintenance-phases} gives the stage shares; delta and merged
+report generation together form re-summarization time $T_s$.
+
+\begin{table*}[tb]\centering
+\caption{Graph-ready maintenance totals and stage shares (\%).}
+\label{tab:maintenance-phases}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrrr@{}}
+\toprule
+Method & $T_m$ (s) & Graph & Context & $\Delta$ reports & Merged reports & Publish & Other \\
+\midrule
+Rebuild & 7523.5 & 0.01 & 0.25 & 0.00 & 99.63 & 0.09 & 0.01 \\
+HIT-Leiden & 3493.1 & 0.03 & 0.53 & 3.60 & 95.67 & 0.14 & 0.03 \\
+\DynaMo{} & 3498.7 & 0.04 & 0.53 & 3.54 & 95.72 & 0.13 & 0.03 \\
+\QCA{} & 3386.3 & 0.04 & 0.56 & 3.66 & 95.58 & 0.14 & 0.03 \\
+DF-\Louvain{} & 3501.8 & 0.03 & 0.54 & 3.51 & 95.75 & 0.14 & 0.03 \\
+$\Delta$-screen & 3590.6 & 0.03 & 0.53 & 3.52 & 95.76 & 0.13 & 0.03 \\
+\Batch{} & 3464.8 & 0.04 & 0.54 & 3.69 & 95.56 & 0.14 & 0.03 \\
+\DyLo{} & 1926.5 & 0.05 & 1.03 & 6.46 & 92.22 & 0.19 & 0.04 \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Graph includes native bootstrap and community maintenance. Publish includes embedding, index writing, and queryability checks. Other groups input loading, refresh selection, and residual overhead. $T_m$ is total maintenance time; delta plus merged reports gives the summarization share $T_s/T_m$.
+\end{table*}
+
+Successful maintenance tokens sum native prompt and completion usage only
+for update-caused reports. The $26$ delta reports are common to incremental
+arms; Rebuild summarizes the final index directly.
+Table~\ref{tab:case-study-tokens} separates input and output components.
+All final indices pass report-coverage, model-provenance, embedding, and
+queryability checks.
+
+\stitle{Separate setup, repair, and failure ledger.} Initial report
+generation uses $2{,}485{,}210$ successful tokens and $7{,}100.1$\,s, followed
+by $26.5$\,s for publication. These setup costs are excluded from $T_m$.
+Every maintenance arm has zero old-report repair calls and zero failed
+calls/tokens. The accounting policy excludes failed tokens from successful
+usage while retaining retry overhead in measured wall time.
+
+\begin{table}[tb]\centering
+\caption{Successful maintenance token components.}
+\label{tab:case-study-tokens}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrr@{}}
+\toprule
+Method & Input tok. (k) & Output tok. (k) \\
+\midrule
+Rebuild & 1926.118 & 704.067 \\
+HIT-Leiden & 1132.125 & 316.781 \\
+\DynaMo{} & 1146.060 & 318.135 \\
+\QCA{} & 1103.605 & 308.146 \\
+DF-\Louvain{} & 1159.690 & 318.304 \\
+$\Delta$-screen & 1174.995 & 326.144 \\
+\Batch{} & 1125.332 & 316.818 \\
+\DyLo{} & 918.156 & 165.118 \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Input and output tokens count successful community-maintenance usage; answer generation is excluded.
+\end{table}
+
+\subsection{Questions and sensemaking generation}\label{app:questions}
+
+Following GraphRAG's user--task question-generation approach~\cite{edge2024graphrag},
+the archived question bank was generated from a prose description of the
+news corpus. We use its first $60$ questions, $q_0$--$q_{59}$, frozen before
+generation on the new indices. They cover five user roles and $15$ tasks,
+including temporal trends, journalistic practices, and business analysis.
+For example, $q_0$ asks which entities are mentioned most frequently across
+categories from September to December 2023; $q_{14}$ asks about viewpoint
+diversity; $q_{20}$ asks which themes recur across categories.
+The companion \texttt{artifacts/sensemaking-questions.csv} contains the exact
+question text, IDs, roles, and tasks. Questions requesting unavailable
+evidence are retained, including any resulting insufficient-evidence answers.
+
+Each maintained index supplies its complete level-$0$ root-report cut to
+GraphRAG global-search map--reduce. All methods use the same 32B English
+answer generator, $8{,}000$-Qwen-token budgets per map chunk and for reduce
+evidence, and output caps of $2{,}048$ map tokens and $3{,}072$ reduce tokens.
+Map points carry usefulness scores; the reducer synthesizes useful points
+into paragraphs. Native root cuts expose $151$ reports in eight chunks for
+DyLo and $67$--$78$ reports in four chunks for each baseline
+(Table~\ref{tab:sensemaking-costs}). This comparison uses equal per-call
+budgets; total query work varies with the maintained index.
+
+Structured outputs require a normal stop, complete valid JSON, and allowed
+report identifiers. Tool markers and truncation trigger technical retries
+with unchanged evidence/output budgets, a format-only instruction, and
+compact JSON grammar. Valid checkpoints are retained; citations are rendered
+mechanically. All $480$ final answers pass validation. Judge scores never
+trigger answer regeneration.
+
+\subsection{Independent judging and uncertainty}\label{app:case-judge}
+
+The independent local \texttt{gpt-oss-120b} judge uses temperature $0$,
+seed $17$, low reasoning effort, and a $2{,}048$-token output cap.
+Blind pairwise prompts allow ties and apply four GraphRAG criteria:
+comprehensiveness (coverage), diversity (perspectives), empowerment (support
+for informed judgment), and directness (focus on the question).
+Each DyLo--baseline pair is assessed in both orders for every question and
+criterion, giving $7\times60\times4\times2=3{,}360$ oriented cases.
+Validated verdicts are reused for identical prompts.
+
+DyLo receives $100/50/0$ for a win/tie/loss. Both orders are averaged within
+each question, then across $60$ questions; $50$ denotes equal preference.
+Table~\ref{tab:sensemaking-ci} reports unadjusted $95\%$ intervals from
+$10{,}000$ question-bootstrap resamples (seed $17$), keeping both orders
+together. These are local-judge preferences for a fixed question set and
+one generation run per method; intervals are not multiplicity-adjusted.
+
+\begin{table*}[tb]\centering
+\caption{DyLo preference scores and unadjusted $95\%$ question-bootstrap intervals.}
+\label{tab:sensemaking-ci}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}
+\toprule
+Opponent & Comprehensiveness & Diversity & Empowerment & Directness \\
+\midrule
+\Batch{} & 64.17 [55.83, 72.50] & 59.17 [49.17, 70.00] & 60.83 [50.83, 70.42] & 61.25 [52.08, 70.00] \\
+Rebuild & 65.42 [57.50, 73.33] & 57.08 [47.92, 66.67] & 63.33 [55.00, 71.67] & 63.75 [54.58, 72.50] \\
+HIT-Leiden & 58.33 [50.00, 66.67] & 49.58 [39.58, 59.58] & 58.75 [50.00, 67.08] & 57.92 [48.33, 67.08] \\
+\DynaMo{} & 65.42 [57.08, 73.33] & 56.25 [45.00, 67.08] & 67.92 [59.58, 75.83] & 56.25 [47.08, 65.42] \\
+\QCA{} & 65.42 [57.50, 73.33] & 64.17 [55.00, 73.33] & 60.42 [51.25, 69.58] & 58.75 [50.00, 67.50] \\
+DF-\Louvain{} & 67.50 [59.17, 75.83] & 60.42 [49.58, 70.42] & 64.58 [55.00, 73.75] & 66.67 [57.92, 75.00] \\
+$\Delta$-screen & 66.25 [57.08, 75.00] & 60.42 [50.00, 70.42] & 64.58 [55.00, 74.17] & 61.25 [52.50, 70.00] \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+$10{,}000$ resamples of the $60$ questions, seed $17$; both orders stay together within a question. Intervals are per comparison and criterion, without multiplicity correction.
+\end{table*}
+
+Against Batch and Rebuild, intervals favor DyLo in comprehensiveness,
+empowerment, and directness; diversity remains unresolved. All four
+intervals against HIT-Leiden include or touch $50$. These results support
+competitive quality under the native-index sensemaking protocol.
+
+Predeclared calibration gives four ties on four identical-answer controls
+and never favors irrelevant padding in eight controls. Directness favors
+the unpadded answer in both orders; padding-control preferences agree across
+orders in three of four dimensions. During evaluation, answer-order reversal
+changes the oriented preference on $12$--$30$ of $60$ questions per criterion
+and comparator. We therefore average orders and resample questions with
+both orders kept together.
+
+\subsection{Separate evaluation costs and failures}\label{app:case-eval-costs}
+
+All $480$ answers and $3{,}360$ logical judgments are complete.
+Answer generation records $94$ truncated calls and $727{,}067$ failed-call
+tokens, with all usage known and every affected answer recovered
+(Table~\ref{tab:sensemaking-costs}). Four successful format probes use
+$24{,}662$ tokens. Judging uses $3{,}164$ successful API calls and
+$4{,}293{,}789$ tokens, including $12$ calibration calls, with zero failures;
+prompt reuse explains the difference from logical judgment counts.
+
+Summed request durations are $42{,}240.2$\,s for answer generation including
+failures, $38.9$\,s for format probes, and $6{,}980.9$\,s for judging and
+calibration. These sums include overlapping requests and are not elapsed
+wall times. All evaluation usage and durations are excluded from maintenance.
+
+\begin{table*}[tb]\centering
+\caption{Separate 32B sensemaking generation costs and evidence exposure.}
+\label{tab:sensemaking-costs}
+\footnotesize
+\setlength{\tabcolsep}{0.25em}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrr@{}}
+\toprule
+Method & Root reports & Map chunks/question & Successful calls & Success tok. (k) & Failed calls & Failed tok. (k) \\
+\midrule
+Rebuild & 67 & 4 & 295 & 1778.873 & 15 & 103.081 \\
+HIT-Leiden & 67 & 4 & 294 & 1785.648 & 22 & 165.358 \\
+\DynaMo{} & 71 & 4 & 296 & 1823.623 & 8 & 59.025 \\
+\QCA{} & 67 & 4 & 295 & 1761.256 & 17 & 139.856 \\
+DF-\Louvain{} & 69 & 4 & 294 & 1801.883 & 7 & 70.684 \\
+$\Delta$-screen & 78 & 4 & 294 & 1974.009 & 8 & 78.435 \\
+\Batch{} & 70 & 4 & 297 & 1809.216 & 16 & 100.663 \\
+\DyLo{} & 151 & 8 & 538 & 3936.663 & 1 & 9.965 \\
+\midrule
+Total & --- & --- & 2603 & 16,671.171 & 94 & 727.067 \\
+\bottomrule
+\end{tabular*}
+\par\smallskip\raggedright
+Native input plus output tokens; map and reduce calls are both included.
+Successful checkpoints are retained during recovery. Every method produces
+$60$ final answers. Format probes and judge calls are listed separately in
+the text, and all evaluation costs are excluded from maintenance.
+\end{table*}

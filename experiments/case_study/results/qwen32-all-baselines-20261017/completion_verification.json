@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "methods": 8,
+  "answers": 480,
+  "oriented_cases": 3360,
+  "all_initial_and_final_reports32B": true,
+  "completed_three_method_results_unchanged": true,
+  "at": 1792279974.1567652,
+  "paper_tables_ready": true,
+  "raw_document_extraction_measured": false
+}

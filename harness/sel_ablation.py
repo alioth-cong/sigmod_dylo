@@ -2,7 +2,7 @@
 """Selector ablation: exact tree DP vs per-destination greedy vs per-move independent pricing (the naive scheme of Challenge 2).
 
 Configuration = the paper's uniform setting: std4 + singleton reclamation, DEFER=1, eps=0.05 (single anchor -> tree-DP path), leiden.
-Driver dylo_driver_std4sel (DYLO_SEL_MODE=dp|greedy|indep; dp is bit-identical to std4).
+Driver dylo_driver_selector (DYLO_SEL_MODE=dp|greedy|indep; dp is bit-identical to std4).
 lambda=0 is run once (the three selectors are equivalent at lambda=0) as the modularity-only upper reference.
 DYLO_NO_COM=1: per-batch partitions are not written (cost comes from the driver's own refresh plan resum.tsv, the correct accounting with deferral).
 
@@ -29,7 +29,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 ROOT = Path(DYLO_ROOT + "")
-BIN = ROOT / "harness/cpp/dylo/dylo_driver_std4sel"
+BIN = ROOT / "harness/cpp/dylo/dylo_driver_selector"
 RUNS = Path(os.environ.get("SEL_RUNS", str(ROOT / "data/runs")))
 SCR = ROOT / "tmpruns/selabl"
 COMMON = dict(

@@ -1,0 +1,45 @@
+--- driver_std4.cxx
++++ driver_selection_timing.cxx
+@@ -767,6 +767,9 @@
+   }
+ 
+   int batchesSinceRebuild=0, nRebuild=0, nAudit=0, nReclaim=0, nPeel=0; long nReclaimed=0;
++  // selection-phase timing: the paper claims defer -> single anchor -> the exact selector collapses from max-weight-closure/min-cut
++  // to a linear tree DP. In end-to-end latency this part is buried under graph building/certificates/output, so it is timed separately.
++  double selDpMs=0.0, selCutMs=0.0; long selDpRounds=0, selCutRounds=0;
+   // L3, ski-rental form (thm:competitive). The snapshot rule "rebuild when the
+   // instantaneous gap exceeds R" never fires if drift stays just under R at
+   // every audit, however long the stream. The competitive argument is instead
+@@ -1219,6 +1222,8 @@
+         bool allSingle = true;
+         for(const auto& a : actions) if(a.anchors.size()!=1){ allSingle=false; break; }
+         LocalizedSelection chosen;
++        const auto selT0 = std::chrono::high_resolution_clock::now();
++        const bool tookDP = allSingle && USE_TREE_DP;
+         if(!lamInf){
+           if(allSingle && USE_TREE_DP){
+             // one DP node per cost-tree node that some action can reach, plus
+@@ -1256,6 +1261,14 @@
+             chosen.objective = chosen.selected_gain - lambda*chosen.marginal_cost;
+           } else {
+             chosen=select_atomic_actions_localized(costTree.parent,costTree.weight,actions,lambda);
++          }
++        }
++        {
++          const double selMs = std::chrono::duration<double,std::milli>(
++              std::chrono::high_resolution_clock::now()-selT0).count();
++          if(!lamInf){
++            if(tookDP){ selDpMs+=selMs; selDpRounds++; }
++            else      { selCutMs+=selMs; selCutRounds++; }
+           }
+         }
+         std::vector<int> candidate=leaf;
+@@ -2124,6 +2137,8 @@
+           statVertexTriggers>0?(double)statTotalEdges/statVertexTriggers:0.0);
+   fprintf(stderr,"[audit] singles_ok=%ld mismatch=%ld rep_miss=%ld rep_stale=%ld rep_same=%ld rep_diff=%ld\n",statSinglesOK,statSinglesMismatch,statRepMiss,statRepStale,statRepSame,statRepDiff);
+   fprintf(stderr,"[dylo:%s] reclaims=%d vertices_reclaimed=%ld peels=%d\n",algo.c_str(),nReclaim,nReclaimed,nPeel);
++  fprintf(stderr,"[seltime] dp_rounds=%ld dp_ms=%.3f cut_rounds=%ld cut_ms=%.3f\n",
++          selDpRounds,selDpMs,selCutRounds,selCutMs);
+   fprintf(stderr,"[dylo:%s] pruned=%ld deferred=%ld flushes=%ld (vanished=%ld quality=%ld)\n",algo.c_str(),statPruned,statDeferred,statFlushed,statFlushVanished,statFlushQuality);
+   fprintf(stderr,"[dylo:%s] mean_vol(A)/|E| = %.5f over %ld rounds\n",algo.c_str(),
+           statRegionBatches?statVolA/statRegionBatches:0.0,statRegionBatches);

@@ -4,7 +4,7 @@
 Two corrections of earlier measurement errors:
 
 (1) Timing. In end-to-end latency the selection phase is buried under graph building/certificates/output, hiding
-    the gain of "single anchor -> tree DP replaces min-cut". driver_seltime.cxx accumulates the time of
+    the gain of "single anchor -> tree DP replaces min-cut". driver_selection_timing.cxx accumulates the time of
     the DP path and the min-cut path separately (verified bit-identical to std4).
 
 (2) Cost accounting. hier_cost.py re-derives cost from **partitions**: once a source community loses a vertex its member set changes,
@@ -41,7 +41,7 @@ def one(a):
     e.update(DYLO_DEFER=str(defer), DYLO_SEED=str(seed))
     rec = dict(ds=ds, defer=defer, seed=seed)
     try:
-        subprocess.run([str(D / "dylo_driver_seltime"), "leiden",
+        subprocess.run([str(D / "dylo_driver_selection_timing"), "leiden",
                         str(R / f"data/runs/{ds}/initial.txt"),
                         str(R / f"data/runs/{ds}/inc.txt"), str(nb), str(d)],
                        env=e, stdout=subprocess.DEVNULL,

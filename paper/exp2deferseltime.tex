@@ -1,0 +1,16 @@
+\emph{Real-stream selection.}
+We compare source deferral off/on over eight full native graph streams
+(excluding GPlus and LiveJournal) at $\lambda=0.1$
+(three-seed timing medians; on: $\varepsilon=0.05$).
+Without deferral, two-anchor actions use min-cut while single-anchor rounds
+can use DP; with deferral, all $2{,}079$ reported rounds use DP.
+Source deferral reduces total selection time by up to $39\times$ on YouTube
+(Figure~\ref{fig:knee}(d)), with potentially different solver inputs.
+YouTube's driver latency falls from $27.2$ to $26.9$\,ms per batch.
+Driver timing includes graph maintenance and index emission; main-table
+latency excludes partition output (Appendix~\ref{app:defer-seltime}).
+
+Across eight graphs and three detector instances, cumulative cost, including
+executed refreshes and closing pending liabilities, agrees on $23$ of $24$
+deferral pairs and is $0.01\%$ higher for Epinions/\Louvain{}. Every pair
+agrees in $\bar Q$ to five decimals.

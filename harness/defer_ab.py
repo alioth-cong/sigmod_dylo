@@ -38,7 +38,7 @@ def one(a):
     try:
         t0=time.time()
         subprocess.run(["/usr/bin/time","-v","-o",str(d/"mem"),
-            str(D/"dylo_driver_seedrep"),"leiden",
+            str(D/"dylo_driver_seed_dispersion"),"leiden",
             str(R/f"data/runs/{ds}/initial.txt"),str(R/f"data/runs/{ds}/inc.txt"),
             str(nb),str(d)],env=e,stdout=subprocess.DEVNULL,
             stderr=open(d/"err","w"),check=True,timeout=21600)

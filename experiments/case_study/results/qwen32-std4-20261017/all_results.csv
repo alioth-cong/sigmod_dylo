@@ -1,0 +1,4 @@
+method,net_summary_s,net_graph_to_queryable_s,summary_percent,success_calls,successful_input_tokens,successful_output_tokens,successful_total_tokens,failed_calls,known_failed_tokens,unknown_usage_failed_calls,initial_reports_all32B,concurrency
+dylo,1901.056271494017,1926.506998921861,98.67830563537092,344,918156,165118,1083274,0,0,0,True,4
+batch,3438.852572518983,3464.8275294478517,99.24977331956467,712,1125332,316818,1442150,0,0,0,True,4
+rebuild,7495.808476633974,7523.545075451839,99.63096204011002,1637,1926118,704067,2630185,0,0,0,True,4

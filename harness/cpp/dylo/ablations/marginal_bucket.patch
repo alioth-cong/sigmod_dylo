@@ -1,0 +1,97 @@
+--- driver_std4.cxx
++++ driver_marginal_bucket.cxx
+@@ -185,6 +185,15 @@
+   // Charge the deferred source's amortised re-summarization to the action.
+   const bool SRC_CHARGE = [](){ const char* e=std::getenv("DYLO_SRC_CHARGE"); return e?std::atoi(e)!=0:true; }();
+   const bool USE_TREE_DP = [](){ const char* e=std::getenv("DYLO_TREE_DP"); return e?std::atoi(e)!=0:true; }();
++  // R2 ablation arm (DYLO_GREEDY=1): replace the OpenSet DP with per-destination greedy.
++  // OpenSet (dp.hpp, Alg 2) gives the **exact** optimum over ancestor-closed dirty sets; it does two things
++  // greedy cannot:
++  //   (a) the cost of a shared ancestor is amortized across siblings -- k destinations under one parent pay w(parent) once;
++  //   (b) it can accept a parent with g-lambda*w < 0 as long as the surplus of its subtree pays it back
++  //       (exactly the sum max(open(child),0) term in open(c)).
++  // greedy decides each destination independently, each paying its whole ancestor chain, so (a)(b) are lost. It is
++  // the honest floor of "what if there were no Alg 2", not another speed switch.
++  const bool GREEDY = [](){ const char* e=std::getenv("DYLO_GREEDY"); return e && std::atoi(e)!=0; }();
+   const bool INC_TREE = [](){ const char* e=std::getenv("DYLO_INC_TREE"); return e?std::atoi(e)!=0:true; }();
+   const bool VALIDATE_TREE = std::getenv("DYLO_VALIDATE_TREE")!=nullptr;
+   const bool VALIDATE_QC   = std::getenv("DYLO_VALIDATE_QC")!=nullptr;
+@@ -664,9 +673,34 @@
+     // it only avoids treating them as a special "no bucket" case.
+     return bkey(63, 0);
+   };
++  // B3 fix (DYLO_MARGINAL_GAMMA=1).
++  // Review B3: the bucket-pruning test uses the absolute weight w(B), but Eq.(7) actually charges the
++  // MARGINAL weight w_bar_t(B). For a destination already refreshed in this batch,
++  // w_bar_t(B)=0 -- opening B is free, so g(B)-lambda*w(B) is a LOWER bound,
++  // not the upper bound the paper claims, and "safe reduction" as written is false.
++  // The paper gives its own counterexample (4-incAlgo.tex:230): after a commit its refresh closure enters
++  // O_t, and every node on that path has zero marginal weight in later rounds of the batch.
++  // The error is one-sided: over-pruning only loses value and never admits an unsound commit.
++  // Here O_t is exposed to gammaOf: if the node is already in batchDirty then Gamma=0 and the bucket flushes immediately.
++  const bool MARGINAL_GAMMA = [](){ const char* e=std::getenv("DYLO_MARGINAL_GAMMA");
++                                    return e && std::atoi(e)!=0; }();
++  const std::set<std::pair<int,int>>* curBatchDirty = nullptr;
++  long statGammaTested=0, statGammaZeroed=0;   // B3 diagnostics: how many tests / how many of them had w_bar=0
++  long statGammaNonEmptyOt=0;                  // how many of them had a non-empty O_t (could hit, timing-wise)
++  long statOtMax=0;                            // the largest O_t seen
+   auto gammaOf=[&](long long bk)->double{
+     if(lamInf) return 1e300;
+     if(bk==bkey(63,0)) return 0.0;   // virtual root: nothing genuinely dirtied, no deferral possible there
++    if(curBatchDirty){
++      statGammaTested++;
++      if(!curBatchDirty->empty()) statGammaNonEmptyOt++;
++      if((long)curBatchDirty->size()>statOtMax) statOtMax=(long)curBatchDirty->size();
++      int lv=(int)(bk>>40), cm=(int)(bk & ((1LL<<40)-1));
++      if(curBatchDirty->count({lv,cm})){
++        statGammaZeroed++;
++        if(MARGINAL_GAMMA) return 0.0;   // w_bar_t(B)=0 -> opening B is free
++      }
++    }
+     auto it=nodeWeightPersist.find(bk);
+     double w=(it!=nodeWeightPersist.end())?it->second:1.0;   // conservative fallback if not yet indexed
+     return lambda*w;
+@@ -871,6 +905,7 @@
+       // regenerate before this batch is reported committed. Accumulated across
+       // rounds as (level, community) and priced once at the end of the batch.
+       std::set<std::pair<int,int>> batchDirty;
++      curBatchDirty = &batchDirty;      // B3: let gammaOf look up O_t
+       bool batchAllDirty=false;
+       // Fine communities dirtied by reclamation. Collected as raw ids and
+       // closed over ancestors at the end of the batch, once the tree that
+@@ -1242,7 +1277,25 @@
+               else T.roots.push_back(i);
+             }
+             for(const auto& a : actions) T.g[nid[a.anchors[0]]] += a.gain;
+-            std::vector<char> d = open_set_dp(T, lambda);
++            std::vector<char> d;
++            if(GREEDY){
++              // each destination with gain decides independently: it pays its whole ancestor chain, shared with no sibling.
++              d.assign(NN, 0);
++              for(int i=0;i<NN;i++){
++                if(T.g[i] <= 0.0) continue;
++                double own = 0.0;
++                for(int c=back[i]; c>=0; c=costTree.parent[c]) own += costTree.weight[c];
++                if(T.g[i] - lambda*own >= 0.0)
++                  for(int c=i; c>=0; ){            // if accepted, close over ancestors
++                    d[c]=1;
++                    int par=costTree.parent[back[c]];
++                    auto it=(par>=0)?nid.find(par):nid.end();
++                    c = (it!=nid.end()) ? it->second : -1;
++                  }
++              }
++            } else {
++              d = open_set_dp(T, lambda);
++            }
+             chosen.dirty_nodes.assign(costTree.parent.size(),0);
+             for(int i=0;i<NN;i++) if(d[i]) chosen.dirty_nodes[back[i]]=1;
+             chosen.selected_actions.assign(actions.size(),0);
+@@ -2124,6 +2177,8 @@
+           statVertexTriggers>0?(double)statTotalEdges/statVertexTriggers:0.0);
+   fprintf(stderr,"[audit] singles_ok=%ld mismatch=%ld rep_miss=%ld rep_stale=%ld rep_same=%ld rep_diff=%ld\n",statSinglesOK,statSinglesMismatch,statRepMiss,statRepStale,statRepSame,statRepDiff);
+   fprintf(stderr,"[dylo:%s] reclaims=%d vertices_reclaimed=%ld peels=%d\n",algo.c_str(),nReclaim,nReclaimed,nPeel);
++  fprintf(stderr,"[b3] gamma_tested=%ld  O_t_nonempty=%ld  hits(w_bar=0)=%ld  O_t_max=%ld\n",
++          statGammaTested,statGammaNonEmptyOt,statGammaZeroed,statOtMax);
+   fprintf(stderr,"[dylo:%s] pruned=%ld deferred=%ld flushes=%ld (vanished=%ld quality=%ld)\n",algo.c_str(),statPruned,statDeferred,statFlushed,statFlushVanished,statFlushQuality);
+   fprintf(stderr,"[dylo:%s] mean_vol(A)/|E| = %.5f over %ld rounds\n",algo.c_str(),
+           statRegionBatches?statVolA/statRegionBatches:0.0,statRegionBatches);

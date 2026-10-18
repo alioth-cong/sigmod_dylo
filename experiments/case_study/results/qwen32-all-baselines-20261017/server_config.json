@@ -1,0 +1,14 @@
+{
+  "model": "Qwen/Qwen2.5-32B-Instruct",
+  "revision": "5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd",
+  "GPU": "GPU-REDACTED",
+  "dtype": "bfloat16",
+  "max_model_len": 16384,
+  "max_num_seqs": 4,
+  "max_num_batched_tokens": 8192,
+  "gpu_memory_utilization": 0.92,
+  "prefix_caching": false,
+  "seed": 17,
+  "embedding_model": "source-data/hf/hub/models--BAAI--bge-small-en-v1.5/snapshots/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+  "embedding_on_same_GPU": true
+}

@@ -1,0 +1,43 @@
+--- driver_std4.cxx
++++ driver_deferral_trace.cxx
+@@ -410,6 +410,17 @@
+   metrics<<"batch\tlatency_ms\tmodularity\tnum_communities\trounds\n";
+   std::ofstream resum(outDir+"/resum.tsv"); resum<<std::fixed<<std::setprecision(6);
+   resum<<"batch\tall_dirty\tn_nodes\tcost_abs\ttree_weight\tcost_norm\n";
++  // R2/(iv): report the closing P_T / K_T per batch -- the unsettled balance of deferred re-summarization.
++  //   P_T = number of communities that still have residual members (the summary still lists members that left)
++  //   K_T = total residual members = sum_c sigma(c), i.e. the staleness sum of 4d-budget.tex:5
++  // This is exactly the quantity 4-incAlgo.tex:163 promises to bound ("bounds the accumulated source-side
++  // redundancy"), which was never output before.
++  const bool DRIFT_LOG = std::getenv("DYLO_DRIFT_LOG")!=nullptr;
++  std::ofstream driftf;
++  if(DRIFT_LOG){ driftf.open(outDir+"/drift.tsv");
++    driftf<<"batch\tcomm\tlive\tstale\tdrift_rel\tfired\n"; }
++  std::ofstream deferf(outDir+"/defer.tsv");
++  deferf<<"batch\tP_T\tK_T\tdeferred_cum\tflush_cum\tflush_quality_cum\tflush_vanished_cum\n";
+   // Batches in which a full rebuild fired. A rebuild renumbers/reshuffles
+   // the whole partition, so that batch's dirty set is essentially the whole
+   // tree and its re-summarization cost (~1.0) swamps the per-batch average.
+@@ -2003,7 +2014,10 @@
+               if(qit==qAtRefresh.end()){ qAtRefresh[c]=qNow; fire=false; }
+               else {
+                 const double base=std::max(std::fabs(qit->second),1e-12);
+-                fire = std::fabs(qNow-qit->second)/base >= DEFER_EPS;
++                const double drift=std::fabs(qNow-qit->second)/base;
++                fire = drift >= DEFER_EPS;
++                if(DRIFT_LOG) driftf<<k<<"\t"<<c<<"\t"<<live<<"\t"<<st<<"\t"
++                                    <<drift<<"\t"<<(fire?1:0)<<"\n";
+               }
+             } else {
+               fire = (live+st>0) && (double)st/(double)(live+st) >= THETA;
+@@ -2046,6 +2060,10 @@
+       const int   nOut = (Q_AT_END && !lastB) ? -1   : count_comm(repK);
+       metrics<<k<<"\t"<<ms<<"\t"<<qOut<<"\t"<<nOut
+              <<"\t"<<roundsRun<<"\n"; metrics.flush();
++    { long KT=0; for(const auto&[c,n]:staleCnt) KT+=n;
++      deferf<<k<<"\t"<<staleCnt.size()<<"\t"<<KT<<"\t"<<statDeferred<<"\t"
++            <<statFlushed<<"\t"<<statFlushQuality<<"\t"<<statFlushVanished
++            <<"\n"; deferf.flush(); }
+       if(!noCom){ write_levels(k, Hc); write_com(k, repK); }
+       continue;
+     }

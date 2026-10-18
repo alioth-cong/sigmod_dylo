@@ -1,0 +1,15 @@
+--- driver_std4.cxx
++++ driver_seed_dispersion.cxx
+@@ -386,7 +386,11 @@
+   Graph g; read_edges(initial,[&](uint32_t u,uint32_t v,double w){ g.add_edge(u,v,w); });
+   fprintf(stderr,"[dylo:%s] initial %d V, m=%.0f, lambda=%s, hier=%d\n",
+           algo.c_str(),g.n,g.m2/2, lamInf?"inf":std::to_string(lambda).c_str(), (int)emitHier);
+-  std::mt19937 rng(123);
++  // seed knob for repeated runs (DYLO_SEED, default 123 = the original hard-coded value, for reproducibility).
++  // The original implementation hard-coded the seed, so DyLo is fully deterministic for a given input -- itself a fact
++  // worth reporting, but reviewers asked for dispersion, which requires changing the seed to measure the detector's own variance.
++  std::mt19937 rng([](){ const char* e=std::getenv("DYLO_SEED");
++                         return e?(uint32_t)std::atoi(e):123u; }());
+ 
+   auto count_comm=[&](const std::vector<int>& memb){
+     std::unordered_map<int,int> s; for(int i=0;i<(int)memb.size();i++) if(g.k[i]>0) s[memb[i]]; return (int)s.size(); };

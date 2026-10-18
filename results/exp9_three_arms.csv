@@ -1,7 +1,0 @@
-arm,question_set,n,judge_mean,judge_sd,f1
-stale,fresh,48,2.132,2.114,0.068
-stale,control,212,2.360,2.255,0.050
-dylo,fresh,48,1.833,1.736,0.049
-dylo,control,212,2.302,2.210,0.056
-scratch,fresh,48,2.042,1.957,0.057
-scratch,control,212,2.219,2.038,0.051

@@ -1,0 +1,218 @@
+% !TeX root = main.tex
+\section{Frozen-round selection and accounting}\label{app:selection}
+
+DyLo maintains community summaries on a rooted hierarchy. A leaf summarizes
+entities; an internal node summarizes its children. Refreshing a node can
+therefore require refreshing its ancestors. DyLo selects moves by balancing
+their modularity gain against this shared refresh cost, and records deferred
+source consolidation as pending liability. The results below concern one
+frozen selection round or a ledger at fixed valuation; committed moves are
+subsequently checked using their realized joint gain and accrual cost.
+
+\subsection{Frozen state and OpenSet implementation}\label{app:selection-dp}
+
+Let $\mathcal A$ be independently optional actions at one graph level.
+Action $a$ has raw modularity gain $g(a)$, a destination anchor
+$\mathrm{dst}(a)$, and a non-negative source share $\phi(a)$.
+$\mathrm{Anc}(c)$ includes $c$ and its path to the root; for a set, it is
+the union of these paths. If $O_t$ is the already scheduled refresh set,
+$\bar w_t(c)=w(c)\mathbf1[c\notin O_t]$ is the unpaid weight of node $c$.
+All actions, anchors, gains, shares, and weights are fixed during selection;
+there are no additional mutual-exclusion or selection-dependency constraints.
+Executed refresh cost is $\mathsf C_{\mathrm{exec}}(D)=\sum_{c\in D}w(c)$;
+Section~\ref{app:ledger-proof} defines the associated accrual ledger.
+
+For exchange rate $\lambda\ge0$, source deferral gives adjusted gain
+$\tilde g(a)=g(a)-\lambda\phi(a)$ and leaves one immediate anchor per action.
+Let $T_A$ be the union of all destination paths and
+$g(c)=\sum_{a:\mathrm{dst}(a)=c}\max\{\tilde g(a),0\}$.
+Selection maximizes
+\[
+\sum_{a\in S}\tilde g(a)
+-\lambda\sum_{c\in\mathrm{Anc}(\mathrm{dst}(S))}\bar w_t(c).
+\]
+An opened anchor admits every positive adjusted-gain action at no further
+node cost. Thus the equivalent tree objective is
+$\sum_{c\in D}(g(c)-\lambda\bar w_t(c))$ over ancestor-closed sets $D$.
+Conditional on opening $c$, child subtrees are independent:
+\begin{equation}\label{eq:supp-openset}
+\operatorname{val}(c)=g(c)-\lambda\bar w_t(c)
+ +\sum_{u\in\mathrm{child}(c)}\max\{\operatorname{val}(u),0\}.
+\end{equation}
+Algorithm~\ref{alg:dp} evaluates this recurrence and recovers $D$ in two
+linear traversals. The selected actions are those with positive adjusted
+gain anchored in $D$. A forest can be joined under a zero-weight,
+zero-gain dummy root.
+
+\begin{algorithm}[tb]
+\caption{$\textsc{OpenSet}(T_A,g,\bar w_t,\lambda)$}\label{alg:dp}
+\SetAlgoLined
+\DontPrintSemicolon
+\footnotesize
+\KwIn{$T_A,g,\bar w_t,\lambda$}
+\KwOut{Ancestor-closed refresh set $D$}
+\BlankLine
+\ForEach{node $c\in T_A$ in post-order}{
+  $\operatorname{val}(c)\gets g(c)-\lambda\bar w_t(c)$\;
+  \ForEach{$u\in\mathrm{child}(c)$}{
+    $\operatorname{val}(c)\gets\operatorname{val}(c)
+      +\max\{\operatorname{val}(u),0\}$\;
+  }
+}
+$D\gets\emptyset$; $\mathrm{sel}(c)\gets\mathrm{false}$ for all $c$\;
+$\mathrm{sel}(\mathit{root})\gets[\operatorname{val}(\mathit{root})>0]$\;
+\ForEach{node $c\in T_A$ in pre-order}{
+  \If{$c$ is selected}{
+    $D\gets D\cup\{c\}$\;
+    \ForEach{$u\in\mathrm{child}(c)$}{
+      $\mathrm{sel}(u)\gets[\operatorname{val}(u)>0]$\;
+    }
+  }
+}
+\Return{$D$}
+\end{algorithm}
+
+\subsection{Frozen-surrogate submodularity}\label{app:submod-proof}
+
+\begin{lemma}[Frozen-surrogate submodularity]\label{lem:submod}
+For a frozen action set $\mathcal A$, let each action $a$ have fixed destination
+$\mathrm{dst}(a)$ and non-negative share $\phi(a)$, and let
+$\bar w_t(c)\ge0$ be the fixed marginal refresh weight of node $c$. Then
+$\widehat{\mathsf C}_t(S)=\sum_{c\in\mathrm{Anc}(\mathrm{dst}(S))}\bar w_t(c)
++\sum_{a\in S}\phi(a)$ is monotone and submodular over $S\subseteq\mathcal A$.
+Fixed-node content refreshes preserve both properties when represented as fixed
+anchors.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma~\ref{lem:submod}]
+Let $f(S)=\sum_{c\in\mathrm{Anc}(\mathrm{dst}(S))}\bar w_t(c)$. For
+$S\subseteq R$, ancestor closure gives $f(S)\le f(R)$. For an action
+$a\notin R$,
+\begin{align*}
+f(S\cup\{a\})-f(S)
+ &=\sum_{c\in\mathrm{Anc}(\mathrm{dst}(a))
+          \setminus\mathrm{Anc}(\mathrm{dst}(S))}\bar w_t(c)\\
+ &\ge\sum_{c\in\mathrm{Anc}(\mathrm{dst}(a))
+          \setminus\mathrm{Anc}(\mathrm{dst}(R))}\bar w_t(c)\\
+ &=f(R\cup\{a\})-f(R).
+\end{align*}
+This proves diminishing returns. The non-negative share sum is modular and
+therefore preserves both monotonicity and submodularity; a fixed-node
+content refresh is simply another fixed anchor. The argument requires frozen
+shares: immediate retirement in realized accounting can depend on which other
+paths are selected and is not covered by this lemma.
+\end{proof}
+
+\subsection{Surrogate-rate monotonicity}\label{app:rate-proof}
+
+\begin{proposition}[Rate trade-off]\label{prop:frontier}\label{prop:price}\label{prop:mono}
+In a frozen round, let the \emph{surrogate cost} of a selection be the weight of
+the refresh nodes it opens plus its source shares. Raising the rate $\lambda$
+never increases the surrogate cost or the raw gain of the selected actions, and
+the gain lost relative to $\lambda=0$ is at most $\lambda$ times the surrogate
+cost selected at $\lambda=0$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition~\ref{prop:mono}]
+Let $\mathcal S(x)$ and $D(x)$ be the actions and previously unopened refresh
+set selected at rate $x$, let $\kappa_t\ge0$ collect rate-independent work fixed
+before selection, and write
+$\operatorname{gain}(x)=\sum_{a\in\mathcal S(x)}g(a)$ and
+$\widehat{\mathsf C}_t(x)=\kappa_t+\mathsf C_{\mathrm{exec}}(D(x))
++\sum_{a\in\mathcal S(x)}\phi(a)$.
+Optimality at $x$ and $y$ gives
+\begin{align*}
+\operatorname{gain}(x)-x\widehat{\mathsf C}_t(x)
+&\ge\operatorname{gain}(y)-x\widehat{\mathsf C}_t(y),
+\end{align*}
+and the reverse comparison at rate $y$. Adding them yields
+\[
+(x-y)\bigl(\widehat{\mathsf C}_t(y)
+-\widehat{\mathsf C}_t(x)\bigr)\ge0.
+\]
+Substitution gives gain monotonicity. Comparing rates $x$ and zero similarly
+gives
+\begin{align*}
+\operatorname{gain}(0)-\operatorname{gain}(x)
+&\le x\bigl(\widehat{\mathsf C}_t(0)
+             -\widehat{\mathsf C}_t(x)\bigr)\\
+&\le x\widehat{\mathsf C}_t(0),
+\end{align*}
+where non-negativity follows from $\kappa_t\ge0$, non-negative marginal refresh
+weights, and non-negative shares. For the immediate tentative group evaluated
+at the same fixed node valuation,
+immediately retired components are included in $\sum_a\phi(a)$ but do not
+increase its post-commit balance; retiring old pending components or canceling
+obsolete ones can only reduce its marginal accrual. This proves
+$\delta\mathsf C(\mathcal S(x))\le\widehat{\mathsf C}_t(x)-\kappa_t$.
+Later action-induced settlement can add unbooked refresh cost and is excluded
+from this inequality.
+\end{proof}
+
+Across separate update trajectories, candidates and costs change. The
+empirical rate sweep in Section~\ref{app:exp4-detail} measures that broader
+effect.
+
+\subsection{Accounting invariant and accrual bound}\label{app:ledger-proof}
+
+For batch $t$, let $D_t$ be its refreshed nodes,
+$\mathsf C_{\mathrm{exec}}(D_t)=\sum_{c\in D_t}w(c)$ its executed cost,
+and $P_t\ge0$ its closing pending balance. The accrual charge is
+\[
+\Delta\mathsf C_t=\mathsf C_{\mathrm{exec}}(D_t)+P_t-P_{t-1}.
+\]
+At fixed valuation, consider one removal episode of source $A$ with fixed
+source--node tags and non-negative share values. Let $R_t(A)$, $P_t(A)$, $L_t(A)$, and
+$Z_t^{\mathrm{own}}(A)$ be its owned liability that is retired by execution,
+pending, unbooked, and canceled, respectively. Committed actions transfer their frozen source shares from unbooked liability
+to pending or executed-retired liability. Executed consolidation transfers the remaining
+owned liability at each refreshed tag to $R_t(A)$.
+Canceling an obsolete tag transfers its pending and unbooked amounts to
+$Z_t^{\mathrm{own}}(A)$; surviving ancestor tags are settled separately.
+These transfers conserve the four-term sum, and rollback restores it.
+Only the canceled \emph{pending} portion contributes to the batch cancellation
+credit $Z_t^{\mathrm{book}}$, whereas canceled unbooked liability does not
+change the ledger. Let $E_t$ be pending balance retired against $D_t$ and
+$B_t\ge0$ newly booked balance. If the pending shares retired at each refreshed node $c$ sum to at most $w(c)$, nodewise coverage gives
+$E_t\le\mathsf C_{\mathrm{exec}}(D_t)$, and
+\[
+P_t-P_{t-1}=B_t-E_t-Z_t^{\mathrm{book}}.
+\]
+Thus $\Delta\mathsf C_t\ge -Z_t^{\mathrm{book}}$ under that condition.
+Telescoping gives
+\begin{equation}\label{eq:supp-ledger}
+\sum_{t=1}^{T}\Delta\mathsf C_t
+=\sum_{t=1}^{T}\mathsf C_{\mathrm{exec}}(D_t)+P_T-P_0.
+\end{equation}
+For $P_0=0$, this total is non-negative and charges work still pending at
+the end of the measured stream.
+
+\subsection{Uniform bounds for decision certificates}\label{app:certificate-bounds}
+
+For a move $v:A\to B$, let $m>0$ be total edge weight, $k_v$ the weighted
+degree of $v$, and $\Sigma_A,\Sigma_B$ the community degree sums.
+While the incident-weight difference $d=k_{v,B}-k_{v,A}$ is fixed,
+the scaled modularity gain is
+\[
+s(z)=m\Delta Q=d-\frac{k_v(\Sigma_B-\Sigma_A+k_v)}{2m},
+\quad z=(m,\Sigma_A,\Sigma_B,k_v).
+\]
+At a reference state $z_0$ with negative gain, set $\mu=-s(z_0)>0$.
+Choose a compact box $\mathcal B$ containing $z_0$, with a positive lower
+bound on $m$, and define
+$\rho_i=\max_{z\in\mathcal B}|z_i-z_{0,i}|$ and
+$L_i=\sup_{z\in\mathcal B}|\partial_i s(z)|$.
+The required derivatives are
+\[
+\begin{aligned}
+\partial_m s&=\frac{k_v(\Sigma_B-\Sigma_A+k_v)}{2m^2},\\
+\partial_{\Sigma_A}s&=\frac{k_v}{2m},\qquad
+\partial_{\Sigma_B}s=-\frac{k_v}{2m},\\
+\partial_{k_v}s&=-\frac{\Sigma_B-\Sigma_A+2k_v}{2m}.
+\end{aligned}
+\]
+Integrating the gradient along a segment inside the box yields
+$|s(z)-s(z_0)|\le\sum_iL_i\rho_i$. Thus
+$\sum_iL_i\rho_i<\mu$ certifies negative gain throughout the box.
+The suprema cover the entire box, including gradient variation. A change
+to either incident-weight dependency invalidates the certificate immediately.

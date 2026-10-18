@@ -12,7 +12,7 @@ This script adds two contribution-level arms:
         (a) the cost of a shared ancestor is amortized across siblings -- k destinations under one parent pay w(parent) once;
         (b) it can accept a parent with g-lambda*w<0 as long as the subtree surplus pays it back.
       greedy decides each destination independently, each paying its whole ancestor chain, so (a)(b) are lost.
-      Switch DYLO_GREEDY=1 (driver_r2greedy.cxx; GREEDY=0 verified bit-identical to std4).
+      Switch DYLO_GREEDY=1 (driver_greedy.cxx; GREEDY=0 verified bit-identical to std4).
 
   R3  flush removal-only sources immediately, i.e. DYLO_DEFER=0
       The default transient overlap does not rewrite A's summary right away when v leaves A; it refreshes once the residual share
@@ -51,10 +51,10 @@ BASE = dict(DYLO_EMIT_HIER="1", DYLO_LAMBDA="1e-1", DYLO_AUDIT_K="8",
 
 ARMS = {
     # name                     binary                  extra environment
-    "V0 full":               ("dylo_driver_r2greedy", dict(DYLO_GREEDY="0", DYLO_DEFER="1")),
-    "R2 greedy (no OpenSet)": ("dylo_driver_r2greedy", dict(DYLO_GREEDY="1", DYLO_DEFER="1")),
-    "R3 flush (no defer)":   ("dylo_driver_r2greedy", dict(DYLO_GREEDY="0", DYLO_DEFER="0")),
-    "R2+R3":                 ("dylo_driver_r2greedy", dict(DYLO_GREEDY="1", DYLO_DEFER="0")),
+    "V0 full":               ("dylo_driver_greedy", dict(DYLO_GREEDY="0", DYLO_DEFER="1")),
+    "R2 greedy (no OpenSet)": ("dylo_driver_greedy", dict(DYLO_GREEDY="1", DYLO_DEFER="1")),
+    "R3 flush (no defer)":   ("dylo_driver_greedy", dict(DYLO_GREEDY="0", DYLO_DEFER="0")),
+    "R2+R3":                 ("dylo_driver_greedy", dict(DYLO_GREEDY="1", DYLO_DEFER="0")),
 }
 
 

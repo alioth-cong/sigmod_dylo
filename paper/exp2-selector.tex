@@ -1,0 +1,19 @@
+% Integrated from the author-supplied experiment, 2026-09-24.
+% Author clarified: 5,000 total small-instance comparisons; same environment
+% and timing scope as the manuscript. Original preserved under output/.
+\stitle{Exp-2b: Exact selection through the single-anchor reduction.}
+\label{sec:exp:selector}
+\emph{Same-instance exactness and scaling.}
+On synthetic forests, we maximize $\sum_{c\in D}(g(c)-\lambda\bar w_t(c))$
+over ancestor-closed node sets $D$: selecting a node requires selecting its
+ancestors. Gains $g(c)$ are sampled from $U(-10,10)$, $\bar w_t(c)$ is the
+fixed marginal refresh weight, and $\lambda\in\{0,0.1,0.5,1,2\}$.
+We compare exhaustive enumeration, generic maximum-weight
+closure~\cite{picard1976maximal} solved by min-cut, and tree DP on identical
+inputs (the objective in Theorem~\ref{thm:dp}).
+
+All three solvers select identical sets in $5{,}000$ tests with $n\le22$;
+DP and closure also agree up to $20{,}000$ nodes. DP is fastest at every
+measured size (Figure~\ref{fig:knee}(c)): enumeration is $12{,}699\times$
+slower at $22$ nodes, and closure is $1.7$--$4.6\times$ slower
+(Appendix~\ref{app:defer-seltime}).

@@ -1,64 +1,57 @@
 # DyLo artifact
 
-Code and evidence for *DyLo: Pricing LLM Re-Summarization in Incremental GraphRAG Index Maintenance*. This repository preserves the October 10 graph experiments and adds the October 16 maintenance case study, with a source/evidence snapshot assembled on October 17, 2026.
+Artifact for **DyLo: Pricing LLM Re-Summarization in Incremental GraphRAG Index Maintenance**, aligned with the manuscript snapshot of October 18, 2026.
 
-## Start here
+This release contains one standard DyLo implementation and the baseline implementations used in the paper. The case study uses **Qwen2.5-32B-Instruct** for reports and answers and an independent **gpt-oss-120b** judge. The release contains eight measured methods, 480 final answers, and 3,360 order-swapped judgments.
 
-The recorded results can be checked without a GPU or any new model requests:
+## Verify the recorded results
 
-```bash
+No GPU or model requests are needed:
+
+```sh
 python3 scripts/validate_artifact.py
-# Requires numpy; verifies and unpacks the evidence archives, then recomputes results:
-python3 experiments/case_study_20261016/audit.py
-# C++17 compiler and Python 3.10+; CPU tests of the separate corrected candidate:
-make corrected-test
+# Python 3.10+ and numpy:
+python3 experiments/case_study/audit.py
+# Requires pandas and scipy; checks the appendix structural-weight table:
+python3 graphrag/audit_structural_weight.py
+# C++17 compiler; compilation only:
+make -j2
+make -j2 ablations
 ```
 
-See [case-study instructions](experiments/case_study_20261016/README.md) for dependencies, measured boundaries, result tables and optional generation replay. `CHECKSUMS.json` covers the published files; `provenance.json` records source and packaged hashes. No model weights are included.
+The audit independently sums request ledgers, checks timing phase sums and the paper's displayed maintenance values, and recomputes all 28 quality scores and question-bootstrap confidence intervals from verdicts. Observations remain unchanged. See [the experiment map](docs/EXPERIMENT_MAP.md) and [case-study instructions](experiments/case_study/README.md).
 
-## Which version produced which result?
+## Paper case study
 
-| Material | Location | Status |
-|---|---|---|
-| Historical graph experiments and GraphRAG evaluation | `harness/`, `graphrag/`, `results/` | Preserved October 10 artifact; [original instructions](docs/LEGACY_ARTIFACT_20261010.md) describe this version only |
-| Eight-method Qwen 7B maintenance and fresh-answer case study | `experiments/case_study_20261016/` | Completed observations; **original std4**, eager refresh, membership-based reuse |
-| Corrected cost ledger, hierarchy and selector implementation | `experiments/corrected_std/` | Separate candidate with CPU tests; **not** the driver of the measured case study |
-| Height-dependent structural/token cost diagnostics | `experiments/height_cost/` | Experimental variant; not promoted to the paper default |
-| Qwen 32B protocol and CPU validation | `experiments/qwen32_pending_20261017/` | In progress at the snapshot; no completed performance/quality result asserted |
-| Relevant manuscript source excerpts | `paper/experiments-20261017/` | Traceability snapshot, not a standalone compilable paper |
-
-Structural cost compares algorithms under an abstract pricing model. Actual token usage is measured in one concrete case study. Graph-ready maintenance time checks whether savings translate into faster index maintenance. These quantities and versions should not be merged into a single metric. For the corrected candidate, deferred work is tracked with its pending-liability ledger; historical partition-recosting numbers are not a replacement for that accounting.
-
-## Completed case study
-
-All methods receive the same frozen extracted graph, extending 304 to 327 documents. The following values are single observed runs, not estimates over repeated timing trials.
-
-| Method | Graph-ready → queryable (s) | Summary interval (s) | Successful input + output tokens |
+| Method | Graph-ready maintenance (s) | Summary interval (s) | Successful input + output tokens |
 |---|---:|---:|---:|
-| DyLo | 547.908 | 521.659 | 1,157,226 |
-| Batch | 957.892 | 931.337 | 1,588,879 |
-| Rebuild | 2,144.711 | 2,116.064 | 2,965,947 |
-| HIT-Leiden | 961.148 | 934.910 | 1,601,555 |
-| DynaMo | 974.842 | 948.767 | 1,616,103 |
-| QCA | 963.145 | 936.653 | 1,558,299 |
-| DF-Louvain | 990.786 | 964.746 | 1,628,887 |
-| DS-Louvain | 987.023 | 960.912 | 1,653,744 |
+| DyLo | 1926.507 | 1901.056 | 1,083,274 |
+| Batch | 3464.828 | 3438.853 | 1,442,150 |
+| Rebuild | 7523.545 | 7495.808 | 2,630,185 |
+| HIT-Leiden | 3493.105 | 3467.632 | 1,448,906 |
+| DynaMo | 3498.679 | 3473.001 | 1,464,195 |
+| QCA | 3386.344 | 3360.405 | 1,411,751 |
+| DF-Louvain | 3501.809 | 3475.966 | 1,477,994 |
+| Delta-screening | 3590.582 | 3565.035 | 1,501,139 |
 
-DyLo reduces measured maintenance time by 42.8% versus Batch and 74.5% versus Rebuild; successful tokens fall by 27.2% and 61.0%, respectively. The summary interval occupies 95.2–98.7% of the measured interval. Common document extraction, initial index construction, model startup and separately recorded repairs of missing initial reports are excluded. Retry time remains included; failed-attempt tokens are reported separately. This is not raw-document end-to-end ingestion time.
+The full-precision source is `experiments/case_study/results/qwen32-all-baselines-20261017/all_results.json`. Each arm is one measured run. The primary token column follows the paper: successful update-summary input plus output; failed usage is recorded separately. Maintenance wall time includes retries and ends at a queryable index. Common extraction, initial-index construction, and answer evaluation are separate costs.
 
-The package includes 480 newly generated answers, 3,360 order-swapped judgments and 28 question-bootstrap confidence intervals. Quality results are descriptive preferences, with different native report exposure across indexes; they do not establish a uniform quality win or a non-inferiority guarantee.
+Structural cost in graph experiments, actual tokens in the case study, and elapsed maintenance time are distinct measurements. Model settings and graph defaults are recorded separately because the case study uses the archived eager-source configuration.
 
-## Historical graph experiments
+## Single standard implementation
 
-```bash
-make
-bash scripts/smoke_test.sh
-```
+`harness/cpp/dylo/driver_std4.cxx` is the sole standard DyLo source. Louvain, SLM, and Leiden are detector choices within it. `harness/cpp/dylo/ablations/` contains named patches for the paper's selector comparisons, instrumentation, and seed controls. These patches reconstruct their measured source exactly; they are not alternative standard releases. `make ablations` builds their explicit targets.
 
-The smoke test downloads its dataset. Baseline dependencies are fetched at pinned revisions through `tools/`; graph streams and third-party builds are not included. Consult the historical instructions for the original switches, dataset pipeline and script/result mapping. New case-study and corrected-candidate settings have their own instructions above.
+Baseline dependencies have pinned revisions in `tools/fetch_baselines.sh`. Java adapters differ between graph streams and the case-study warm-start protocol; these are experiment-specific input adapters for the same baseline algorithms. Third-party notices are retained.
 
-## Included evidence and licensing
+## Contents
 
-Compressed bundles contain the shared extracted input tables, all maintenance request/usage ledgers, final answers, oriented verdicts, protocols and representative plus failed maintenance API payloads. Repeated contexts, full raw API traffic, vector caches, model weights and generated executables are excluded. The case-study README states the exact scope and replay limitations.
+- `harness/`: graph algorithms, stream preparation, accounting and experiment scripts.
+- `results/`: graph-benchmark and structural-weight evidence.
+- `graphrag/`: structural-weight calibration tools.
+- `experiments/case_study/`: measured 32B pipeline, frozen graph inputs, plans, final index tables, request ledgers, answers, judgments and independent audit.
+- `paper/`: current experimental LaTeX excerpts and figures for identifying reported values.
+- `CHECKSUMS.json`: SHA-256 of every published file except the checksum file itself.
+- `provenance.json`: source and anonymized-publication hashes for copied materials and archive members.
 
-Repository code uses the MIT license in `LICENSE`. Third-party baselines retain their upstream licenses; the redistributed DynaMo/QCA patch sources include the upstream MIT notice in `experiments/case_study_20261016/native/java/`. Dataset and model usage remain subject to their upstream terms.
+Large graph datasets are downloaded from the public sources in `data/datasets.tsv`. Model weights, generated executables, and redundant vector caches are excluded. The supplied extracted case-study tables and initial 32B reports support replay without re-extracting documents. Dataset and model use remains subject to upstream terms. Repository code is covered by `LICENSE`; baseline licenses remain in force.

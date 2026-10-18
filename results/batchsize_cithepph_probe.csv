@@ -1,6 +1,0 @@
-dataset,batch_size,n_batches,latency_ms_per_batch,us_per_edge,resumm_cost_per_edge,modularity_Q
-cit-hepph,1,600,0.011,11.030,98.3183,0.73756
-cit-hepph,10,600,0.015,1.461,76.6840,0.73748
-cit-hepph,100,101,0.038,0.379,65.9953,0.73740
-cit-hepph,1000,11,0.254,0.254,25.5803,0.73739
-cit-hepph,10000,2,1.654,0.165,1.7128,0.73732

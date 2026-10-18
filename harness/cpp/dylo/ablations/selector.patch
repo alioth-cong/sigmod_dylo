@@ -1,0 +1,188 @@
+--- driver_std4.cxx
++++ driver_selector.cxx
+@@ -185,7 +185,30 @@
+   // Charge the deferred source's amortised re-summarization to the action.
+   const bool SRC_CHARGE = [](){ const char* e=std::getenv("DYLO_SRC_CHARGE"); return e?std::atoi(e)!=0:true; }();
+   const bool USE_TREE_DP = [](){ const char* e=std::getenv("DYLO_TREE_DP"); return e?std::atoi(e)!=0:true; }();
+-  const bool INC_TREE = [](){ const char* e=std::getenv("DYLO_INC_TREE"); return e?std::atoi(e)!=0:true; }();
++  // R2 ablation arm (DYLO_GREEDY=1): replace the OpenSet DP with per-destination greedy.
++  // OpenSet (dp.hpp, Alg 2) gives the **exact** optimum over ancestor-closed dirty sets; it does two things
++  // greedy cannot:
++  //   (a) the cost of a shared ancestor is amortized across siblings -- k destinations under one parent pay w(parent) once;
++  //   (b) it can accept a parent with g-lambda*w < 0 as long as the surplus of its subtree pays it back
++  //       (exactly the sum max(open(child),0) term in open(c)).
++  // greedy decides each destination independently, each paying its whole ancestor chain, so (a)(b) are lost. It is
++  // the honest floor of "what if there were no Alg 2", not another speed switch.
++  // selector ablation (DYLO_SEL_MODE): dp (default, exact tree DP) | greedy (same as DYLO_GREEDY=1)
++  // | indep: per-move independent pricing -- the naive scheme of Challenge 2 in the introduction. Each action pays, with its own
++  // gain alone, the whole refresh path from its destination anchor to the root, and is accepted if the gain covers it; it shares no path with any action and
++  // does not reuse nodes already opened by other actions. The source side is charged by the same ledger shares (identical across the three
++  // selectors), so the only difference among the three is whether a shared destination path is charged once.
++  // Applies only to the single-anchor tree-DP path (DYLO_DEFER=1); the same Validate gate and Peel still apply.
++  const std::string SEL_MODE = [](){ const char* e=std::getenv("DYLO_SEL_MODE"); return std::string(e?e:"dp"); }();
++  const bool GREEDY = [](){ const char* e=std::getenv("DYLO_GREEDY"); return e && std::atoi(e)!=0; }()
++                      || SEL_MODE=="greedy";
++  const bool INDEP = SEL_MODE=="indep";
++  // marginal weights (DYLO_MARGINAL_W=1): per the paper's w_bar_t -- nodes refreshed in earlier rounds of this batch (batchDirty)
++  // count as 0 in later rounds' selection, validation gate, Peel, and prefilter. Off by default = the original std4 behavior (full price).
++  const bool MARGW = [](){ const char* e=std::getenv("DYLO_MARGINAL_W"); return e && std::atoi(e)!=0; }();
++  if(SEL_MODE!="dp" && SEL_MODE!="greedy" && SEL_MODE!="indep"){
++    fprintf(stderr,"DYLO_SEL_MODE must be dp|greedy|indep, got %s\n",SEL_MODE.c_str()); return 2; }
++  const bool INC_TREE =[](){ const char* e=std::getenv("DYLO_INC_TREE"); return e?std::atoi(e)!=0:true; }();
+   const bool VALIDATE_TREE = std::getenv("DYLO_VALIDATE_TREE")!=nullptr;
+   const bool VALIDATE_QC   = std::getenv("DYLO_VALIDATE_QC")!=nullptr;
+   // ---------------------------------------------------------------------
+@@ -427,6 +450,16 @@
+     self<<"batch\tround\tn_candidates\tn_selected\tpred_gain\tmarginal_cost\tpred_objective"
+           "\tactual_gain\tactual_delta_f\ttrue_cost\ttrue_delta_f\taccepted\n";
+   }
++  // shadow comparison (DYLO_SEL_SHADOW=1, logging only, decisions unchanged): every round, on the same candidates and the same tree,
++  // additionally compute what greedy and indep would select, compare surrogate objectives, and record the sharing structure.
++  std::ofstream shadow;
++  const bool SHADOW = std::getenv("DYLO_SEL_SHADOW")!=nullptr;
++  if(SHADOW && emitHier){
++    shadow.open(outDir+"/shadow.tsv");
++    shadow<<"batch\tround\tn_actions\tn_anchors\tn_tree\tanchors_alone_ok\tanchors_need_share"
++            "\tdp_obj\tgreedy_obj\tindep_obj\tdp_open\tgreedy_open\tdp_sel\tgreedy_sel\tindep_sel"
++            "\tsame_dp_greedy\tsum_own_paths\tdp_marginal\n";
++  }
+ 
+   // ------- initial detect (both modes) -------
+   Hierarchy H0 = detect_iter(g, inst, 42);
+@@ -1074,6 +1107,7 @@
+                 const auto& L0=committedHierarchy.levels[0];
+                 if(bu>=0 && bu<(int)L0.size()){
+                   auto it=fineSize.find(L0[bu]); dstSz = (it==fineSize.end())?1:it->second;
++                  if(MARGW && batchDirty.count({0,L0[bu]})) dstSz=0;   // already refreshed in this batch: marginal cost 0
+                 } else dstSz=1;
+               } else {
+                 auto it=commSize.find(best); dstSz = (it==commSize.end())?1:it->second;
+@@ -1234,7 +1268,7 @@
+               for(int c=a.anchors[0]; c>=0; c=costTree.parent[c]) idOf(c);
+             DPTree T; const int NN=(int)back.size();
+             T.children.assign(NN,{}); T.g.assign(NN,0.0); T.w.assign(NN,0.0);
+-            for(int i=0;i<NN;i++) T.w[i]=costTree.weight[back[i]];
++            for(int i=0;i<NN;i++) T.w[i]=(MARGW && batchDirty.count(costTree.nodeKey[back[i]]) ? 0.0 : costTree.weight[back[i]]);
+             for(int i=0;i<NN;i++){
+               int par=costTree.parent[back[i]];
+               auto it = (par>=0) ? nid.find(par) : nid.end();
+@@ -1242,19 +1276,99 @@
+               else T.roots.push_back(i);
+             }
+             for(const auto& a : actions) T.g[nid[a.anchors[0]]] += a.gain;
+-            std::vector<char> d = open_set_dp(T, lambda);
++            std::vector<char> d;
++            std::vector<char> indepSel;
++            if(INDEP){
++              // per-move independent pricing: the price of action ai = total path weight from its destination anchor to the root,
++              // independent of the round's other actions; accepted if the gain covers it, and then the whole path is opened (ancestor closure).
++              d.assign(NN, 0);
++              indepSel.assign(actions.size(), 0);
++              for(size_t ai=0; ai<actions.size(); ai++){
++                const int a0 = actions[ai].anchors[0];
++                double own = 0.0;
++                for(int c=a0; c>=0; c=costTree.parent[c]) own += (MARGW && batchDirty.count(costTree.nodeKey[c]) ? 0.0 : costTree.weight[c]);
++                if(actions[ai].gain - lambda*own < 0.0) continue;
++                indepSel[ai] = 1;
++                for(int c=nid[a0]; c>=0; ){
++                  d[c]=1;
++                  int par=costTree.parent[back[c]];
++                  auto it=(par>=0)?nid.find(par):nid.end();
++                  c = (it!=nid.end()) ? it->second : -1;
++                }
++              }
++            } else if(GREEDY){
++              // each destination with gain decides independently: it pays its whole ancestor chain, shared with no sibling.
++              d.assign(NN, 0);
++              for(int i=0;i<NN;i++){
++                if(T.g[i] <= 0.0) continue;
++                double own = 0.0;
++                for(int c=back[i]; c>=0; c=costTree.parent[c]) own += (MARGW && batchDirty.count(costTree.nodeKey[c]) ? 0.0 : costTree.weight[c]);
++                if(T.g[i] - lambda*own >= 0.0)
++                  for(int c=i; c>=0; ){            // if accepted, close over ancestors
++                    d[c]=1;
++                    int par=costTree.parent[back[c]];
++                    auto it=(par>=0)?nid.find(par):nid.end();
++                    c = (it!=nid.end()) ? it->second : -1;
++                  }
++              }
++            } else {
++              d = open_set_dp(T, lambda);
++            }
+             chosen.dirty_nodes.assign(costTree.parent.size(),0);
+             for(int i=0;i<NN;i++) if(d[i]) chosen.dirty_nodes[back[i]]=1;
+             chosen.selected_actions.assign(actions.size(),0);
+             chosen.selected_gain=0.0; chosen.marginal_cost=0.0;
+             for(size_t ai=0; ai<actions.size(); ai++)
+-              if(d[nid[actions[ai].anchors[0]]]){
++              if(INDEP ? (bool)indepSel[ai] : (bool)d[nid[actions[ai].anchors[0]]]){
+                 chosen.selected_actions[ai]=1;
+                 chosen.selected_gain += actions[ai].gain;
+               }
+             for(int i=0;i<NN;i++) if(d[i]) chosen.marginal_cost += T.w[i];
+             chosen.objective = chosen.selected_gain - lambda*chosen.marginal_cost;
++            if(SHADOW && shadow.is_open()){
++              // the three rules' selections and surrogate objectives on the same T (sum of selected gains - lambda * sum of opened node weights)
++              auto upclose=[&](std::vector<char>& dd,int i){
++                for(int c=i; c>=0; ){
++                  if(dd[c]) break; dd[c]=1;
++                  int par=costTree.parent[back[c]];
++                  auto it=(par>=0)?nid.find(par):nid.end();
++                  c = (it!=nid.end()) ? it->second : -1;
++                }
++              };
++              auto own_path=[&](int treeNode){ double s=0; for(int c=treeNode;c>=0;c=costTree.parent[c]) s+=(MARGW && batchDirty.count(costTree.nodeKey[c]) ? 0.0 : costTree.weight[c]); return s; };
++              std::vector<char> dD = INDEP||GREEDY ? open_set_dp(T, lambda) : d;
++              std::vector<char> dG(NN,0), dI(NN,0);
++              long anchors=0, aloneOK=0, needShare=0;
++              for(int i=0;i<NN;i++){
++                if(T.g[i] <= 0.0) continue;
++                anchors++;
++                const double own=own_path(back[i]);
++                if(T.g[i] - lambda*own >= 0.0){ aloneOK++; upclose(dG,i); }
++                else if(dD[i]) needShare++;      // DP opened it, but it cannot pay its whole path alone
++              }
++              double gD=0,gG=0,gI=0,wD=0,wG=0,wI=0,sumOwn=0; long nD=0,nG=0,nI=0;
++              for(size_t ai=0; ai<actions.size(); ai++){
++                const int ni=nid[actions[ai].anchors[0]];
++                if(dD[ni]){ gD+=actions[ai].gain; nD++; sumOwn+=own_path(actions[ai].anchors[0]); }
++                if(dG[ni]){ gG+=actions[ai].gain; nG++; }
++                if(actions[ai].gain - lambda*own_path(actions[ai].anchors[0]) >= 0.0){
++                  gI+=actions[ai].gain; nI++; upclose(dI,ni); }
++              }
++              long oD=0,oG=0; bool same=true;
++              for(int i=0;i<NN;i++){
++                if(dD[i]){ wD+=T.w[i]; oD++; } if(dG[i]){ wG+=T.w[i]; oG++; } if(dI[i]) wI+=T.w[i];
++                if(dD[i]!=dG[i]) same=false;
++              }
++              shadow<<k<<"\t"<<roundsRun<<"\t"<<actions.size()<<"\t"<<anchors<<"\t"<<NN<<"\t"
++                    <<aloneOK<<"\t"<<needShare<<"\t"<<(gD-lambda*wD)<<"\t"<<(gG-lambda*wG)<<"\t"
++                    <<(gI-lambda*wI)<<"\t"<<oD<<"\t"<<oG<<"\t"<<nD<<"\t"<<nG<<"\t"<<nI<<"\t"
++                    <<(same?1:0)<<"\t"<<sumOwn<<"\t"<<wD<<"\n";
++            }
+           } else {
++            if(INDEP){
++              fprintf(stderr,"DYLO_SEL_MODE=indep needs the single-anchor tree-DP path (DYLO_DEFER=1, DYLO_TREE_DP=1)\n");
++              std::exit(2);
++            }
+             chosen=select_atomic_actions_localized(costTree.parent,costTree.weight,actions,lambda);
+           }
+         }
+@@ -1324,7 +1438,7 @@
+           for(int c:trueActions[ai].anchors)
+             while(c>=0 && !trueDirty[c]){ trueDirty[c]=1; c=costTree.parent[c]; }
+         double trueCost=0.0;
+-        for(int c=0;c<(int)trueDirty.size();c++) if(trueDirty[c]) trueCost+=costTree.weight[c];
++        for(int c=0;c<(int)trueDirty.size();c++) if(trueDirty[c]) trueCost+=(MARGW && batchDirty.count(costTree.nodeKey[c]) ? 0.0 : costTree.weight[c]);
+         const double decisionCost=legacySelector?chosen.marginal_cost:trueCost;
+         auto net_objective=[&](double cost){
+           if(lamInf) return cost>0.0 ? -std::numeric_limits<double>::infinity() : actualGain;
+@@ -1378,7 +1492,7 @@
+             std::vector<char> d(costTree.parent.size(),0);
+             double costOne=0.0;
+             for(int c: trueActions[ai].anchors)
+-              while(c>=0 && !d[c]){ d[c]=1; costOne+=costTree.weight[c]; c=costTree.parent[c]; }
++              while(c>=0 && !d[c]){ d[c]=1; costOne+=(MARGW && batchDirty.count(costTree.nodeKey[c]) ? 0.0 : costTree.weight[c]); c=costTree.parent[c]; }
+             double dfOne = gainOne - lambda*costOne;
+             if(dfOne > bestDF){ bestDF = dfOne; peeledMove = ai; peeledDeltaF = dfOne; }
+           }

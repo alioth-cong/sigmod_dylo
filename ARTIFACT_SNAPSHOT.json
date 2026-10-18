@@ -1,8 +1,19 @@
 {
-  "snapshot_date": "2026-10-17",
-  "historical_graph_experiments": "harness/",
-  "measured_case_study": "experiments/case_study_20261016",
-  "corrected_std_status": "candidate; not the manuscript case-study driver",
-  "freshness_candidate_status": "invalid chronological mapping; rebuild required",
-  "qwen32_status": "in progress; no performance or quality result included"
+  "status": "frozen",
+  "paper_snapshot": "2026-10-18",
+  "standard_driver": "harness/cpp/dylo/driver_std4.cxx",
+  "case_study": "experiments/case_study",
+  "model": "Qwen/Qwen2.5-32B-Instruct",
+  "judge": "openai/gpt-oss-120b",
+  "methods": [
+    "dylo",
+    "batch",
+    "rebuild",
+    "hit-leiden",
+    "dynamo",
+    "qca",
+    "df-louvain",
+    "ds-louvain"
+  ],
+  "source_changes": "Path portability and anonymization; no new measured runs."
 }

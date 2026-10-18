@@ -1,0 +1,32 @@
+[
+  {
+    "name": "selector",
+    "generated_source": "driver_selector.cxx",
+    "source_sha256": "36d5cad8912f687b6b9ead2bbcda2187de08a1b0ba9b5ecc080475781e5bb5b8"
+  },
+  {
+    "name": "selection_timing",
+    "generated_source": "driver_selection_timing.cxx",
+    "source_sha256": "0a0d6deed60485a9a5d91f27b4d19b51164ed97af9580efe27c3faf58a3df63c"
+  },
+  {
+    "name": "deferral_trace",
+    "generated_source": "driver_deferral_trace.cxx",
+    "source_sha256": "c326df453d8ed2c9c65510f1498c847197ebe1a99732eca95526d36f8eca0505"
+  },
+  {
+    "name": "seed_dispersion",
+    "generated_source": "driver_seed_dispersion.cxx",
+    "source_sha256": "a08ac92039ac76f9d280c9de8993219d4d0b0b28f547e0adf25335d306c26c90"
+  },
+  {
+    "name": "marginal_bucket",
+    "generated_source": "driver_marginal_bucket.cxx",
+    "source_sha256": "ba4b964ed18d379555c44a22a987e8daa5a0b91a6f7d6eea90def47a1c409023"
+  },
+  {
+    "name": "greedy",
+    "generated_source": "driver_greedy.cxx",
+    "source_sha256": "ffba772ab9dcf3d67806f6a69301aeb19be869f83d8c172f9f2f843c9552b29b"
+  }
+]

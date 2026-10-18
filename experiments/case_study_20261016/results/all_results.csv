@@ -1,9 +1,0 @@
-method,net_update_tasks,net_summary_s,net_graph_to_queryable_s,summary_percent,successful_input_tokens,successful_output_tokens,successful_total_tokens,failed_calls,failed_tokens,old_missing_repair_s,old_missing_repair_tokens,GPU_index,timing_scope
-dylo,344,521.6590433750534,547.9081616131589,95.20673758757637,918156,239070,1157226,0,0,85.66319699189626,149956,0,shared archived graph ready to queryable; raw extraction excluded
-batch,712,931.3371442280477,957.8924716148758,97.22567895663157,1125332,463547,1588879,0,0,82.69793421006761,120866,0,shared archived graph ready to queryable; raw extraction excluded
-rebuild,1637,2116.0642190049402,2144.710873832926,98.66312012118911,1926118,1039829,2965947,0,0,0.00016770209185779095,0,0,shared archived graph ready to queryable; raw extraction excluded
-hit-leiden,721,934.9104719060706,961.1477044898784,97.26815863013657,1132160,469395,1601555,1,6439,84.26745853002649,137266,1,shared archived graph ready to queryable; raw extraction excluded
-dynamo,717,948.7672236590879,974.8417320399312,97.32314756658712,1146060,470043,1616103,0,0,74.65579629899003,116943,1,shared archived graph ready to queryable; raw extraction excluded
-qca,695,936.6534774550237,963.1448487860616,97.24725634169934,1103605,454694,1558299,0,0,83.40267518197652,135152,1,shared archived graph ready to queryable; raw extraction excluded
-df-louvain,717,964.7456783680245,990.7856065250235,97.36958126870483,1159725,469162,1628887,1,6431,77.36982965201605,107281,1,shared archived graph ready to queryable; raw extraction excluded
-ds-louvain,732,960.9123303879751,987.022839764948,97.35258148563737,1174995,478749,1653744,0,0,67.86420164001174,102484,1,shared archived graph ready to queryable; raw extraction excluded
