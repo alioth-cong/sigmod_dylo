@@ -1,6 +1,6 @@
 # DyLo artifact
 
-Artifact for **DyLo: Pricing LLM Re-Summarization in Incremental GraphRAG Index Maintenance**, aligned with the manuscript snapshot of October 18, 2026.
+Artifact for **DyLo: Efficient Maintenance of Community Indexes for GraphRAG**, aligned with the manuscript snapshot of October 18, 2026.
 
 This release contains one standard DyLo implementation and the baseline implementations used in the paper. The case study uses **Qwen2.5-32B-Instruct** for reports and answers and an independent **gpt-oss-120b** judge. The release contains eight measured methods, 480 final answers, and 3,360 order-swapped judgments.
 
